@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Yacht Builder · Baltic Yachts</title>
+<title>Procurement & Purchasing · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -733,46 +733,166 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
+<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script>
+<script>
+/* Runs FIRST (before any per-page app): resolves the active project from ?p and
+   exposes window.PJ_HULL / PJ_PROJ / PJ_LIST / PJ_CARRY. No DOM access here so it
+   is safe to run at the top of the page. */
+(function(){
+  var seed = window.PJ_SEED || [];
+  function realizedList(){
+    var rl=[]; try{ rl=JSON.parse(localStorage.getItem('pw_realized'))||[]; }catch(e){}
+    var map={}; var out=[];
+    seed.forEach(function(p){ map[p.hull.toUpperCase()]=Object.assign({},p); });
+    rl.forEach(function(p){ var k=(p.hull||'').toUpperCase(); if(!k) return;
+      map[k]=Object.assign({stage:'Realized — transferred from Sales'}, map[k]||{}, p); });
+    Object.keys(map).forEach(function(k){ out.push(map[k]); });
+    out.sort(function(a,b){ return (a.hull||'').localeCompare(b.hull||''); });
+    return out;
+  }
+  window.PJ_LIST = realizedList;
+  var list = realizedList();
+  var qp = new URLSearchParams(location.search).get('p');
+  var hull = qp || (list[0]&&list[0].hull) || window.PJ_DEFAULT;
+  window.PJ_HULL = (hull||'').toUpperCase();
+  window.PJ_PROJ = list.filter(function(p){return (p.hull||'').toUpperCase()===window.PJ_HULL;})[0]
+                   || {hull:hull,name:hull,pm:'',stage:''};
+  window.PJ_CARRY = '?p='+encodeURIComponent(hull);
+})();
+</script>
+
+<script>
+window.PJX = (function(){
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  function nowISO(){ try{ return new Date().toISOString(); }catch(e){ return ''; } }
+  function fmt(iso){ try{ var d=new Date(iso); return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
+  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  function curUser(){ try{ return localStorage.getItem('pw_user') || window.PW_USER_DEFAULT || 'You'; }catch(e){ return window.PW_USER_DEFAULT||'You'; } }
+  function setUser(u){ try{ localStorage.setItem('pw_user', u); }catch(e){} }
+  // simulated Teams/email notification toast (matches the Sales editor look)
+  var nEl;
+  function notify(html, kind){
+    if(!nEl){ nEl=document.createElement('div'); document.body.appendChild(nEl); }
+    nEl.className='sp-notify'+(kind?(' '+kind):'');
+    var ic = kind==='warn'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>';
+    nEl.innerHTML=ic+'<span>'+html+'</span>'; nEl.classList.add('show');
+    clearTimeout(nEl._t); nEl._t=setTimeout(function(){ nEl.classList.remove('show'); }, 6500);
+  }
+  // identity switcher (shared pw_user) -> calls onChange(user)
+  function identityBar(host, onChange){
+    var all=[]; (window.PJ_PMS||[]).concat(window.PJ_ENG||[],window.PJ_FOREMEN||[]).forEach(function(n){ if(all.indexOf(n)<0)all.push(n); });
+    var wrap=document.createElement('span'); wrap.className='sp-userbar';
+    wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Viewing as</span>';
+    var sel=document.createElement('select'); sel.className='sp-user-sel';
+    if(all.indexOf(curUser())<0){ var x=document.createElement('option'); x.value=curUser(); x.textContent=curUser(); sel.appendChild(x); }
+    all.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; if(n===curUser())o.selected=true; sel.appendChild(o); });
+    sel.value=curUser();
+    sel.addEventListener('change', function(){ setUser(sel.value); if(onChange)onChange(sel.value); });
+    wrap.appendChild(sel); host.appendChild(wrap); return sel;
+  }
+  // snapshot + manual-update bar. keys() -> array of per-project storage keys.
+  function snapBar(host, hull, keysFn, versionFn){
+    var KEY='pw_snapshots_'+hull;
+    var bar=document.createElement('div'); bar.className='snap-bar';
+    function paint(){
+      var snaps=load(KEY,[]);
+      bar.innerHTML='<span class="snap-v">'+esc(versionFn?versionFn():'')+'</span>'+
+        '<span>Local working copy · '+snaps.length+' snapshot'+(snaps.length===1?'':'s')+'</span><span class="snap-sp"></span>'+
+        '<button type="button" class="snap-btn" data-a="snap"><svg viewBox="0 0 24 24"><path d="M5 7h3l1-2h6l1 2h3v12H5z"/><circle cx="12" cy="13" r="3"/></svg>Take snapshot</button>'+
+        '<button type="button" class="snap-btn" data-a="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Snapshots ('+snaps.length+')</button>'+
+        '<button type="button" class="snap-btn" data-a="upd"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Update now</button>';
+    }
+    paint();
+    bar.addEventListener('click', function(e){
+      var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
+      if(a==='snap'){
+        var lab=prompt('Snapshot label:', 'Snapshot '+today()); if(lab===null) return;
+        var data={}; keysFn().forEach(function(k){ var v=localStorage.getItem(k); if(v!=null) data[k]=v; });
+        var snaps=load(KEY,[]); snaps.unshift({ts:nowISO(), label:lab, by:curUser(), data:data, version:(versionFn?versionFn():'')});
+        save(KEY,snaps); paint(); notify('Snapshot <b>'+esc(lab)+'</b> saved ('+keysFn().length+' items).');
+      } else if(a==='upd'){
+        notify('Updated — reloaded the latest saved state.'); setTimeout(function(){ location.reload(); }, 500);
+      } else if(a==='list'){ openSnaps(); }
+    });
+    function openSnaps(){
+      var snaps=load(KEY,[]);
+      var ov=document.createElement('div'); ov.className='cmt-overlay';
+      var body = snaps.length ? snaps.map(function(s,i){
+        return '<div class="rev-row"><div class="rev-v">#'+(snaps.length-i)+'</div><div class="rev-main">'+
+          '<div class="rev-sum">'+esc(s.label)+'</div><div class="rev-meta">'+esc(fmt(s.ts))+' · by '+esc(s.by)+(s.version?(' · '+esc(s.version)):'')+
+          ' · <a href="#" data-restore="'+i+'">Restore</a> · <a href="#" data-del="'+i+'">Delete</a></div></div></div>';
+      }).join('') : '<div class="pj-empty">No snapshots yet. Take one to capture the current state.</div>';
+      ov.innerHTML='<div class="cmt-sheet"><div class="cmt-sheet-top"><h3>Snapshots — '+esc(hull)+'</h3>'+
+        '<span class="cmt-sheet-tools"><button type="button" class="primary" data-close>Close</button></span></div>'+
+        '<p class="cmt-sheet-sub">Point-in-time copies of this project’s working data (spec, comments, change orders, revisions, planning).</p>'+body+'</div>';
+      document.body.appendChild(ov);
+      ov.addEventListener('click', function(e){
+        if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
+        var r=e.target.closest('[data-restore]'); var d=e.target.closest('[data-del]');
+        if(r){ e.preventDefault(); var i=+r.getAttribute('data-restore'); var s=load(KEY,[])[i];
+          if(s && confirm('Restore snapshot “'+s.label+'”? This overwrites the current working copy.')){
+            Object.keys(s.data).forEach(function(k){ localStorage.setItem(k, s.data[k]); }); location.reload(); } }
+        if(d){ e.preventDefault(); var j=+d.getAttribute('data-del'); var arr=load(KEY,[]); arr.splice(j,1); save(KEY,arr); ov.remove(); paint(); openSnaps(); }
+      });
+    }
+    host.appendChild(bar); return bar;
+  }
+  // mini rich-text editor: returns {el, getHTML, setHTML}
+  function richEditor(initialHTML, readOnly){
+    var box=document.createElement('div'); box.className='co-rt';
+    var bar=document.createElement('div'); bar.className='co-rt-bar';
+    var area=document.createElement('div'); area.className='co-rt-area'; area.setAttribute('contenteditable', readOnly?'false':'true');
+    area.innerHTML=initialHTML||'';
+    var cmds=[['B','bold','Bold'],['I','italic','Italic'],['U','underline','Underline'],['•','insertUnorderedList','Bulleted list'],['1.','insertOrderedList','Numbered list'],['↺','removeFormat','Clear formatting']];
+    cmds.forEach(function(c){ var b=document.createElement('button'); b.type='button'; b.textContent=c[0]; b.title=c[2];
+      if(c[0]==='I')b.style.fontStyle='italic'; if(c[0]==='U')b.style.textDecoration='underline';
+      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly)return; document.execCommand(c[1],false,null); area.focus(); }); bar.appendChild(b); });
+    if(readOnly){ bar.style.display='none'; }
+    box.appendChild(bar); box.appendChild(area);
+    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
+  }
+  return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
+          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor};
+})();
+</script>
+
 <main class="wrap">
 
-  <div class="crumb"><a href="../">&larr; All apps</a></div>
   <div class="intro">
-    <h1>Yacht Builder</h1>
-    <p>Choose where to go &mdash; start a new project, or open work that&rsquo;s ongoing or resting.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Procurement & Purchasing</div>
+    <h1>Procurement & Purchasing</h1>
+    <p>Supplier orders, lead times and deliveries for the build.</p>
   </div>
-  <div class="home-grid">
-    <a class="home-block primary" href="create.html">
-      <div class="home-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
-      <h2>Create New Project</h2>
-      <p>Begin a pricing calculation or a build specification &mdash; from scratch or based on an existing project.</p>
-      <div class="home-foot"><span class="home-cta">Open <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
-    </a>
-    <a class="home-block" href="ongoing.html">
-      <div class="home-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
-      <h2>Ongoing Projects</h2>
-      <p>Pick up projects currently in progress &mdash; active pricing and specification work.</p>
-      <div class="home-foot"><span class="home-cta"><span class="dot good"></span>Open <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="count">0 active</span></span></div>
-    </a>
-    <a class="home-block" href="resting.html">
-      <div class="home-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h6l2 4 2-8 2 4h4"/></svg></div>
-      <h2>Resting Projects</h2>
-      <p>Revisit paused or on-hold projects, kept ready to resume when they pick back up.</p>
-      <div class="home-foot"><span class="home-cta"><span class="dot rest"></span>Open <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="count">0 on hold</span></span></div>
-    </a>
-    <a class="home-block" href="../projects/">
-      <div class="home-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V9l5 3V9l5 3V9l5 3v8z"/><path d="M3 20h18"/><path d="M9 20v-4h4v4"/></svg></div>
-      <h2>Realized &mdash; In build</h2>
-      <p>Projects that have been sold and handed over to the Projects area &mdash; the live build, change orders and planning.</p>
-      <div class="home-foot"><span class="home-cta"><span class="dot good"></span>Open Projects <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
-    </a>
-    <a class="home-block soon" href="#">
-      <div class="home-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <h2>Pricing</h2>
-      <p>A guided pricing model is on the way &mdash; built from the sales pricing spreadsheet to give quick, consistent indicative prices.</p>
-      <div class="home-foot"><span class="home-cta"><span class="dot rest"></span>Coming soon</span></div>
-    </a>
-  </div>
+<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1.2 10.5a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg><strong>Procurement & Purchasing</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
 
+
+<script>
+/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
+   links, and reflects the project name in headers. */
+(function(){
+  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
+  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
+  var list = window.PJ_LIST ? window.PJ_LIST() : [];
+  var pick=document.getElementById('pj-pick');
+  if(pick){
+    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
+      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
+    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
+    var h=a.getAttribute('href')||'';
+    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
+    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
+  });
+})();
+</script>
 </main>
 <footer>
   <div class="wrap foot-inner">
