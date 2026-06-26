@@ -299,7 +299,13 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+
 /* --- v18: project hub --- */
+/* --- v27: editor tables (shared rich-text spec editor) --- */
+.sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
+.sp-table th,.sp-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.sp-table th{background:var(--surface-2);font-weight:700;color:var(--ink)}
+.sp-table td{color:var(--ink)}
 .src-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:-2px 0 16px;display:flex;gap:8px;align-items:flex-start}
 .src-note svg{width:16px;height:16px;stroke:var(--brand-2);flex:0 0 auto;margin-top:1px}
 .proj-cell{display:flex;flex-direction:column;gap:2px}
@@ -1564,7 +1570,8 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
       img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/>',
       clear:'<path d="M5 6h14M9 6l1-2h4l1 2M8 6l1 12M16 6l-1 12M3 20l4-4M7 20l-4-4"/>',
       colorA:'<path d="M6 18 11 5h2l5 13M8.2 13.5h7.6"/>',
-      mark:'<path d="m9 13-4 4v3h3l4-4M13.5 8.5l3 3M8 14l7-7 3 3-7 7M19 4l1 1"/>'
+      mark:'<path d="m9 13-4 4v3h3l4-4M13.5 8.5l3 3M8 14l7-7 3 3-7 7M19 4l1 1"/>',
+      table:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 9h18M3 14h18M9 4v16M15 4v16"/>'
     };
     b.appendChild(mk(svg(I.bold),'Bold (Ctrl+B)', cmd('bold')));
     b.appendChild(mk(svg(I.italic),'Italic (Ctrl+I)', cmd('italic')));
@@ -1579,6 +1586,7 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
     b.appendChild(colorWrap(svg(I.mark),'Highlight', HILITE_COLORS, '#ffff00', function(hex){ if(!document.execCommand('hiliteColor',false,hex)){ document.execCommand('backColor',false,hex); } persist(); }, 'transparent'));
     b.appendChild(sep());
     b.appendChild(mk(svg(I.img),'Insert picture / screenshot', pickImage));
+    b.appendChild(mk(svg(I.table),'Insert table', insertTable));
     b.appendChild(mk(svg(I.clear),'Clear formatting', cmd('removeFormat')));
     return b;
   }
@@ -1620,6 +1628,17 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
       im.src=fr.result;
     };
     fr.readAsDataURL(file);
+  }
+  // ---- table insert (v27) — a small editable table; lives in the document HTML
+  function insertTable(){
+    var cols=3, rows=2;
+    var h='<table class="sp-table"><thead><tr>';
+    for(var c=0;c<cols;c++){ h+='<th>Heading '+(c+1)+'</th>'; }
+    h+='</tr></thead><tbody>';
+    for(var r=0;r<rows;r++){ h+='<tr>'; for(var k=0;k<cols;k++){ h+='<td>&nbsp;</td>'; } h+='</tr>'; }
+    h+='</tbody></table><p><br></p>';
+    document.execCommand('insertHTML', false, h);
+    persist(); rebuildTOC();
   }
   SEC.addEventListener('paste', function(e){
     if(!editing) return;
