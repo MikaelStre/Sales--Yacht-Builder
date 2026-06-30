@@ -299,7 +299,6 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
 /* --- v27: editor tables (shared rich-text spec editor) --- */
 .sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
@@ -563,6 +562,12 @@
   .cmt-sheet .cmt-row-c .cmt-row-who{color:#005080}
 }
 
+.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
+.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
+.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
+.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.co-card.co-steer{border-left:4px solid var(--good)}
+.co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:18px 0 8px}
 /* --- v26: Realize action + realized journey dot --- */
 .btn-row.realize{border-color:var(--good);color:var(--good)}
 .btn-row.realize:hover{background:var(--good);border-color:var(--good);color:#fff}
@@ -726,6 +731,11 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
   body.co-printing>*{display:none!important}
   body.co-printing .co-print{display:block!important}
 }
+/* --- v33: "new proposal" badge on the Project development tab --- */
+.pj-badge-new{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;border-radius:50%;background:#d69600;color:#fff;font:700 11px/1 var(--sans);padding:0 4px;vertical-align:1px}
+/* --- v34: clickable file/PDF chip (opens in a new tab) --- */
+.dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
+a.dl-chip:hover{background:var(--brand-2);color:#fff}
 </style>
 </head>
 <body>
@@ -739,6 +749,7 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
+
 <main class="wrap">
 
   <div class="intro">

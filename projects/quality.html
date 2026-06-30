@@ -299,7 +299,6 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
 /* --- v27: editor tables (shared rich-text spec editor) --- */
 .sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
@@ -563,6 +562,12 @@
   .cmt-sheet .cmt-row-c .cmt-row-who{color:#005080}
 }
 
+.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
+.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
+.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
+.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.co-card.co-steer{border-left:4px solid var(--good)}
+.co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:18px 0 8px}
 /* --- v26: Realize action + realized journey dot --- */
 .btn-row.realize{border-color:var(--good);color:var(--good)}
 .btn-row.realize:hover{background:var(--good);border-color:var(--good);color:#fff}
@@ -726,6 +731,11 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
   body.co-printing>*{display:none!important}
   body.co-printing .co-print{display:block!important}
 }
+/* --- v33: "new proposal" badge on the Project development tab --- */
+.pj-badge-new{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;border-radius:50%;background:#d69600;color:#fff;font:700 11px/1 var(--sans);padding:0 4px;vertical-align:1px}
+/* --- v34: clickable file/PDF chip (opens in a new tab) --- */
+.dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
+a.dl-chip:hover{background:var(--brand-2);color:#fff}
 </style>
 </head>
 <body>
@@ -739,6 +749,7 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
+
 <script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script>
 <script>
 /* Runs FIRST (before any per-page app): resolves the active project from ?p and
@@ -862,8 +873,42 @@ window.PJX = (function(){
     box.appendChild(bar); box.appendChild(area);
     return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
   }
+  // file chip as an HTML string — a clickable link (opens in a new tab) when the
+  // file carries data/url, else a plain badge.
+  function chipHTML(f){
+    var name=(f&&f.name)||'file';
+    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
+    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
+    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
+    var src=(f&&(f.data||f.url))||'';
+    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
+    return '<span class="dl-chip">'+ic+label+'</span>';
+  }
+  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
+  function _openData(href, name){
+    try{
+      var c=href.indexOf(","); if(c<0) return false;
+      var meta=href.substring(5,c), data=href.substring(c+1);
+      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
+      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
+      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
+      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
+      var w=window.open(url,"_blank");
+      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+      return true;
+    }catch(e){ return false; }
+  }
+  try{ document.addEventListener("click", function(e){
+    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
+    if(!a) return; var href=a.getAttribute("href")||"";
+    if(href.indexOf("data:")!==0) return;
+    e.preventDefault();
+    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
+    _openData(href, nm);
+  }, false); }catch(e){}
   return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor};
+          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
 })();
 </script>
 
@@ -874,7 +919,7 @@ window.PJX = (function(){
     <h1>Quality & Sea Trials</h1>
     <p>Inspections, NCRs, commissioning and sea trials.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><strong>Quality & Sea Trials</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><strong>Quality & Sea Trials</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
 
 
 <script>
@@ -897,6 +942,12 @@ window.PJX = (function(){
   Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
     el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
   });
+  // badge the Project development tab when reference proposals are pending the PM
+  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
+    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
+    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
+    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
+  }catch(e){}
 })();
 </script>
 </main>

@@ -299,7 +299,6 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
 /* --- v27: editor tables (shared rich-text spec editor) --- */
 .sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
@@ -563,6 +562,12 @@
   .cmt-sheet .cmt-row-c .cmt-row-who{color:#005080}
 }
 
+.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
+.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
+.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
+.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.co-card.co-steer{border-left:4px solid var(--good)}
+.co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:18px 0 8px}
 /* --- v26: Realize action + realized journey dot --- */
 .btn-row.realize{border-color:var(--good);color:var(--good)}
 .btn-row.realize:hover{background:var(--good);border-color:var(--good);color:#fff}
@@ -726,6 +731,11 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
   body.co-printing>*{display:none!important}
   body.co-printing .co-print{display:block!important}
 }
+/* --- v33: "new proposal" badge on the Project development tab --- */
+.pj-badge-new{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;border-radius:50%;background:#d69600;color:#fff;font:700 11px/1 var(--sans);padding:0 4px;vertical-align:1px}
+/* --- v34: clickable file/PDF chip (opens in a new tab) --- */
+.dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
+a.dl-chip:hover{background:var(--brand-2);color:#fff}
 
 /* --- v27: Engineering Projects — force the app's dark palette on these pages --- */
 body.eng-dark{
@@ -827,6 +837,7 @@ body.eng-dark .home-block.soon{opacity:.7}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
+
 <script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script><script>window.ENG_PURCHASERS=["Anna Lindqvist", "Markus Holm", "Sofia Berg", "Daniel Ek"];window.ENG_SALES=["Kenneth Nyfelt", "Henry Hawkins", "Joakim Kasslin", "Daniel Wahlroos"];window.ENG_HEAD="Mikael Strengell";window.ENG_SOL_SEED=[{"id": "BS-010-1", "area": "10", "name": "Through-hull valve set — DZR bronze", "supplier": "TruDesign / Forespar", "desc": "<p>Approved through-hull and seacock set in DZR bronze for hulls below the waterline. Sizes per the systems diagram.</p>", "files": [{"name": "TH-valve-set-DZR.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-010-2", "area": "10", "name": "Hull anode kit — aluminium", "supplier": "MG Duff", "desc": "<p>Sacrificial aluminium anode kit sized to the wetted surface; brackets bonded to the grounding plate.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-020-1", "area": "20", "name": "Electric primary winch — 1100ST", "supplier": "Harken", "desc": "<p>Self-tailing electric primary winch, 24&nbsp;V. Mounted on the cockpit coaming pads per the deck plan.</p>", "files": [{"name": "Winch-1100ST-datasheet.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-020-2", "area": "20", "name": "Hydraulic furler — Code 0", "supplier": "Reckmann", "desc": "<p>Below-deck hydraulic furler for the Code&nbsp;0, integrated with the central hydraulic ring main.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-040-1", "area": "40", "name": "Main engine flexible mounts (set)", "supplier": "Vetus / R&D", "desc": "<p>Vibration-isolating flexible engine mounts matched to the main engine mass and torque.</p>", "files": [{"name": "Engine-mounts.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-050-1", "area": "50", "name": "Freshwater pressure pump — 24V", "supplier": "Jabsco", "desc": "<p>Variable-speed freshwater pressure set with accumulator; feeds the manifold per the plumbing schematic.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-060-1", "area": "60", "name": "Lithium battery module — 5&nbsp;kWh", "supplier": "Mastervolt", "desc": "<p>LiFePO4 house-bank module, 24&nbsp;V 5&nbsp;kWh, with integrated BMS and CAN monitoring.</p>", "files": [{"name": "Li-module-5kWh.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-060-2", "area": "60", "name": "Navigation light set — LED", "supplier": "Lopolight", "desc": "<p>Certified LED navigation light set for vessels &gt;20&nbsp;m, with dual-source masthead.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-070-1", "area": "70", "name": "Carbon boom gooseneck fitting", "supplier": "Baltic / Hall", "desc": "<p>Titanium gooseneck fitting bonded to the carbon boom; engineered to the rig load case.</p>", "files": [{"name": "Gooseneck-load-case.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}];window.ENG_AREAS=[{"code": "GP", "title": "General Particulars", "sections": [{"name": "Principal dimensions", "rows": ["L.O.A.", "D.W.L.", "Beam", "Draft", "Displacement (light)", "I / I’ / I’’", "J / J / J code", "P", "E"]}, {"name": "Construction", "rows": ["Hull", "Keel", "Deck", "Interior"]}, {"name": "Equipment", "rows": ["Winches", "Anchoring system", "Fuel tanks", "Fresh water", "Holding tank", "Watermaker", "Heating / AC", "Main engine", "Generators", "Propeller", "Bow &amp; stern thruster", "Mast &amp; rigging", "Batteries", "AC system", "Electronics"]}, {"name": "Design", "rows": ["Naval architect", "Exterior &amp; interior design", "Project management", "Classification", "Flag state", "Cabins", "Delivery"]}]}, {"code": "00", "title": "General Conditions", "sections": [{"name": "Specification", "rows": ["The purpose of the Technical Specification is to define the …", "The Technical Specification will be accompanied by the Gener…", "The intent is to produce a lightweight, comfortable, perform…", "In case of either gaps, or conflict, between the drawings an…", "Work shown in the drawings and not in the specs, or vice ver…", "The Builder undertakes to ensure that the boat is built in a…"]}, {"name": "Articles supplied by shipyard and owner", "rows": ["The yard to receive and take responsibility for all articles…"]}, {"name": "Access", "rows": ["The owner, the naval architect, his representatives and or a…"]}, {"name": "Materials and workmanship", "rows": ["All materials and manufactured articles furnished by the yar…", "If the yard proposes an equivalent substitution that differs…", "The Builder shall use skilled workmanship, in keeping with t…", "Materials and workmanship can be regularly inspected by the …", "Particular care is to be taken to avoid bimetallic corrosion…", "All materials to be in accordance with class regulations."]}, {"name": "Insurance", "rows": ["See Yacht Construction Agreement."]}, {"name": "Warranty", "rows": ["See Yacht Construction Agreement."]}, {"name": "Drawings and Definitions", "rows": ["All drawings, specification and further information supplied…", "The drawings will be interpreted and completed with referenc…", "All the drawings will be drawn to scale but not all will con…", "The Builder will correct any defects or errors, which may oc…", "The Builder shall follow all details and dimensions shown on…", "The Builder is to review all plans, drawings, subcontractor …", "The Builder’s drawings", "The Builder is responsible for making and submitting all oth…"]}, {"name": "Classification and Compliance", "rows": ["The Yacht will be constructed in accordance with the class r…", "Certification of Class, Hull and Machinery DNV GL.", "Mast and rig class certification. To be decided if any."]}, {"name": "Flag state requirements", "rows": ["The flag state will be Malta.", "A change of flag state during the build may cause additional…"]}, {"name": "Weight control", "rows": ["The builder shall supply a detailed weight study which also …"]}, {"name": "Commissioning and Testing", "rows": ["The builder has developed an extensive commissioning process…", "The builders project team hands over the testing of the boat…", "All commissioning and test protocols to be accepted by the c…", "Following Hand over documents are prepared.", "Owner’s manual", "Warranty cards", "Warranty registration cards", "Warranty certificate"]}, {"name": "Delivery of yacht", "rows": ["If on delivery of the yacht to the owner any item of work sh…", "At delivery of the yacht Baltic Yachts will provide two pers…"]}]}, {"code": "10", "title": "Hull", "sections": [{"name": "General Concept", "rows": ["Hull lines will be in accordance with Naval Architect design…", "Details of engineering and construction according to the Str…", "The hulls and wetdeck (bridge between the hulls) will be bui…", "Hulls and wetdeck are built in advanced composite sandwich c…", "Inner skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "Core: Corecell core bonded under vacuum to obtain best bondi…", "Outer skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "For the lamination, an oven will be assembled around the mou…"]}, {"name": "101  Hull structures", "rows": ["The hull shell will be supported by transverse and longitudi…", "The high-stress areas, such as the ones surrounding the pivo…", "Hull internal structures and bulkheads will be provided with…", "Structural engineering to be done by Rivoyre Ingenierie.", "Hull will be NDT checked and report to be shared with owner’…", "Structural bulkheads", "All bulkheads have a sandwich construction with skins made o…", "The bulkheads are manufactured on a vacuum table, to be flat…"]}, {"name": "102  Hull finish and fairing", "rows": ["General", "The complete paint system shall be Awlcraft as per yards’ st…", "A complete kit for touch up or small repairs to be supplied …", "The colours will be following the preliminary OWNER’s wishes…", "Metallic Flag Blue colour for the topsides,", "White or Oyster White for the deck and superstructure and fl…", "Black for the under-waterline paint", "Hull sides, transom and superstructure"]}, {"name": "103  Transom, swim and boarding platform", "rows": ["Transom", "Two transom doors shall be included and serve as access door…", "Transom swim platform", "A hydraulic tender lifting platform from TENDERLIFT will be …", "In lowered position, the platform must be deeply submerged t…", "The platform can also be lowered at the same level as the tr…", "The hull shapes will not be symmetrical to their respective …", "Platform to serve as swim platform when open, teak covered a…"]}, {"name": "105  Anchoring system", "rows": ["The ground tackle is to meet class rules. The builder is to …", "The anchor and chain handling systems are to be installed in…", "A mock-up in plywood will be made of the anchor handling arr…", "Windlass", "One Maxwell 8000 VWCLP hydraulically driven windlass to be i…", "The windlass motor shall be dual speed controlled. A chain c…", "Brakes and clutches for manual release shall be fitted to th…", "Anchor"]}, {"name": "106  Hull fittings and hardware", "rows": ["Hull windows", "All hull windows are to be installed according to class rule…", "Bow and stern thruster and Installation.", "Bow thruster foundation to be made according to the specific…", "Thrusters shall be controlled at both helm stations by a sma…", "Bow thruster", "OMS hydraulic swing thruster H-0300-S.", "Stern thruster"]}, {"name": "150  Pivoting daggerboard and skeg system", "rows": ["The boat is fitted with 2 fixed skegs and pivoting daggerboa…", "The daggerboard is a composite structure made of carbon lami…", "The skeg is incorporated to the hulls and will house the piv…", "Skegs:", "Lateral area: 1.7 m2 each", "Span: 0.4 m", "Carbon pivoting boards:", "Lateral area: 5.0 m2 each"]}]}, {"code": "20", "title": "Deck", "sections": [{"name": "General concept", "rows": ["The deck will have a superstructure including a flybridge.", "The deck will incorporate a toe rail in composite, details s…", "The flybridge will have twin helm stations one (1) port side…", "The area forward incorporates a comfortable relaxing cockpit…", "The main tender is stored on a tenderlift most aft. The crew…"]}, {"name": "201  Deck structure", "rows": ["General", "Deck is built in female moulds which are strong and airtight…", "The deck will be built using composite construction with epo…", "For the lamination, an oven will be assembled around the mou…", "The deck shell will be supported by transversal and longitud…"]}, {"name": "202  Finish", "rows": ["See hull finish 102"]}, {"name": "204  Decking", "rows": ["Standard deck", "Teak will be of the best available quality, quarter sawn Ind…", "A teak deck will be provided for the side decks and cockpits…", "Margin planks around hatches and fittings;", "1. 35 – 50 mm margin plank around hatch cut out. Corners to …", "Detail 1. 35mm margin plank w/ caulking", "In the corners", "15367073025"]}, {"name": "210  Deck fittings and hardware", "rows": ["General", "All deck equipment will be installed by means of through bol…", "When non-ferrous metal is used, titanium should be preferred…", "Deck fillers", "Deck fillers, one each filling point for fresh water and one…", "Pulpit, pushpit and stanchions", "Pulpit, pushpit and stanchions will be built according to de…", "Pulpit, pushpit and stanchions will be made from carbon usin…"]}, {"name": "211  Deck sail handling gear", "rows": ["General", "The sail handling gear will be supplied by Harken or equival…", "The maximum working load for standing and running rigging is…", "All hydraulic cylinders to be in anodized aluminum body and …", "Bobstay", "N/A", "Main sail system", "Main sheet xx kg"]}]}, {"code": "30", "title": "Interior", "sections": [{"name": "General", "rows": ["General", "The interior styling is done by Jamie Bush and the following…", "240425_ZETEO_DESIGN DEVELOPMENT PRESENTATION compressed-Mock…", "240531_APPLIANCES SCHEDULE", "240531_PLUMBING SCHEDULE", "240531_WOOD SCHEDULE", "BALTIC PERFORMANCE LIGHT (BENCHMARK LIARA AND HER DUAL ROLES…", "GENERAL The BALTIC PERFORMANCE LIGHT class uses specialist t…"]}, {"name": "301  Cabins, heads and showers", "rows": ["Bulkheads", "Advanced lightweight construction techniques are used in the…", "Main bulkheads are made on a vacuum table and the core is ma…", "BHDs will be built in by additional interior panels. Painted…", "Interior walls build-up specified in Noise and vibration stu…", "Floors", "Cabin soles throughout the entire Yacht will be a composite/…", "Main Deck: -Teak."]}]}, {"code": "40", "title": "Engine", "sections": [{"name": "401  Engine room", "rows": ["General", "The engine rooms are internally insulated for both fire safe…", "Access to the engine rooms will be through watertight deck h…", "The walls and ceilings of the engine room will be clad with …", "The engine room insulation will consist of two layers of hig…", "The engine room floor will be made of GRP or Aluminum plates…", "If space permits A workbench with a vice will be installed i…", "Pipes in the engine room, machinery spaces, and other areas …"]}, {"name": "402  Engine and propulsion system", "rows": ["Main engines", "There will be similar setups on each side. The propulsion sy…", "The electrical propulsion engine is a Danfoss Editron EM-PMI…", "Propeller &amp; Shaft setup", "Brunton's Varifold 4-bladed folding propeller to be provided…", "2 Stainless Steel 1.4460 Propeller shaft (front-side propell…", "2 stern tubes, length and diameter to be defined, flange on …", "2 Stand-by Seal, inflatable, for shaft with Stainless Steel …"]}, {"name": "403  Diesel Generator", "rows": ["General", "Monitoring and controlling the generators is done from the v…", "The diesel generators will have an HMI page that tracks vari…", "Oil pressure", "Oil temperature", "Wet exhaust temperature", "Dry exhaust temperatures", "High-level water sensor for silencer"]}, {"name": "404  Fuel and oil system", "rows": ["Schematic drawing: 1221-404001(P1) Fuel system.", "General", "The fuel system is to comply with class requirements. All va…", "The fuel system serves the two generators onboard and the di…", "Fuel polishing", "Two fuel polishing systems are installed, one per side, mode…", "Fuel tanks", "The fuel tanks are made in stainless steel. There are four 1…"]}, {"name": "405  Exhaust system", "rows": ["Schematic drawing: 1221-405001(P1) Exhaust System.", "The generators have exhaust systems where exhaust gases are …", "The exhaust equipment, piping, lift silencer and water separ…"]}, {"name": "406  Engine room ventilation system", "rows": ["Schematic drawing: 1221-406001(P1) Engine room ventilation.", "Engine room ventilation is based on the requirements of the …", "The requirements of the installed equipment are manufacturer…", "Control of engine room ventilation", "The system is based on temperature control; this will try to…", "Engine room ventilation system Main components", "A60 Fire dampers installed in Engine room", "Engine room air inlet via water trap"]}]}, {"code": "50", "title": "Plumbing", "sections": [{"name": "General", "rows": ["All piping systems are designed and optimized for their purp…", "For freshwater, wastewater +GF+ ABS plastic piping and Hep2O…", "501 Fresh water system"]}, {"name": "General", "rows": ["Schematic drawing: 1221-501001(P2) Fresh water system.", "The freshwater system is optimized for the yacht considering…", "The supply of pressurized water is achieved by two pressure …", "Shore water supply is connected in the lazarette via a filte…", "The freshwater system will supply water to the following are…"]}, {"name": "Fresh water tanks", "rows": ["Two 2000 litre HDPE freshwater tanks are installed, one in e…"]}, {"name": "Hot water boilers", "rows": ["One 200L hot water boiler per hull with electric heating ele…", "Main components of the Fresh water system:", "Component", "Pcs", "Type", "Fresh water tanks", "2", "4000 liters (divided into port &amp; Stb) *"]}, {"name": "502  Waste water system", "rows": ["General", "Schematic drawing: 1221-502001(P1) Waste water system.", "All grey water collected from showers, wash basins and galle…", "Tanks", "The waste tanks are made of HDPE plastic. There is one holdi…", "All tanks are equipped with service valves and service hatch…", "Waste system main components", "Component"]}]}, {"code": "60", "title": "Electrical", "sections": [{"name": "General", "rows": ["General", "This specification outlines the installation of a hybrid pro…", "The power sources for this system include shore power and ge…", "Given that the HVDC battery bank continuously provides power…"]}, {"name": "One line diagram", "rows": ["The electrical system is divided into two sides for redundan…"]}, {"name": "Cables and Supports", "rows": ["All wiring will be installed within conduits or stainless-st…", "The Builder will ensure the use of lightweight marine-grade …", "Cables passing through structures and exposed to potential m…"]}, {"name": "Switchgear and Panels", "rows": ["General", "All switchboards and distribution boards shall be housed in …", "Switchboards with removable fuses shall be equipped with a f…"]}, {"name": "Grounding system and Corrosion prevention", "rows": ["A lightning conductor is installed in the mast, with an elec…", "Corrosion prevention anodes will be recessed in the hull, an…"]}, {"name": "601  AC system", "rows": ["General", "The two three-phase main inverters are supplying 230/400VAC …", "The types of consumers on the AC bus include:", "• Galley equipment", "• Water heater", "• Water maker", "• Air conditioning compressors", "• Battery chargers for 24V systems"]}, {"name": "602  DC systems", "rows": ["All critical data from DC systems will be monitored through …", "All DC equipment will be isolated from the hull.", "In addition to the electronic cathodic protection system, th…", "HVDC battery system", "The high voltage battery bank shall consist of 2 (two) separ…", "Aiming for a minimum of 8 hours silent night period in accor…", "HVDC system main components:", "2x Permanent magnet generators."]}, {"name": "603  Control and Monitoring system", "rows": ["The monitoring and control system utilizes a decentralized I…", "HMI is based in a webserver, any device or computer connecte…", "Each monitoring screen will have a small fan less computer d…", "Service", "Pcs", "Type", "Master PLC", "2"]}, {"name": "605  Navigation system", "rows": ["General", "Assuming built as pleasure yacht i.e. Malta CYC2020 does not…", "Sailing instruments (preliminary allowance list)", "Processors", "One (1) B&amp;G Hercules WTP sailing processor with interfac…", "Sensors", "One (1) B&amp;G WS730 VMHU in mast top, connected to NMEA 20…", "One (1) B&amp;G DST800 Depth, speed and temp sensor (235kHz)…"]}, {"name": "606  Audio / Video", "rows": ["N/A. For details see Preliminary allowance list P1.", "Central system", "Sonance DSP 8-130 Amplifier 5", "WiiM Pro music streamer 11", "Flybridge", "Sonance VPXT6R 4", "Bathing platform", "Sonance VPXT6R 2"]}]}, {"code": "70", "title": "Rigging", "sections": [{"name": "701  Mast and rig (owner supplied)", "rows": ["General", "Mast, rigging and boom are to be owner supplied. A prelimina…", "Stability has been performed at MLDC in the figure below to …", "Dimensions:", "I 38.0 m", "J 13.0 m", "P 38.7 m", "E 11.4 m"]}, {"name": "702  Sails", "rows": ["Sails will be supplied by the Owner. The yard will support t…", "The inventory and dimensions are provisional pending final d…", "Mainsail", "Area: 296 m²", "P: 38.7 m", "E: 11.4 m", "Genoa", "Area: 276 m²"]}]}, {"code": "90", "title": "Miscellaneous", "sections": []}];</script>
 <script>
 /* Runs FIRST (before any per-page app): resolves the active project from ?p and
@@ -950,8 +961,42 @@ window.PJX = (function(){
     box.appendChild(bar); box.appendChild(area);
     return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
   }
+  // file chip as an HTML string — a clickable link (opens in a new tab) when the
+  // file carries data/url, else a plain badge.
+  function chipHTML(f){
+    var name=(f&&f.name)||'file';
+    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
+    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
+    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
+    var src=(f&&(f.data||f.url))||'';
+    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
+    return '<span class="dl-chip">'+ic+label+'</span>';
+  }
+  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
+  function _openData(href, name){
+    try{
+      var c=href.indexOf(","); if(c<0) return false;
+      var meta=href.substring(5,c), data=href.substring(c+1);
+      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
+      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
+      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
+      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
+      var w=window.open(url,"_blank");
+      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+      return true;
+    }catch(e){ return false; }
+  }
+  try{ document.addEventListener("click", function(e){
+    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
+    if(!a) return; var href=a.getAttribute("href")||"";
+    if(href.indexOf("data:")!==0) return;
+    e.preventDefault();
+    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
+    _openData(href, nm);
+  }, false); }catch(e){}
   return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor};
+          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
 })();
 </script>
 
@@ -1008,7 +1053,7 @@ window.ENGX = (function(){
     var kind=f.kind||kindFromName(f.name);
     var ic='<svg viewBox="0 0 24 24">'+(KIND_ICON[kind]||KIND_ICON.pdf)+'</svg>';
     var node=document.createElement(onRemove?'span':'a'); node.className='eng-chip k-'+kind;
-    if(!onRemove){ node.setAttribute('href', f.data||'#'); if(f.data) node.setAttribute('download', f.name); }
+    if(!onRemove){ var src=f.data||f.url||''; node.setAttribute('href', src||'#'); if(src){ node.setAttribute('target','_blank'); node.setAttribute('rel','noopener'); } }
     node.innerHTML=ic+'<span>'+X.esc(kind.toUpperCase())+' · '+X.esc(f.name)+'</span>';
     if(onRemove){ var x=document.createElement('span'); x.className='x'; x.textContent='×'; x.title='Remove';
       x.addEventListener('click', function(e){ e.preventDefault(); onRemove(); }); node.appendChild(x); }
@@ -1061,7 +1106,7 @@ window.ENGX = (function(){
     <h1>Engineering Projects</h1>
     <p>Boats in build, from an <strong>engineering</strong> viewpoint. Pick a project to see its specification and the state of its change orders &mdash; this overview is <strong>read-only</strong>; use <a href="area.html">Area &amp; tools</a> to do the work.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="project-solutions.html">Project solutions</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card">
+<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card">
     <table class="pj-port">
       <thead><tr><th>Project</th><th>Type</th><th>Project manager</th><th>Stage</th><th>In build since</th><th></th></tr></thead>
       <tbody id="eng-portfolio"><tr><td colspan="6"><div class="pj-empty">Loading projects&hellip;</div></td></tr></tbody>
@@ -1071,6 +1116,12 @@ window.ENGX = (function(){
     <h2><svg viewBox="0 0 24 24"><path d="M4 7h12M4 12h8M4 17h12M18 14l3 3-3 3"/></svg>Change orders &mdash; <span class="pj-proj-ref"></span></h2>
     <p class="eng-hint">Ongoing and realized change orders for the selected project, with their current state. Read-only here &mdash; change orders are raised and progressed in the Projects area.</p>
     <div id="eng-cos"></div>
+  </div>
+  <div class="eng-panel">
+    <h2><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Reference documents &mdash; <span class="pj-proj-ref"></span></h2>
+    <p class="eng-hint">Material sent to this project from <b>Area &amp; tools</b> (per area), to work from. The <b>PM</b> accepts or declines each suggestion.</p>
+    <div class="role-bar" id="eng-refrole" style="margin:0 0 10px"></div>
+    <div id="eng-refdocs"></div>
   </div>
   <p class="src-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; reads the shared project specification and change orders saved in this browser.</span></p>
 
@@ -1095,6 +1146,12 @@ window.ENGX = (function(){
   Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
     el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
   });
+  // badge the Project development tab when reference proposals are pending the PM
+  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
+    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
+    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
+    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
+  }catch(e){}
 })();
 </script>
 </main>
@@ -1138,6 +1195,55 @@ window.ENGX = (function(){
   html+= realized.length ? '<table class="eng-tbl"><tbody>'+rows(realized)+'</tbody></table>' : '<div class="pj-empty">None implemented yet.</div>';
   if(rej.length){ html+='<div class="eng-co-grp">Rejected ('+rej.length+')</div><table class="eng-tbl"><tbody>'+rows(rej)+'</tbody></table>'; }
   host.innerHTML=html;
+})();
+</script>
+<script>
+(function(){
+  var X=window.PJX;
+  var host=document.getElementById('eng-refdocs'); if(!host) return;
+  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
+  var AREAS=window.ENG_AREAS||[];
+  function projPM(){ return (window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
+  var roleEl=document.getElementById('eng-refrole');
+  function role(){
+    if(!roleEl) return;
+    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ role(); render(); });
+    var note=document.createElement('span');
+    if(X.curUser()===projPM()){ note.className='role-note edit'; note.innerHTML='You are the <b>PM</b> — accept or decline material sent to this project.'; }
+    else { note.className='role-note view'; note.innerHTML='Only the project PM (<b>'+X.esc(projPM()||'—')+'</b>) accepts or declines. Switch identity to act.'; }
+    roleEl.appendChild(note);
+  }
+  function decide(code, status){
+    var k='pw_eng_projdoc_'+H+'_'+code; var d=X.load(k, null); if(!d) return;
+    d.status=status; d.decidedBy=X.curUser(); d.decidedWhen=X.nowISO(); X.save(k, d);
+    X.notify('Reference material for <b>'+X.esc(code)+'</b> <b>'+X.esc(status.toLowerCase())+'</b> by the PM.');
+    render();
+  }
+  function render(){
+    var isPM = X.curUser()===projPM();
+    var found=[];
+    AREAS.forEach(function(a){ var d=X.load('pw_eng_projdoc_'+H+'_'+a.code, null); if(d&&d.html){ found.push({code:a.code, title:a.title, doc:d}); } });
+    if(!found.length){ host.innerHTML='<div class="pj-empty">Nothing sent to this project yet. In <b>Area &amp; tools</b>, open an area\'s <b>Reference material</b> and use <b>Send to project</b>.</div>'; return; }
+    host.innerHTML=found.map(function(f,i){
+      var st=f.doc.status||'Pending';
+      var cls=st==='Accepted'?'st-ready':(st==='Declined'?'st-rejected':'st-proposed');
+      var decided=f.doc.decidedBy ? ('<div class="eng-owner">'+X.esc(st)+' by <b>'+X.esc(f.doc.decidedBy)+'</b> · '+X.esc(X.fmt(f.doc.decidedWhen))+'</div>') : '';
+      var fc=(f.doc.files||[]).map(function(x){ return X.chipHTML(x); }).join('');
+      var acts=(isPM && st==='Pending') ? ('<div class="eng-actions"><button type="button" class="eng-btn go" data-acc="'+X.esc(f.code)+'"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Accept</button>'+
+        '<button type="button" class="eng-btn" data-dec="'+X.esc(f.code)+'"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>Decline</button></div>') : '';
+      return '<div class="co-card"><div class="co-top"><span class="co-ref">'+X.esc(f.code)+' · '+X.esc(f.title)+'</span>'+
+        '<span style="flex:1"></span><span class="pj-status '+cls+'">'+X.esc(st)+'</span>'+
+        '<button type="button" class="eng-btn" data-t="'+i+'" style="margin-left:8px">View</button></div>'+
+        '<div class="eng-owner">Sent by <b>'+X.esc(f.doc.by||'—')+'</b> · '+X.esc(X.fmt(f.doc.when))+'</div>'+ decided +(fc?('<div style="margin-top:7px">'+fc+'</div>'):'')+
+        '<div class="eng-doc-view" id="rd-'+i+'" style="display:none;margin-top:9px">'+(f.doc.html||'')+'</div>'+ acts +'</div>';
+    }).join('');
+    Array.prototype.forEach.call(host.querySelectorAll('[data-t]'), function(b){ b.addEventListener('click', function(){
+      var v=document.getElementById('rd-'+b.getAttribute('data-t')); var open=v.style.display!=='none'; v.style.display=open?'none':''; b.textContent=open?'View':'Hide';
+    }); });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-acc]'), function(b){ b.addEventListener('click', function(){ decide(b.getAttribute('data-acc'),'Accepted'); }); });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-dec]'), function(b){ b.addEventListener('click', function(){ decide(b.getAttribute('data-dec'),'Declined'); }); });
+  }
+  role(); render();
 })();
 </script>
 <footer>

@@ -663,7 +663,7 @@
   var appr=all.filter(function(s){ return (s.status||'')==='Approved' && s.owner && s.owner!=='Library'; });
   var prop=all.filter(function(s){ return (s.status||'Proposed')!=='Approved'; });
   if(!appr.length && !prop.length) return;
-  function chips(files){ return (files||[]).map(function(f){ var k=(f.kind||'pdf'); return '<span class="file-chip">'+esc(k.toUpperCase())+' · '+esc(f.name)+'</span>'; }).join(''); }
+  function chips(files){ return (files||[]).map(function(f){ var k=(f.kind||'pdf'); var src=f.data||f.url||''; var lbl=esc(k.toUpperCase())+' · '+esc(f.name); return src?('<a class="file-chip" href="'+src+'" target="_blank" rel="noopener">'+lbl+'</a>'):('<span class="file-chip">'+lbl+'</span>'); }).join(''); }
   function card(s, pending){
     return '<div class="sol-card'+(pending?' pending':'')+'"><div class="sol-head">'+
       '<span class="area-code">'+esc(s.area||'')+'</span><strong>'+esc(s.name)+'</strong>'+
