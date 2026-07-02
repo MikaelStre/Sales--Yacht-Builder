@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Ongoing Projects · Yacht Builder</title>
+<title>Price Calculation · Yacht Builder</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -779,149 +779,40 @@ table.rk td.r,table.rk th.r{text-align:right}
 </header>
 
 <main class="wrap">
-
   <div class="intro">
-    <div class="crumb"><a href="index.html">Yacht Builder</a> / Ongoing Projects</div>
-    <h1>Ongoing Projects</h1>
-    <p>Projects currently in progress. Open one to reach its specification and revisions, or pause it to Resting.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Yacht Builder</a> / Price calculation</div>
+    <h1>Price calculation</h1>
+    <p class="pc-lead">Per-project costing &amp; pricing. Import the base project post-calc, apply the size factor, gross tonnage and inflation, set rates &amp; provisions, then review the business approval. Each project keeps its own file; once the project is <strong>realized</strong> the calculation is locked as-sold and a read-only copy flows to the Projects area.</p>
   </div>
-  <div class="src-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; moves are saved in this browser; the list will read live from the <strong>Projects</strong> folder once connected.</span></div>
   <div class="card">
-    <table>
-      <thead><tr><th>Project</th><th>Type</th><th>Stage</th><th>Owner</th><th>Updated</th><th></th></tr></thead>
-      <tbody id="pw-tbody"><tr data-hull="B107C"><td><div class="proj-cell"><span class="proj-hull">B107C</span><span class="proj-name">B107C</span></div></td><td>Sail</td><td>Specification · Rev C (draft)</td><td>MS</td><td>2026-06-20</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B107C">Open</a><a class="btn-row" href="pricing.html?p=B107C">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B107C">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B107C" data-name="B107C" data-type="Sail" data-owner="MS">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B107C" data-name="B107C" data-type="Sail" data-owner="MS">Realize &rarr;</button></div></td></tr><tr data-hull="B123-45"><td><div class="proj-cell"><span class="proj-hull">B123-45</span><span class="proj-name">Blue Horizon</span></div></td><td>Sail</td><td>Pricing calculation</td><td>KK</td><td>2026-06-18</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B123-45">Open</a><a class="btn-row" href="pricing.html?p=B123-45">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B123-45">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B123-45" data-name="Blue Horizon" data-type="Sail" data-owner="KK">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B123-45" data-name="Blue Horizon" data-type="Sail" data-owner="KK">Realize &rarr;</button></div></td></tr><tr data-hull="B156-02"><td><div class="proj-cell"><span class="proj-hull">B156-02</span><span class="proj-name">Aurora</span></div></td><td>Power</td><td>Initial 10-pager</td><td>SH</td><td>2026-06-12</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B156-02">Open</a><a class="btn-row" href="pricing.html?p=B156-02">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B156-02">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B156-02" data-name="Aurora" data-type="Power" data-owner="SH">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B156-02" data-name="Aurora" data-type="Power" data-owner="SH">Realize &rarr;</button></div></td></tr></tbody>
-    </table>
-  </div>
-  <script>window.PW_PROJECTS = [{"hull": "B107C", "name": "B107C", "type": "Sail", "owner": "MS", "stage": "Specification · Rev C (draft)", "status": "ongoing", "updated": "2026-06-20", "paused": "", "last": ""}, {"hull": "B123-45", "name": "Blue Horizon", "type": "Sail", "owner": "KK", "stage": "Pricing calculation", "status": "ongoing", "updated": "2026-06-18", "paused": "", "last": ""}, {"hull": "B156-02", "name": "Aurora", "type": "Power", "owner": "SH", "stage": "Initial 10-pager", "status": "ongoing", "updated": "2026-06-12", "paused": "", "last": ""}, {"hull": "B098-11", "name": "Norderö", "type": "Sail", "owner": "AB", "stage": "Specification · Rev B (released)", "status": "resting", "updated": "2026-04-08", "paused": "2026-04-10", "last": "2026-04-08"}, {"hull": "B142-03", "name": "Silver Lining", "type": "Catamaran", "owner": "PH", "stage": "Pricing calculation", "status": "resting", "updated": "2026-04-28", "paused": "2026-05-02", "last": "2026-04-28"}];</script>
-
-
-<div class="pw-modal" id="pw-modal" role="dialog" aria-modal="true" aria-labelledby="pw-mtitle">
-  <div class="pw-dialog">
-    <h3 id="pw-mtitle">Move project</h3>
-    <p class="pw-sub" id="pw-msub"></p>
-    <dl class="pw-id">
-      <dt>Hull no.</dt><dd id="pw-id-hull"></dd>
-      <dt>Name</dt><dd id="pw-id-name"></dd>
-      <dt>Type</dt><dd id="pw-id-type"></dd>
-      <dt>Owner</dt><dd id="pw-id-owner"></dd>
-    </dl>
-    <div class="pw-acts">
-      <button type="button" class="pw-btn" id="pw-cancel">Cancel</button>
-      <button type="button" class="pw-btn go" id="pw-confirm">Move</button>
+    <div class="pc-bar">
+      <label for="pc-pick">Project</label>
+      <select id="pc-pick"></select>
+      <span class="pc-hint" id="pc-hint"></span>
+      <a class="btn-row" id="pc-open" target="_blank" rel="noopener" style="margin-left:auto">Open full screen &#8599;</a>
     </div>
+    <iframe id="pc-frame" class="pc-frame" title="Price calculation" src="about:blank"></iframe>
+    <div class="pc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Saved in this browser as the project&rsquo;s pricing file (<code>pw_price_&lt;hull&gt;</code>). Realize the project from Ongoing/Resting to freeze it.</span></div>
   </div>
-</div>
 <script>
 (function(){
-  var PAGE = "ongoing";
-  var SEED = window.PW_PROJECTS || [];
-  var EMPTY = "<tr class=\"tbl-empty\"><td colspan=\"6\"><div class=\"empty\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 9h18\"/></svg>No active projects right now. Create one, or resume a resting project.</div></td></tr>";
-  function ls(k,d){ try{ return JSON.parse(localStorage.getItem(k)) || d; }catch(e){ return d; } }
-  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  function moves(){ return ls('pw_moves', {}); }
-  function created(){ return ls('pw_created', []); }
-  function all(){ return SEED.concat(created()); }
-  function eff(p){ var m=moves()[p.hull]; return m ? m.to : p.status; }
-  function today(){ return new Date().toISOString().slice(0,10); }
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  function actsHTML(p){
-    var d='data-hull="'+esc(p.hull)+'" data-name="'+esc(p.name)+'" data-type="'+esc(p.type)+'" data-owner="'+esc(p.owner)+'"';
-    var open='<a class="btn-row primary" href="specification.html?p='+encodeURIComponent(p.hull)+'">Open</a>';
-    var price='<a class="btn-row" href="pricing.html?p='+encodeURIComponent(p.hull)+'">Price calc</a>';
-    var realize='<button type="button" class="btn-row realize" data-move-to="realized" '+d+'>Realize &rarr;</button>';
-    if(PAGE==='ongoing'){
-      return '<div class="proj-acts">'+open+price+
-        '<a class="btn-row" href="specification-revisions.html?p='+encodeURIComponent(p.hull)+'">Revisions</a>'+
-        '<button type="button" class="btn-row" data-move-to="resting" '+d+'>Pause</button>'+realize+'</div>';
-    }
-    return '<div class="proj-acts">'+open+price+
-      '<button type="button" class="btn-row" data-move-to="ongoing" '+d+'>Resume</button>'+realize+'</div>';
-  }
-  function rowHTML(p){
-    var mv=moves()[p.hull], c3, c5;
-    if(PAGE==='ongoing'){ c3=esc(p.stage)||'&mdash;'; c5=esc((mv&&mv.to==='ongoing'&&mv.when)?mv.when:(p.updated||'')); }
-    else { c3=esc((mv&&mv.to==='resting'&&mv.when)?mv.when:(p.paused||'')); c5=esc(p.last||p.updated||''); }
-    if(!c3) c3='&mdash;'; if(!c5) c5='&mdash;';
-    return '<tr data-hull="'+esc(p.hull)+'"><td><div class="proj-cell"><span class="proj-hull">'+esc(p.hull)+
-      '</span><span class="proj-name">'+esc(p.name)+'</span></div></td><td>'+esc(p.type)+'</td><td>'+c3+
-      '</td><td>'+esc(p.owner)+'</td><td>'+c5+'</td><td>'+actsHTML(p)+'</td></tr>';
-  }
-  var tb=document.getElementById('pw-tbody');
-  var modal=document.getElementById('pw-modal'), pending=null;
-  function render(){
-    var list=all().filter(function(p){ return eff(p)===PAGE; });
-    tb.innerHTML = list.length ? list.map(rowHTML).join('') : EMPTY;
-    Array.prototype.forEach.call(tb.querySelectorAll('[data-move-to]'),function(b){
-      b.addEventListener('click',function(){
-        pending={to:b.getAttribute('data-move-to'),hull:b.getAttribute('data-hull'),
-                 name:b.getAttribute('data-name'),type:b.getAttribute('data-type'),
-                 owner:b.getAttribute('data-owner')};
-        openModal();
-      });
-    });
-  }
-  function openModal(){
-    var toResting = pending.to==='resting';
-    var toRealized = pending.to==='realized';
-    document.getElementById('pw-id-hull').textContent=pending.hull;
-    document.getElementById('pw-id-name').textContent=pending.name;
-    document.getElementById('pw-id-type').textContent=pending.type;
-    document.getElementById('pw-id-owner').textContent=pending.owner;
-    document.getElementById('pw-mtitle').textContent = toRealized ? 'Realize & transfer to Projects?'
-      : (toResting ? 'Move to Resting?' : 'Resume to Ongoing?');
-    document.getElementById('pw-msub').innerHTML = toRealized
-      ? 'The sale is final: this project is <b>transferred to the Projects area</b> (live build, change orders &amp; planning). A <b>locked, read-only &ldquo;as&nbsp;sold&rdquo; copy</b> of the approved specification stays here in Sales.'
-      : (toResting
-        ? 'This project moves out of Ongoing into Resting. You can resume it anytime.'
-        : 'This project moves back into Ongoing as active work.');
-    document.getElementById('pw-confirm').textContent = toRealized ? 'Realize & transfer'
-      : (toResting ? 'Move to Resting' : 'Resume to Ongoing');
-    modal.classList.add('open');
-  }
-  function closeModal(){ modal.classList.remove('open'); pending=null; }
-  document.getElementById('pw-cancel').addEventListener('click', closeModal);
-  modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
-  document.getElementById('pw-confirm').addEventListener('click', function(){
-    if(!pending) return;
-    var m=moves(); m[pending.hull]={to:pending.to, when:today()}; save('pw_moves', m);
-    var msg;
-    if(pending.to==='realized'){
-      // freeze a locked "as sold" copy of the approved spec, here in Sales
-      var H=(pending.hull||'').toUpperCase();
-      try{
-        if(!localStorage.getItem('pw_assold_'+H)){
-          var spec=localStorage.getItem('pw_spec_'+H);
-          var stamp={when:today(), by:'Sales', spec:spec||null};
-          localStorage.setItem('pw_assold_'+H, JSON.stringify(stamp));
-        }
-        var rl=ls('pw_realized', []);
-        if(!rl.some(function(x){return (x.hull||'').toUpperCase()===H;})){
-          rl.push({hull:pending.hull, name:pending.name, type:pending.type, owner:pending.owner, when:today()});
-          save('pw_realized', rl);
-        }
-        // freeze the price calculation as-sold + flow a read-only copy + seed the PM risk register
-        var pc=localStorage.getItem('pw_price_'+H);
-        if(pc){
-          if(!localStorage.getItem('pw_assold_price_'+H)) localStorage.setItem('pw_assold_price_'+H, pc);
-          if(!localStorage.getItem('pw_pprice_'+H)) localStorage.setItem('pw_pprice_'+H, pc);
-          if(!localStorage.getItem('pw_proj_risks_'+H)){
-            try{ var pj=JSON.parse(pc); if(pj&&pj.risks) localStorage.setItem('pw_proj_risks_'+H, JSON.stringify(pj.risks)); }catch(e2){}
-          }
-        }
-      }catch(e){}
-      msg='Realized ' + pending.hull + (pending.name ? ' “'+pending.name+'”' : '') + ' — transferred to Projects; as-sold copy locked in Sales.';
-    } else {
-      var where = pending.to==='resting' ? 'Resting' : 'Ongoing';
-      msg='Moved ' + pending.hull + (pending.name ? ' “'+pending.name+'”' : '') + ' to ' + where + '.';
-    }
-    closeModal(); render();
-    if(window.__toast) window.__toast(msg);
-  });
-  render();
+  var SEED=[{"hull": "B107C", "name": "B107C", "type": "Sail", "owner": "MS", "stage": "Specification · Rev C (draft)", "status": "ongoing", "updated": "2026-06-20", "paused": "", "last": ""}, {"hull": "B123-45", "name": "Blue Horizon", "type": "Sail", "owner": "KK", "stage": "Pricing calculation", "status": "ongoing", "updated": "2026-06-18", "paused": "", "last": ""}, {"hull": "B156-02", "name": "Aurora", "type": "Power", "owner": "SH", "stage": "Initial 10-pager", "status": "ongoing", "updated": "2026-06-12", "paused": "", "last": ""}, {"hull": "B098-11", "name": "Norderö", "type": "Sail", "owner": "AB", "stage": "Specification · Rev B (released)", "status": "resting", "updated": "2026-04-08", "paused": "2026-04-10", "last": "2026-04-08"}, {"hull": "B142-03", "name": "Silver Lining", "type": "Catamaran", "owner": "PH", "stage": "Pricing calculation", "status": "resting", "updated": "2026-04-28", "paused": "2026-05-02", "last": "2026-04-28"}];
+  function ls(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){ return d; } }
+  function esc(s){ return (s==null?"":String(s)).replace(/[&<>\"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];}); }
+  var created=ls("pw_created",[]), realized=ls("pw_realized",[]);
+  var map={}; SEED.concat(created).concat(realized).forEach(function(p){ if(p&&p.hull) map[p.hull.toUpperCase()]={hull:p.hull,name:p.name||p.hull}; });
+  var moves=ls("pw_moves",{});
+  var list=Object.keys(map).map(function(k){return map[k];}).sort(function(a,b){return a.hull<b.hull?-1:1;});
+  var q=new URLSearchParams(location.search); var cur=(q.get("p")||(list[0]&&list[0].hull)||"B107C").toUpperCase();
+  var sel=document.getElementById("pc-pick");
+  sel.innerHTML=list.map(function(p){ var rz=moves[p.hull.toUpperCase()]&&moves[p.hull.toUpperCase()].to==="realized"; return '<option value="'+esc(p.hull)+'"'+(p.hull.toUpperCase()===cur?" selected":"")+">"+esc(p.hull)+(p.name&&p.name!==p.hull?" \u00b7 "+esc(p.name):"")+(rz?" \u2014 realized":"")+"</option>"; }).join("");
+  var frame=document.getElementById("pc-frame"), open=document.getElementById("pc-open"), hint=document.getElementById("pc-hint");
+  function apply(h){ h=(h||"").toUpperCase(); var src="pricing-tool.html?p="+encodeURIComponent(h); frame.src=src; open.href=src;
+    var rz=moves[h]&&moves[h].to==="realized"; hint.textContent = rz ? "Realized \u2014 locked (as sold)." : "Editable working calculation."; }
+  sel.addEventListener("change", function(){ apply(sel.value); var u=new URL(location); u.searchParams.set("p",sel.value); history.replaceState(null,"",u); });
+  apply(cur);
 })();
 </script>
-
 </main>
 
 <footer>

@@ -654,34 +654,6 @@
 <h3 class="sol-group" id="sol-area-90">90 Miscellaneous</h3>
 <div class="sp-empty" style="text-align:start;padding:6px 0 12px;">No solutions in this area yet.</div>
 
-
-<script>
-(function(){
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-  var all=load('pw_baltic_solutions',[]); if(!all.length) return;
-  var appr=all.filter(function(s){ return (s.status||'')==='Approved' && s.owner && s.owner!=='Library'; });
-  var prop=all.filter(function(s){ return (s.status||'Proposed')!=='Approved'; });
-  if(!appr.length && !prop.length) return;
-  function chips(files){ return (files||[]).map(function(f){ var k=(f.kind||'pdf'); var src=f.data||f.url||''; var lbl=esc(k.toUpperCase())+' · '+esc(f.name); return src?('<a class="file-chip" href="'+src+'" target="_blank" rel="noopener">'+lbl+'</a>'):('<span class="file-chip">'+lbl+'</span>'); }).join(''); }
-  function card(s, pending){
-    return '<div class="sol-card'+(pending?' pending':'')+'"><div class="sol-head">'+
-      '<span class="area-code">'+esc(s.area||'')+'</span><strong>'+esc(s.name)+'</strong>'+
-      '<span class="sol-badge '+(pending?'pending':'approved')+'">'+(pending?'From Engineering · pending — view only':'From Engineering · approved')+'</span></div>'+
-      (s.supplier?'<div class="sol-meta">Supplier: '+esc(s.supplier)+'</div>':'')+
-      '<div class="sol-text">'+(s.desc||'')+'</div>'+
-      (chips(s.files)?'<div class="sol-files">'+chips(s.files)+'</div>':'')+
-      '<div class="sol-by">Owner: '+esc(s.owner||'—')+(s.approvedBy?(' · approved by '+esc(s.approvedBy)):'')+'</div></div>';
-  }
-  var main=document.querySelector('main')||document.body;
-  var sec=document.createElement('div');
-  var html='<h2 class="sol-h" style="margin-top:30px">From Engineering &mdash; Baltic Solutions</h2>'+
-    '<p class="src-note" style="margin:-6px 0 14px"><span>Proposed solutions are <b>view-only</b> here until the Head of Engineering approves them; approved solutions join the library.</span></p>';
-  if(appr.length){ html+='<div class="sol-grid">'+appr.map(function(s){return card(s,false);}).join('')+'</div>'; }
-  if(prop.length){ html+='<h3 class="sol-group">Pending approval (view only)</h3><div class="sol-grid">'+prop.map(function(s){return card(s,true);}).join('')+'</div>'; }
-  sec.innerHTML=html; main.appendChild(sec);
-})();
-</script>
 </main>
 <footer>
   <div class="wrap foot-inner">

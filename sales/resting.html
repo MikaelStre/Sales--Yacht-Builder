@@ -299,6 +299,7 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+
 /* --- v18: project hub --- */
 /* --- v27: editor tables (shared rich-text spec editor) --- */
 .sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
@@ -736,6 +737,33 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
 /* --- v34: clickable file/PDF chip (opens in a new tab) --- */
 .dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
 a.dl-chip:hover{background:var(--brand-2);color:#fff}
+
+/* --- v39: price calculation host + risk register --- */
+.pc-h2{font:600 15px/1.3 var(--serif);margin:0 0 6px;color:var(--ink)}
+.pc-h2 .pc-hint{font:500 12px/1 var(--sans);color:var(--muted);margin-left:8px;text-transform:none;letter-spacing:0}
+.pc-lead{font:500 13.5px/1.6 var(--sans);color:var(--muted);margin:0 0 4px}
+.pc-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+.pc-bar label{font:600 12px/1 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.pc-bar select{font:500 13.5px/1.3 var(--sans);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:280px}
+.pc-hint{font:500 12.5px/1.5 var(--sans);color:var(--muted)}
+.pc-frame{width:100%;height:82vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
+.pc-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:flex-start}
+.pc-note svg{width:16px;height:16px;stroke:var(--brand-2);fill:none;stroke-width:1.7;flex:0 0 auto;margin-top:1px}
+.rk-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0}
+table.rk{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:900px}
+table.rk th,table.rk td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+table.rk th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+table.rk td.r,table.rk th.r{text-align:right}
+.rk-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
+.rk-txt{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
+.rk-sel{padding:4px 6px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1 var(--sans)}
+.rk-score{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
+.rk-lo{background:#e7f6ee;color:#1f7a52}.rk-md{background:#fbf3e0;color:#8a6d1a}.rk-hi{background:#fbe7e7;color:#b23b3b}
+.rk-ro td{color:var(--ink)}
+.rk-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
+.rk-role{font:500 12.5px/1.5 var(--sans);margin:6px 0 0}
+.rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
+.rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
 </style>
 </head>
 <body>
@@ -761,7 +789,7 @@ a.dl-chip:hover{background:var(--brand-2);color:#fff}
   <div class="card">
     <table>
       <thead><tr><th>Project</th><th>Type</th><th>Paused</th><th>Owner</th><th>Last activity</th><th></th></tr></thead>
-      <tbody id="pw-tbody"><tr data-hull="B098-11"><td><div class="proj-cell"><span class="proj-hull">B098-11</span><span class="proj-name">Norderö</span></div></td><td>Sail</td><td>2026-04-10</td><td>AB</td><td>2026-04-08</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B098-11">Open</a><button type="button" class="btn-row" data-move-to="ongoing" data-hull="B098-11" data-name="Norderö" data-type="Sail" data-owner="AB">Resume</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B098-11" data-name="Norderö" data-type="Sail" data-owner="AB">Realize &rarr;</button></div></td></tr><tr data-hull="B142-03"><td><div class="proj-cell"><span class="proj-hull">B142-03</span><span class="proj-name">Silver Lining</span></div></td><td>Catamaran</td><td>2026-05-02</td><td>PH</td><td>2026-04-28</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B142-03">Open</a><button type="button" class="btn-row" data-move-to="ongoing" data-hull="B142-03" data-name="Silver Lining" data-type="Catamaran" data-owner="PH">Resume</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B142-03" data-name="Silver Lining" data-type="Catamaran" data-owner="PH">Realize &rarr;</button></div></td></tr></tbody>
+      <tbody id="pw-tbody"><tr data-hull="B098-11"><td><div class="proj-cell"><span class="proj-hull">B098-11</span><span class="proj-name">Norderö</span></div></td><td>Sail</td><td>2026-04-10</td><td>AB</td><td>2026-04-08</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B098-11">Open</a><a class="btn-row" href="pricing.html?p=B098-11">Price calc</a><button type="button" class="btn-row" data-move-to="ongoing" data-hull="B098-11" data-name="Norderö" data-type="Sail" data-owner="AB">Resume</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B098-11" data-name="Norderö" data-type="Sail" data-owner="AB">Realize &rarr;</button></div></td></tr><tr data-hull="B142-03"><td><div class="proj-cell"><span class="proj-hull">B142-03</span><span class="proj-name">Silver Lining</span></div></td><td>Catamaran</td><td>2026-05-02</td><td>PH</td><td>2026-04-28</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B142-03">Open</a><a class="btn-row" href="pricing.html?p=B142-03">Price calc</a><button type="button" class="btn-row" data-move-to="ongoing" data-hull="B142-03" data-name="Silver Lining" data-type="Catamaran" data-owner="PH">Resume</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B142-03" data-name="Silver Lining" data-type="Catamaran" data-owner="PH">Realize &rarr;</button></div></td></tr></tbody>
     </table>
   </div>
   <script>window.PW_PROJECTS = [{"hull": "B107C", "name": "B107C", "type": "Sail", "owner": "MS", "stage": "Specification · Rev C (draft)", "status": "ongoing", "updated": "2026-06-20", "paused": "", "last": ""}, {"hull": "B123-45", "name": "Blue Horizon", "type": "Sail", "owner": "KK", "stage": "Pricing calculation", "status": "ongoing", "updated": "2026-06-18", "paused": "", "last": ""}, {"hull": "B156-02", "name": "Aurora", "type": "Power", "owner": "SH", "stage": "Initial 10-pager", "status": "ongoing", "updated": "2026-06-12", "paused": "", "last": ""}, {"hull": "B098-11", "name": "Norderö", "type": "Sail", "owner": "AB", "stage": "Specification · Rev B (released)", "status": "resting", "updated": "2026-04-08", "paused": "2026-04-10", "last": "2026-04-08"}, {"hull": "B142-03", "name": "Silver Lining", "type": "Catamaran", "owner": "PH", "stage": "Pricing calculation", "status": "resting", "updated": "2026-04-28", "paused": "2026-05-02", "last": "2026-04-28"}];</script>
@@ -800,13 +828,14 @@ a.dl-chip:hover{background:var(--brand-2);color:#fff}
   function actsHTML(p){
     var d='data-hull="'+esc(p.hull)+'" data-name="'+esc(p.name)+'" data-type="'+esc(p.type)+'" data-owner="'+esc(p.owner)+'"';
     var open='<a class="btn-row primary" href="specification.html?p='+encodeURIComponent(p.hull)+'">Open</a>';
+    var price='<a class="btn-row" href="pricing.html?p='+encodeURIComponent(p.hull)+'">Price calc</a>';
     var realize='<button type="button" class="btn-row realize" data-move-to="realized" '+d+'>Realize &rarr;</button>';
     if(PAGE==='ongoing'){
-      return '<div class="proj-acts">'+open+
+      return '<div class="proj-acts">'+open+price+
         '<a class="btn-row" href="specification-revisions.html?p='+encodeURIComponent(p.hull)+'">Revisions</a>'+
         '<button type="button" class="btn-row" data-move-to="resting" '+d+'>Pause</button>'+realize+'</div>';
     }
-    return '<div class="proj-acts">'+open+
+    return '<div class="proj-acts">'+open+price+
       '<button type="button" class="btn-row" data-move-to="ongoing" '+d+'>Resume</button>'+realize+'</div>';
   }
   function rowHTML(p){
@@ -871,6 +900,15 @@ a.dl-chip:hover{background:var(--brand-2);color:#fff}
           rl.push({hull:pending.hull, name:pending.name, type:pending.type, owner:pending.owner, when:today()});
           save('pw_realized', rl);
         }
+        // freeze the price calculation as-sold + flow a read-only copy + seed the PM risk register
+        var pc=localStorage.getItem('pw_price_'+H);
+        if(pc){
+          if(!localStorage.getItem('pw_assold_price_'+H)) localStorage.setItem('pw_assold_price_'+H, pc);
+          if(!localStorage.getItem('pw_pprice_'+H)) localStorage.setItem('pw_pprice_'+H, pc);
+          if(!localStorage.getItem('pw_proj_risks_'+H)){
+            try{ var pj=JSON.parse(pc); if(pj&&pj.risks) localStorage.setItem('pw_proj_risks_'+H, JSON.stringify(pj.risks)); }catch(e2){}
+          }
+        }
       }catch(e){}
       msg='Realized ' + pending.hull + (pending.name ? ' “'+pending.name+'”' : '') + ' — transferred to Projects; as-sold copy locked in Sales.';
     } else {
@@ -885,6 +923,7 @@ a.dl-chip:hover{background:var(--brand-2);color:#fff}
 </script>
 
 </main>
+
 <footer>
   <div class="wrap foot-inner">
     <span>Baltic Yachts · Sales — Yacht Builder</span>

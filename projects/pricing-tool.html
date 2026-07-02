@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baltic Yachts · Price Calculation</title>
+<style>
+  :root{
+    --bg:#0b1017; --panel:#121a26; --panel2:#0f1622; --line:#1e2a3a; --line2:#1b2634;
+    --ink:#e6edf5; --mut:#9fb0c4; --mut2:#7d8da3; --mut3:#6b7a90;
+    --blue:#4ea3ff; --green:#5bd6a3; --red:#ff5d5d; --orange:#ff7b54; --yellow:#ffd166;
+    --edit:#16283e; --editbrd:#2b5580; --topbar-h:0px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;font-size:14px}
+  .wrap{max-width:1840px;width:100%;margin:0 auto;padding:18px clamp(16px,2.4vw,34px) 60px}
+  a{color:var(--blue)}
+  .topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+    padding-top:4px;padding-bottom:10px;box-shadow:0 10px 20px -12px rgba(0,0,0,.75)}
+  header{display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:1px solid var(--line);padding-bottom:14px}
+  h1{font-size:24px;margin:0;letter-spacing:.3px;font-weight:700}
+  h1 span{color:var(--blue)}
+  .sub{color:var(--mut2);font-size:13px;margin-top:2px}
+  .stamp{color:var(--mut3);font-size:12px;text-align:right;line-height:1.5}
+  .btn{background:#17263a;border:1px solid var(--line);color:var(--ink);border-radius:8px;
+    padding:7px 12px;font-size:13px;cursor:pointer;transition:.15s}
+  .btn:hover{border-color:var(--blue);background:#1b2f47}
+  .btn.primary{background:#12508f;border-color:#1f6fbf}
+  .btn.primary:hover{background:#1663ad}
+  .btn.sm{padding:3px 8px;font-size:12px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  .summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:12px 0 12px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .kpi .v{font-size:24px;font-weight:700;line-height:1.05}
+  .kpi .l{margin-top:6px;font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.6px}
+  .kpi .s{margin-top:2px;font-size:11px;color:var(--mut3)}
+  .kpi.good .v{color:var(--green)} .kpi.warn .v{color:var(--orange)} .kpi.bad .v{color:var(--red)}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:0;flex-wrap:wrap}
+  .tab{padding:10px 16px;font-size:13px;color:var(--mut);cursor:pointer;border:1px solid transparent;
+    border-bottom:none;border-radius:9px 9px 0 0;position:relative;top:1px;white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:var(--ink);background:var(--panel);border-color:var(--line)}
+  .tab .n{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;
+    font-size:11px;background:#1c2c42;border-radius:9px;margin-left:7px;color:var(--mut);padding:0 5px}
+  .view{display:none;margin-top:16px} .view.active{display:block}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+  .card h2{font-size:13px;margin:0 0 14px;color:#cdd9e8;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+  .card h2 .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut3);font-size:12px;margin-left:8px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:1fr 1fr 1fr} .g4{grid-template-columns:repeat(4,1fr)}
+  .fld label{display:block;font-size:11px;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+  .fld .u{color:var(--mut3);font-weight:400;text-transform:none;letter-spacing:0}
+  input.in,select.in,textarea.in{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit}
+  input.in:focus,select.in:focus,textarea.in:focus{outline:none;border-color:var(--blue);background:#0c1520}
+  .in.num{text-align:right;font-variant-numeric:tabular-nums}
+  textarea.in{resize:vertical;min-height:120px;font-family:'Consolas',ui-monospace,monospace;font-size:12px}
+  .note{color:var(--mut3);font-size:12px;line-height:1.55}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#1c2c42;color:var(--mut);margin-left:6px}
+  .ratio{font-size:22px;font-weight:700;color:var(--blue)}
+  .tblwrap{border-radius:10px;border:1px solid var(--line2)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:7px 9px;border-bottom:1px solid var(--line2);text-align:left;white-space:nowrap}
+  thead th{position:sticky;top:var(--topbar-h,0px);background:#0e1621;color:var(--mut2);font-weight:600;font-size:11px;
+    text-transform:uppercase;letter-spacing:.4px;z-index:3}
+  th.r,td.r{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr:hover{background:#0e1723}
+  .grp td{background:#101d2c;font-weight:700;border-top:1px solid var(--line)}
+  .grp td:first-child{cursor:pointer}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;vertical-align:middle}
+  .muted{color:var(--mut3)} .b{font-weight:700}
+  .basecol{color:var(--mut3);font-variant-numeric:tabular-nums}
+  /* cost table compact + narrow code col */
+  #costTable{font-size:12.5px}
+  #costTable th,#costTable td{padding:6px 7px}
+  #costTable td.desc{white-space:normal;line-height:1.2;min-width:150px}
+  td.edit{cursor:text;position:relative;background:#0e1a29}
+  td.edit:hover{background:var(--edit);box-shadow:inset 0 0 0 1px var(--editbrd)}
+  td.edit.ov{background:#132a1f;box-shadow:inset 0 0 0 1px #2f7a52}
+  td.edit .fx{position:absolute;left:4px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--green);font-style:italic}
+  td.edit input{width:100%;background:#0c1520;border:1px solid var(--blue);color:var(--ink);border-radius:5px;
+    padding:3px 5px;font-size:12.5px;text-align:right;font-family:inherit;font-variant-numeric:tabular-nums}
+  .cellinp{width:100%;background:transparent;border:1px solid transparent;color:var(--ink);border-radius:5px;
+    padding:3px 5px;font-size:12.5px;font-family:inherit}
+  .cellinp:hover{border-color:var(--line)} .cellinp:focus{outline:none;border-color:var(--blue);background:#0c1520}
+  .cellinp.code{width:52px;font-variant-numeric:tabular-nums;color:var(--mut)}
+  .rowchk{width:15px;height:15px;accent-color:var(--blue);cursor:pointer}
+  tr.off td{opacity:.4} tr.off .desc{text-decoration:line-through}
+  .cellhint{position:fixed;z-index:50;background:#0c1520;border:1px solid var(--editbrd);border-radius:8px;
+    padding:8px 10px;font-size:11px;color:var(--mut);max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,.5);line-height:1.5}
+  .cellhint code{color:var(--yellow);background:#161f2c;padding:1px 4px;border-radius:4px}
+  tfoot td{background:#0e1621;font-weight:700;border-top:2px solid var(--line)}
+  .rk{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:6px;padding:2px 6px}
+  .rk.lo{background:#173a2a;color:var(--green)} .rk.md{background:#4a3a12;color:var(--yellow)}
+  .rk.hi{background:#4a1c1c;color:var(--red)}
+  .risk-in{width:44px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:6px;
+    padding:4px;text-align:center;font-size:13px}
+  .risk-txt{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:6px;
+    padding:5px 7px;font-size:12px;font-family:inherit;min-height:30px;resize:vertical}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--mut)}
+  .legend b{color:var(--ink)}
+  .aprow{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--line2);padding:9px 0}
+  .aprow .lab{color:var(--mut)} .aprow .r{text-align:right;font-variant-numeric:tabular-nums}
+  .aphead{color:var(--mut2);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .apbig{font-size:20px;font-weight:700}
+  .sigbox{border:1px dashed var(--line);border-radius:10px;padding:22px 16px 10px;margin-top:10px;color:var(--mut3);font-size:12px}
+  .tag{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+  .tag.ok{background:#173a2a;color:var(--green)} .tag.warn{background:#4a3a12;color:var(--yellow)} .tag.bad{background:#4a1c1c;color:var(--red)}
+  .infl td,.infl th{padding:5px 8px}
+  .yactual{color:var(--green);font-size:10px} .yfore{color:var(--yellow);font-size:10px}
+  footer{margin-top:26px;color:var(--mut3);font-size:12px;text-align:center;border-top:1px solid var(--line);padding-top:14px}
+  .ro-ribbon{margin:12px 0 0;padding:9px 14px;border-radius:10px;background:#3a2f12;color:var(--yellow);
+    font-size:12.5px;border:1px solid #6b551d;display:flex;align-items:center;gap:8px}
+  body.ro td.edit{cursor:default!important}
+  body.ro td.edit:hover{background:#0e1a29!important;box-shadow:none!important}
+  .flash{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#12508f;color:#fff;
+    padding:10px 18px;border-radius:10px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;
+    transition:.3s;pointer-events:none;z-index:60}
+  .flash.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar" id="topbar">
+  <header>
+    <div>
+      <h1>Baltic Yachts · <span>Price Calculation</span></h1>
+      <div class="sub">Costing &amp; pricing workbench · freestanding module</div>
+    </div>
+    <div>
+      <div class="toolbar no-print">
+        <button class="btn" id="btnSaveRev">Save revision</button>
+        <button class="btn" id="btnExport">Export</button>
+        <button class="btn" id="btnImportJson">Load file</button>
+        <button class="btn" id="btnReset">Reset example</button>
+        <button class="btn primary" id="btnPrint">Print approval (PDF)</button>
+        <input type="file" id="fileJson" accept=".json" style="display:none">
+      </div>
+      <div class="stamp">Template generated 02 Jul 2026<br>Autosaves in this browser</div>
+    </div>
+  </header>
+  <div class="ro-ribbon" id="roRibbon" style="display:none"></div>
+  <div class="summary" id="summary"></div>
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-v="setup">1 · Setup &amp; Import</div>
+    <div class="tab" data-v="rates">2 · Rates &amp; Provisions</div>
+    <div class="tab" data-v="cost">3 · Cost Build-up <span class="n" id="tabLines">0</span></div>
+    <div class="tab" data-v="risk">4 · Risk Assessment <span class="n" id="tabRisk">0</span></div>
+    <div class="tab" data-v="approval">5 · Business Approval</div>
+    <div class="tab" data-v="rev">6 · Revisions <span class="n" id="tabRev">0</span></div>
+  </div>
+  </div><!-- /topbar -->
+
+  <!-- ============ SETUP & IMPORT ============ -->
+  <section class="view active" id="view-setup">
+    <div class="card">
+      <h2>Project identity <span class="hint">linked to project creation — see below</span></h2>
+      <div class="grid g4">
+        <div class="fld"><label>Customer</label><input class="in" data-proj="customer" placeholder="e.g. Mr Nordqvist"></div>
+        <div class="fld"><label>New yacht / contract</label><input class="in" data-proj="yacht" placeholder="e.g. B135-01"></div>
+        <div class="fld"><label>Agent / broker</label><input class="in" data-proj="agent" placeholder="if applicable"></div>
+        <div class="fld"><label>Date</label><input class="in" data-proj="date" placeholder="dd.mm.yyyy"></div>
+        <div class="fld"><label>Base project (post-calc)</label><input class="in" data-proj="baseProject" placeholder="e.g. B80-02"></div>
+        <div class="fld"><label>New pricing object ref</label><input class="in" data-proj="newProject" placeholder="e.g. B135"></div>
+        <div class="fld"><label>Compiled by</label><input class="in" data-proj="compiledBy" placeholder="name(s)"></div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="btn sm" id="btnCopyLink">Copy project link</button>
+        <span class="note" style="max-width:820px">When a project is created in the Workspace it opens this tool via a
+        <b>project link</b> that pre-fills the naming &amp; base-data fields above (and creates the specification alongside).
+        On the pricing side you then import the <b>base project post-calc</b> below. The link carries: customer, yacht,
+        base/new project, size factor and inflation years.</span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Size factor &amp; gross tonnage <span class="hint">scales the base project to the new object</span></h2>
+        <div class="grid g2">
+          <div class="fld"><label>Base project size factor</label><input class="in num" data-param="sfBase"></div>
+          <div class="fld"><label>New object size factor</label><input class="in num" data-param="sfNew"></div>
+        </div>
+        <div class="grid g2" style="margin-top:12px">
+          <div class="fld"><label>Base gross tonnage <span class="u">GT</span></label><input class="in num" data-param="gtBase" placeholder="e.g. 288"></div>
+          <div class="fld"><label>New gross tonnage <span class="u">GT</span></label><input class="in num" data-param="gtNew" placeholder="e.g. 193"></div>
+        </div>
+        <div class="grid g2" style="margin-top:12px;align-items:end">
+          <div class="fld"><label>Scale the project by</label><select class="in" data-param="scaleBasis">
+            <option value="sf">Size factor ratio</option>
+            <option value="gt">Gross tonnage ratio</option></select></div>
+          <div style="text-align:right">
+            <div class="note" id="ratioBreak" style="margin-bottom:2px"></div>
+            <div>Scaling ratio <span class="ratio" id="ratioOut" style="margin-left:6px">1.000</span></div>
+          </div>
+        </div>
+        <p class="note" style="margin-top:12px">Both metrics are recorded. Choose which ratio drives scaling — base material
+        &amp; hours are multiplied by it before manual adjustment. Gross tonnage is the classed volumetric measure; the size
+        factor can be a composite index (length, displacement, complexity).</p>
+      </div>
+      <div class="card">
+        <h2>Inflation calculator <span class="hint">from real annual inflation</span></h2>
+        <div class="grid g3">
+          <div class="fld"><label>Base year <span class="u">post-calc</span></label><input class="in num" data-param="inflBaseYear"></div>
+          <div class="fld"><label>Delivery year</label><input class="in num" data-param="inflDeliveryYear"></div>
+          <div class="fld"><label>Source</label><select class="in" id="inflSource">
+            <option value="euro">Euro area (HICP)</option>
+            <option value="finland">Finland (CPI)</option>
+            <option value="custom">Custom</option></select></div>
+        </div>
+        <div id="inflTableWrap" style="margin-top:10px"></div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button class="btn sm" id="btnInflReset">Reset to source</button>
+          <div>Cumulative factor</div><div class="ratio" id="inflOut">1.000</div>
+        </div>
+        <p class="note" id="inflNote" style="margin-top:8px"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Import official post-calc <span class="hint">the starting post</span></h2>
+      <p class="note" style="margin-bottom:12px">Pre-loaded with the <b id="srcName">official post-calc</b>. To bring in
+      another, open its <code>IFS Data</code> sheet in Excel, select the rows and paste here as <b>tab-separated</b>:
+      <b>code · description · material € · design hours · total hours</b>. Two-digit chapter rows become group headers;
+      production hours = total − design.</p>
+      <textarea class="in" id="pasteBox" placeholder="101&#9;Hull structure&#9;357952&#9;1061.8&#9;10206.4&#10;102&#9;Hull finish and fairing&#9;205673&#9;0&#9;170.4"></textarea>
+      <div class="toolbar" style="margin-top:12px">
+        <button class="btn primary" id="btnLoadPaste">Load pasted rows</button>
+        <button class="btn" id="btnReset2">Restore example post-calc</button>
+        <span class="note" id="importMsg" style="align-self:center"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RATES & PROVISIONS ============ -->
+  <section class="view" id="view-rates">
+    <div class="grid g2">
+      <div class="card">
+        <h2>Hourly rates <span class="hint">€ / hour</span></h2>
+        <div class="grid g3">
+          <div class="fld"><label>Engineering rate</label><input class="in num" data-param="engRate"></div>
+          <div class="fld"><label>Blue-collar rate <span class="u">production</span></label><input class="in num" data-param="prodRate"></div>
+          <div class="fld"><label>Company rate <span class="u">fixed / indirect</span></label><input class="in num" data-param="companyRate"></div>
+        </div>
+        <p class="note" style="margin-top:12px">Engineering rate prices design hours; blue-collar rate prices production
+        hours; the company rate applies to all hours as fixed/indirect cost.</p>
+      </div>
+      <div class="card">
+        <h2>Provisions &amp; margin <span class="hint">% of cost of sales</span></h2>
+        <div class="grid g2">
+          <div class="fld"><label>Warranty provision <span class="u">%</span></label><input class="in num" data-param="warrantyPct"></div>
+          <div class="fld"><label>Profit margin <span class="u">%</span></label><input class="in num" data-param="profitPct"></div>
+          <div class="fld"><label>Pre-engineering cost <span class="u">€, in price</span></label><input class="in num" data-param="preEng"></div>
+          <div class="fld"><label>Max discount approved <span class="u">%</span></label><input class="in num" data-param="discountPct"></div>
+        </div>
+        <p class="note" style="margin-top:12px">Sales price = cost of sales × (1 + warranty% + profit%). The max discount
+        feeds the negotiation view on the approval page.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Risk &amp; R&amp;D surcharge defaults <span class="hint">applied to every line unless overridden</span></h2>
+      <div class="grid g2" style="max-width:520px">
+        <div class="fld"><label>Risk margin default <span class="u">% of COGHM</span></label><input class="in num" data-param="riskPctDefault"></div>
+        <div class="fld"><label>R&amp;D / innovation default <span class="u">% of COGHM</span></label><input class="in num" data-param="rdPctDefault"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COST BUILD-UP ============ -->
+  <section class="view" id="view-cost">
+    <div class="card">
+      <h2>Cost build-up <span class="hint">tick to include · click a highlighted cell to adjust</span></h2>
+      <div class="note" style="margin-bottom:10px">
+        Editable cells prefill with the current value — type a number, or a formula using
+        <code>auto</code> (size-scaled value) and <code>base</code> (post-calc value), e.g. <code>auto+300</code>,
+        <code>base*0.8</code>. Code &amp; description are editable inline. Use the tick box to include/exclude a line and
+        <b>+ line</b> in a group header to add one.
+      </div>
+      <div class="tblwrap">
+        <table id="costTable">
+          <thead>
+            <tr>
+              <th title="include"></th><th>Code</th><th>Description</th>
+              <th class="r">Base mat €</th><th class="r">Base h <span class="muted">D/T</span></th>
+              <th class="r">Material €</th><th class="r">Design h</th><th class="r">Prod h</th><th class="r">3rd-party €</th>
+              <th class="r">Labour €</th><th class="r">COS €</th><th class="r">Sales €</th><th class="r">Share</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="costBody"></tbody>
+          <tfoot id="costFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RISK ASSESSMENT ============ -->
+  <section class="view" id="view-risk">
+    <div class="card">
+      <h2>Risk assessment <span class="hint">probability × consequence, before &amp; after mitigation</span></h2>
+      <div class="tblwrap">
+        <table id="riskTable" style="min-width:1100px">
+          <thead>
+            <tr>
+              <th style="min-width:170px">Identified risk</th><th style="min-width:200px">Description</th>
+              <th class="r">P</th><th class="r">C</th><th class="r">Risk</th>
+              <th style="min-width:220px">Mitigating action</th><th>Resp.</th>
+              <th class="r">P′</th><th class="r">C′</th><th class="r">Residual</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="riskBody"></tbody>
+        </table>
+      </div>
+      <div class="toolbar" style="margin-top:12px"><button class="btn" id="btnAddRisk">+ Add risk</button></div>
+      <div class="legend">
+        <span>Scales <b>1–5</b> each.</span>
+        <span><span class="rk lo">0–5</span> <b>No action</b></span>
+        <span><span class="rk md">6–10</span> <b>Investigate</b></span>
+        <span><span class="rk hi">11–25</span> <b>Rectify</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BUSINESS APPROVAL ============ -->
+  <section class="view" id="view-approval">
+    <div class="card" id="approvalCard"></div>
+  </section>
+
+  <!-- ============ REVISIONS ============ -->
+  <section class="view" id="view-rev">
+    <div class="card">
+      <h2>Revisions <span class="hint">snapshot the whole calculation, restore any time</span></h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px">
+        <div class="fld" style="flex:1;min-width:260px"><label>Note for this revision</label>
+          <input class="in" id="revNote" placeholder="e.g. after owner meeting — reduced interior scope"></div>
+        <button class="btn primary" id="btnSaveRev2">Save current as revision</button>
+      </div>
+      <div class="tblwrap"><table id="revTable" style="min-width:820px">
+        <thead><tr><th>Rev</th><th>Saved</th><th>Note</th><th class="r">Sales price</th><th class="r">EBIT</th><th class="r">EBIT %</th><th></th></tr></thead>
+        <tbody id="revBody"></tbody>
+      </table></div>
+      <p class="note" style="margin-top:10px">Restoring a revision replaces the current project, parameters, cost lines and
+      risks with that snapshot. Export keeps the full revision history in the file.</p>
+    </div>
+  </section>
+
+  <footer>Baltic Yachts · Engineering &amp; Design — pricing module · mirrors "Calculation scheme.xlsx" · all figures editable, autosaved locally</footer>
+</div>
+<div class="flash" id="flash"></div>
+
+<script>
+const SEED = {"meta": {"source": "B80-02 PostCalc Official.xlsx", "contract": "B80-02 New Build"}, "project": {"customer": "", "yacht": "", "agent": "", "baseProject": "B80-02 New Build", "newProject": "", "compiledBy": "", "date": ""}, "params": {"sfBase": 1.0, "sfNew": 1.0, "gtBase": 1.0, "gtNew": 1.0, "scaleBasis": "sf", "inflSource": "euro", "inflBaseYear": 2024, "inflDeliveryYear": 2026, "inflRates": {}, "engRate": 46, "prodRate": 34.5, "companyRate": 40, "warrantyPct": 4.0, "profitPct": 10.0, "riskPctDefault": 0.0, "rdPctDefault": 0.0, "preEng": 0, "discountPct": 2.0}, "lines": [{"code": "001", "desc": "Sales cost, Build spec, conceptual design", "group": "00", "baseMat": 495710.99, "baseDesignH": 718.0, "baseTotalH": 718.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "003", "desc": "Project management", "group": "00", "baseMat": 149837.85, "baseDesignH": 683.23, "baseTotalH": 7475.78, "baseProdH": 6792.56, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "005", "desc": "Classification and registration", "group": "00", "baseMat": 32900.09, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "006", "desc": "Quality, commissioning and training", "group": "00", "baseMat": 1882.0, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "007", "desc": "Travelling and representation", "group": "00", "baseMat": 10149.67, "baseDesignH": 4.63, "baseTotalH": 34.12, "baseProdH": 29.49, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "101", "desc": "Hull Structure", "group": "10", "baseMat": 357952.03, "baseDesignH": 1061.76, "baseTotalH": 10206.35, "baseProdH": 9144.59, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "102", "desc": "Hull finish and fairing", "group": "10", "baseMat": 205672.96, "baseDesignH": 0.0, "baseTotalH": 170.44, "baseProdH": 170.44, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "103", "desc": "Hull door", "group": "10", "baseMat": 0.0, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "105", "desc": "Anchoring system", "group": "10", "baseMat": 20172.45, "baseDesignH": 66.92, "baseTotalH": 370.93, "baseProdH": 304.02, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "106", "desc": "Hull fittings and hardware", "group": "10", "baseMat": 46936.98, "baseDesignH": 87.92, "baseTotalH": 1346.37, "baseProdH": 1258.45, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "115", "desc": "Hull plug and mould", "group": "10", "baseMat": 49417.89, "baseDesignH": 233.89, "baseTotalH": 4555.99, "baseProdH": 4322.11, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "150", "desc": "Keel system", "group": "10", "baseMat": 464426.68, "baseDesignH": 51.57, "baseTotalH": 405.23, "baseProdH": 353.66, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "200", "desc": "Deck GA", "group": "20", "baseMat": 0.0, "baseDesignH": 30.95, "baseTotalH": 30.95, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "201", "desc": "Deck Structure", "group": "20", "baseMat": 132464.16, "baseDesignH": 190.39, "baseTotalH": 4791.35, "baseProdH": 4600.96, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "202", "desc": "Deck finish and fairing", "group": "20", "baseMat": 73648.87, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "204", "desc": "Teak deck and wood surfaces", "group": "20", "baseMat": 92785.06, "baseDesignH": 17.56, "baseTotalH": 27.27, "baseProdH": 9.71, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "210", "desc": "Deck fittings and hardware", "group": "20", "baseMat": 339325.41, "baseDesignH": 725.96, "baseTotalH": 4543.31, "baseProdH": 3817.35, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "211", "desc": "Deck sailhandling gear", "group": "20", "baseMat": 426584.09, "baseDesignH": 647.6, "baseTotalH": 5503.09, "baseProdH": 4855.49, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "215", "desc": "Deck plug and mould", "group": "20", "baseMat": 52705.38, "baseDesignH": 268.73, "baseTotalH": 1798.45, "baseProdH": 1529.72, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "220", "desc": "Deck mock-up", "group": "20", "baseMat": 0.0, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "300", "desc": "Interior GA and details", "group": "30", "baseMat": 48252.25, "baseDesignH": 1289.93, "baseTotalH": 4565.82, "baseProdH": 3275.89, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "301", "desc": "Cabins", "group": "30", "baseMat": 267740.74, "baseDesignH": 1135.73, "baseTotalH": 18542.64, "baseProdH": 17406.91, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "320", "desc": "Interior mock-up and samples", "group": "30", "baseMat": 3085.56, "baseDesignH": 0.0, "baseTotalH": 177.05, "baseProdH": 177.05, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "401", "desc": "Engine room layout, insulation, doors and hatches", "group": "40", "baseMat": 8850.39, "baseDesignH": 147.04, "baseTotalH": 1310.57, "baseProdH": 1163.53, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "402", "desc": "Engine and propulsion system", "group": "40", "baseMat": 75030.51, "baseDesignH": 251.41, "baseTotalH": 902.88, "baseProdH": 651.48, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "403", "desc": "Generator system", "group": "40", "baseMat": 19882.09, "baseDesignH": 12.0, "baseTotalH": 102.11, "baseProdH": 90.11, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "404", "desc": "Fuel and oil system", "group": "40", "baseMat": 11436.81, "baseDesignH": 61.8, "baseTotalH": 1305.59, "baseProdH": 1243.79, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "405", "desc": "Exhaust system", "group": "40", "baseMat": 8690.45, "baseDesignH": 52.1, "baseTotalH": 286.36, "baseProdH": 234.26, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "406", "desc": "Engine room ventilation", "group": "40", "baseMat": 5486.74, "baseDesignH": 97.14, "baseTotalH": 303.52, "baseProdH": 206.38, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "500", "desc": "Equipment layout and 3d routing", "group": "50", "baseMat": 0.0, "baseDesignH": 560.56, "baseTotalH": 560.56, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "501", "desc": "Fresh waster system", "group": "50", "baseMat": 52715.25, "baseDesignH": 104.44, "baseTotalH": 1258.95, "baseProdH": 1154.51, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "502", "desc": "Waste water system", "group": "50", "baseMat": 19923.6, "baseDesignH": 51.84, "baseTotalH": 432.07, "baseProdH": 380.23, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "503", "desc": "Air conditioning system", "group": "50", "baseMat": 32478.27, "baseDesignH": 142.79, "baseTotalH": 1025.71, "baseProdH": 882.92, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "504", "desc": "Ventialtion system", "group": "50", "baseMat": 5846.31, "baseDesignH": 40.81, "baseTotalH": 231.99, "baseProdH": 191.19, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "506", "desc": "Pneumatic system", "group": "50", "baseMat": 4927.8, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "507", "desc": "Seawater system", "group": "50", "baseMat": 6036.66, "baseDesignH": 55.85, "baseTotalH": 390.25, "baseProdH": 334.4, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "508", "desc": "Fridge and freeser system", "group": "50", "baseMat": 6416.06, "baseDesignH": 4.37, "baseTotalH": 7.22, "baseProdH": 2.85, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "509", "desc": "Bilge, drainage and fire system", "group": "50", "baseMat": 15481.75, "baseDesignH": 45.48, "baseTotalH": 628.48, "baseProdH": 583.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "510", "desc": "Hydraulic system", "group": "50", "baseMat": 96460.86, "baseDesignH": 245.98, "baseTotalH": 1052.9, "baseProdH": 806.92, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "513", "desc": "Technical cooling", "group": "50", "baseMat": 7234.83, "baseDesignH": 49.25, "baseTotalH": 245.95, "baseProdH": 196.7, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "600", "desc": "Equipment layout", "group": "60", "baseMat": 542.81, "baseDesignH": 51.04, "baseTotalH": 51.04, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "601", "desc": "AC/DC system", "group": "60", "baseMat": 154826.59, "baseDesignH": 980.89, "baseTotalH": 3366.7, "baseProdH": 2385.81, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "603", "desc": "Control and monitoring system", "group": "60", "baseMat": 32500.5, "baseDesignH": 1565.27, "baseTotalH": 2352.99, "baseProdH": 787.72, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "604", "desc": "Lightning system", "group": "60", "baseMat": 41152.93, "baseDesignH": 187.6, "baseTotalH": 1010.0, "baseProdH": 822.4, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "605", "desc": "Navigation and communication system", "group": "60", "baseMat": 94041.9, "baseDesignH": 387.82, "baseTotalH": 688.15, "baseProdH": 300.33, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "606", "desc": "Audio / Video system", "group": "60", "baseMat": 11447.94, "baseDesignH": 54.23, "baseTotalH": 159.51, "baseProdH": 105.28, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "701", "desc": "Mast and Rig", "group": "70", "baseMat": 1141961.57, "baseDesignH": 79.78, "baseTotalH": 93.78, "baseProdH": 14.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "702", "desc": "Sails", "group": "70", "baseMat": 383101.0, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "801", "desc": "Steering system", "group": "80", "baseMat": 125327.06, "baseDesignH": 339.99, "baseTotalH": 1828.41, "baseProdH": 1488.42, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "902", "desc": "Cradle", "group": "90", "baseMat": 51267.25, "baseDesignH": 37.36, "baseTotalH": 729.35, "baseProdH": 691.99, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "903", "desc": "Cleaning", "group": "90", "baseMat": 0.0, "baseDesignH": 0.0, "baseTotalH": 279.55, "baseProdH": 279.55, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "904", "desc": "Launching and hauling", "group": "90", "baseMat": 7904.41, "baseDesignH": 14.62, "baseTotalH": 53.27, "baseProdH": 38.65, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "905", "desc": "Tranpsort and packing", "group": "90", "baseMat": 350.96, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "906", "desc": "Consumables", "group": "90", "baseMat": 211944.03, "baseDesignH": 0.0, "baseTotalH": 9.14, "baseProdH": 9.14, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "910", "desc": "Safety equipment and dinghy", "group": "90", "baseMat": 14716.67, "baseDesignH": 2.4, "baseTotalH": 2.4, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "950", "desc": "Reworks and corrections", "group": "90", "baseMat": 2684.67, "baseDesignH": 0.27, "baseTotalH": 1191.82, "baseProdH": 1191.55, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}, {"code": "991", "desc": "Owners and crew supply", "group": "99", "baseMat": 382875.73, "baseDesignH": 0.0, "baseTotalH": 0.0, "baseProdH": 0.0, "matExpr": "", "designExpr": "", "prodExpr": "", "other3rd": 0, "riskPct": "", "rdPct": "", "active": true}], "risks": [{"risk": "Unclear or vague specification", "desc": "Room for unknowns and surprises.", "p0": 3, "c0": 4, "action": "Use allowances where not fully specified; flag open points.", "resp": "Sales", "date": "", "p1": 3, "c1": 3, "status": "Started"}, {"risk": "Naval architect new to this design", "desc": "Risk to timetable and cost.", "p0": 4, "c0": 4, "action": "Form a strong project team; early design reviews.", "resp": "MGMT", "date": "", "p1": 3, "c1": 3, "status": "Not started"}, {"risk": "Design & engineering capacity", "desc": "New territory for Baltic Yachts.", "p0": 3, "c0": 4, "action": "Work with external expertise; resource plan.", "resp": "MGMT", "date": "", "p1": 3, "c1": 3, "status": "Not started"}, {"risk": "Class certification", "desc": "Few references in this segment.", "p0": 3, "c0": 4, "action": "Early discussion with Class to align scope.", "resp": "Project / Sales", "date": "", "p1": 2, "c1": 2, "status": "Not started"}, {"risk": "Sales calculation completeness", "desc": "Has everything been accounted for?", "p0": 3, "c0": 4, "action": "Cross-check brokerage info; independent review.", "resp": "Sales / Project", "date": "", "p1": 2, "c1": 2, "status": "Started"}, {"risk": "New suppliers (mast, rigg, keel)", "desc": "Client-supply / long-lead items.", "p0": 3, "c0": 4, "action": "Confirm scope & landed cost with selected suppliers.", "resp": "Project / Sales", "date": "", "p1": 2, "c1": 2, "status": "Not started"}, {"risk": "Weight target set by designer", "desc": "Weight budget for paint & finish.", "p0": 3, "c0": 4, "action": "Explain cost vs weight trade-offs to owner.", "resp": "Project", "date": "", "p1": 2, "c1": 3, "status": "Not started"}], "revisions": []};
+const GROUP_NAMES = {"00": "Project general", "10": "Hull & keel", "20": "Deck", "30": "Interior", "40": "Engine", "50": "Plumbing", "60": "Electrical", "70": "Mast & rigg", "80": "Steering", "90": "Misc", "99": "Owner's & crew supply"};
+const GROUP_COLOR = {"00": "#8a9bb2", "10": "#4ea3ff", "20": "#5bd6a3", "30": "#f78fb3", "40": "#ff7b54", "50": "#57c8d9", "60": "#ffd166", "70": "#b39ddb", "80": "#80cbc4", "90": "#c0a36e", "99": "#7d8da3"};
+const INFL_DATA = {"euro": {"label": "Euro area (HICP)", "source": "Eurostat HICP, annual average", "last": 2025, "rates": {"2015": 0.2, "2016": 0.2, "2017": 1.5, "2018": 1.8, "2019": 1.2, "2020": 0.3, "2021": 2.6, "2022": 8.4, "2023": 5.4, "2024": 2.4, "2025": 2.1, "2026": 2.4}}, "finland": {"label": "Finland (CPI)", "source": "Statistics Finland CPI, annual average", "last": 2025, "rates": {"2015": -0.2, "2016": 0.4, "2017": 0.7, "2018": 1.1, "2019": 1.0, "2020": 0.3, "2021": 2.2, "2022": 7.1, "2023": 6.3, "2024": 1.6, "2025": 0.3, "2026": 1.5}}}; const INFL_FORECAST = 2.0;
+
+// ------------------------------------------------------------------ storage
+// Embedding: when opened with ?p=<HULL> the tool is a per-project file inside the
+// Yacht Builder app. ?m=view (or a realized project) makes it read-only. With no
+// ?p it is the standalone tool (single global key) — unchanged behaviour.
+const Q = new URLSearchParams(location.search);
+const HULL = (Q.get("p") || "").trim().toUpperCase();
+const MODE = (Q.get("m") || Q.get("mode") || "").toLowerCase();
+const EMBED = !!HULL;
+function lsget(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
+function isRealized(h){ try{ const mv=JSON.parse(lsget("pw_moves"))||{}; return !!(mv[h] && mv[h].to==="realized"); }catch(e){ return false; } }
+let READONLY = EMBED && (MODE === "view" || isRealized(HULL));
+const LS_KEY = EMBED ? ((MODE === "view" ? "pw_pprice_" : "pw_price_") + HULL) : "baltic_pricing_v2";
+const store = (function(){
+  let mem=null, ok=false;
+  try{ const t="__balt_test"; window.localStorage.setItem(t,"1"); window.localStorage.removeItem(t); ok=true; }catch(e){ ok=false; }
+  return { get(){ if(ok){ try{ return window.localStorage.getItem(LS_KEY); }catch(e){ ok=false; } } return mem; },
+           set(v){ if(ok){ try{ window.localStorage.setItem(LS_KEY,v); return; }catch(e){ ok=false; } } mem=v; } };
+})();
+let state = load();
+function load(){
+  try{
+    let raw = store.get();
+    if(!raw && EMBED && MODE === "view"){ raw = lsget("pw_assold_price_" + HULL) || lsget("pw_price_" + HULL); }
+    if(raw){ const s=JSON.parse(raw); if(s && s.lines) return migrate(s); }
+  }catch(e){}
+  return clone(SEED);
+}
+function migrate(s){
+  s.revisions = s.revisions||[];
+  s.lines.forEach(l=>{ if(l.active===undefined) l.active=true; });
+  if(!s.params.inflRates) s.params.inflRates={};
+  return s;
+}
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function save(){ try{ store.set(JSON.stringify(state)); }catch(e){} }
+function num(v){ const n=parseFloat(v); return isFinite(n)?n:0; }
+
+// ------------------------------------------------------------------ formula eval
+function evalExpr(expr, ctx){
+  if(expr==null) return NaN;
+  let s=String(expr).trim(); if(s==="") return NaN;
+  if(s[0]==="=") s=s.slice(1);
+  s=s.replace(/×/g,"*").replace(/÷/g,"/").replace(/\s+/g,"");
+  s=s.replace(/auto/gi,"("+(ctx.auto||0)+")").replace(/base/gi,"("+(ctx.base||0)+")").replace(/,/g,".");
+  const toks=s.match(/(\d+\.?\d*|\.\d+|[+\-*/()])/g);
+  if(!toks || toks.join("")!==s) return NaN;
+  let i=0; const peek=()=>toks[i], next=()=>toks[i++];
+  function E(){ let v=T(); while(peek()==="+"||peek()==="-"){const o=next(),r=T(); v=o==="+"?v+r:v-r;} return v; }
+  function T(){ let v=F(); while(peek()==="*"||peek()==="/"){const o=next(),r=F(); v=o==="*"?v*r:v/r;} return v; }
+  function F(){ if(peek()==="-"){next();return -F();} if(peek()==="+"){next();return F();}
+    if(peek()==="("){next(); const v=E(); if(next()!==")") throw 0; return v;}
+    const t=next(); if(t===undefined||isNaN(parseFloat(t))) throw 0; return parseFloat(t); }
+  try{ const v=E(); if(i!==toks.length) return NaN; return isFinite(v)?v:NaN; }catch(e){ return NaN; }
+}
+function valOr(v,f){ return isNaN(v)?f:v; }
+
+// ------------------------------------------------------------------ engine
+function params(){ return state.params; }
+function sfRatio(){ const p=params(); return p.sfBase? p.sfNew/p.sfBase : 1; }
+function gtRatio(){ const p=params(); return p.gtBase? p.gtNew/p.gtBase : 1; }
+function ratio(){ return params().scaleBasis==="gt" ? gtRatio() : sfRatio(); }
+function inflationFactor(){
+  const p=params(), rates=p.inflRates||{};
+  let f=1; const b=+p.inflBaseYear, d=+p.inflDeliveryYear;
+  for(let y=b+1; y<=d; y++){ const r=parseFloat(rates[y]); f*=(1+(isFinite(r)?r:0)/100); }
+  return f>0?f:1;
+}
+function lineValues(l){
+  const p=params(), rt=ratio(), inf=inflationFactor();
+  const matAuto=l.baseMat*rt*inf, dAuto=l.baseDesignH*rt, pAuto=l.baseProdH*rt;
+  const mat=l.matExpr? valOr(evalExpr(l.matExpr,{auto:matAuto,base:l.baseMat}),matAuto):matAuto;
+  const dh =l.designExpr? valOr(evalExpr(l.designExpr,{auto:dAuto,base:l.baseDesignH}),dAuto):dAuto;
+  const ph =l.prodExpr? valOr(evalExpr(l.prodExpr,{auto:pAuto,base:l.baseProdH}),pAuto):pAuto;
+  const other=num(l.other3rd);
+  const labour=dh*p.engRate+ph*p.prodRate;
+  const coghm=mat+labour+other;
+  const indirect=(dh+ph)*p.companyRate;
+  const cos=coghm+indirect;
+  const riskPct=(l.riskPct===""||l.riskPct==null?p.riskPctDefault:num(l.riskPct))/100;
+  const rdPct=(l.rdPct===""||l.rdPct==null?p.rdPctDefault:num(l.rdPct))/100;
+  const risk=coghm*riskPct, rd=coghm*rdPct;
+  const cosIncl=coghm+indirect+risk+rd;
+  const prov=(p.warrantyPct+p.profitPct)/100;
+  return {mat,dh,ph,other,labour,coghm,indirect,cos,risk,rd,cosIncl,sales:cosIncl*(1+prov),
+          matAuto,dAuto,pAuto,ov:{mat:!!l.matExpr,dh:!!l.designExpr,ph:!!l.prodExpr}};
+}
+function compute(){
+  const groups={}; let V=0,COS=0,MAT=0,OTHER=0,DH=0,PH=0,RISK=0,RD=0,LAB=0;
+  state.lines.forEach(l=>{
+    const v=lineValues(l); l._v=v;
+    if(!l.active) return;
+    const g=l.group; if(!groups[g]) groups[g]={mat:0,dh:0,ph:0,labour:0,cos:0,cosIncl:0,sales:0};
+    const G=groups[g];
+    G.mat+=v.mat; G.dh+=v.dh; G.ph+=v.ph; G.labour+=v.labour; G.cos+=v.cos; G.cosIncl+=v.cosIncl; G.sales+=v.sales;
+    V+=v.cosIncl; COS+=v.cos; MAT+=v.mat; OTHER+=v.other; DH+=v.dh; PH+=v.ph; RISK+=v.risk; RD+=v.rd; LAB+=v.labour;
+  });
+  const p=params(), prov=(p.warrantyPct+p.profitPct)/100;
+  const salesTotal=Math.round(V*(1+prov)/100)*100;
+  const warranty=p.warrantyPct/100*V, profit=p.profitPct/100*V;
+  const material3rd=MAT+OTHER, design=DH*p.engRate, production=PH*p.prodRate, fixed=(DH+PH)*p.companyRate;
+  const provTotal=warranty+RD, preEng=num(p.preEng);
+  const targetRev=V*(1+prov)+preEng, disc=(p.discountPct||0)/100, revDisc=targetRev*(1-disc);
+  const margins=rev=>{ const cm1=rev-material3rd,cm2=cm1-design-production,cm3=cm2-fixed,ebit=cm3-provTotal-preEng; return {rev,cm1,cm2,cm3,ebit}; };
+  return {groups,V,COS,MAT,OTHER,DH,PH,RISK,RD,LAB,salesTotal,warranty,profit,
+    approval:{material3rd,design,production,fixed,totalCOS:V,warranty,rd:RD,provTotal,preEng,
+      target:margins(targetRev),disc:margins(revDisc),discPct:disc}};
+}
+
+// ------------------------------------------------------------------ format
+const eur=v=>(v<0?"−":"")+"€"+Math.abs(Math.round(v)).toLocaleString("en-GB");
+const hrs=v=>v.toLocaleString("en-GB",{maximumFractionDigits:1});
+const pct=v=>(v*100).toLocaleString("en-GB",{maximumFractionDigits:1})+"%";
+function esc(s){ return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m])); }
+
+// ------------------------------------------------------------------ render
+const collapsed={};
+function render(){
+  const c=compute();
+  renderSummary(c); renderCost(c); renderApproval(c); renderInfl();
+  document.getElementById("tabLines").textContent=state.lines.filter(l=>l.active).length;
+  document.getElementById("tabRisk").textContent=state.risks.length;
+  document.getElementById("tabRev").textContent=state.revisions.length;
+  const f3=v=>v.toLocaleString("en-GB",{maximumFractionDigits:3});
+  document.getElementById("ratioOut").textContent=f3(ratio());
+  const rb=document.getElementById("ratioBreak");
+  if(rb) rb.innerHTML=`size factor ${f3(sfRatio())} · GT ${f3(gtRatio())} <span class="pill">using ${params().scaleBasis==="gt"?"GT":"size factor"}</span>`;
+  document.getElementById("inflOut").textContent=f3(inflationFactor());
+  document.getElementById("srcName").textContent=(SEED.meta.source||"official post-calc");
+  save(); setTopbarH(); if(READONLY) applyRO();
+}
+function applyRO(){
+  document.body.classList.add("ro");
+  document.querySelectorAll("input,select,textarea").forEach(el=>{ el.disabled=true; });
+  document.querySelectorAll("[data-addline],[data-del],#btnSaveRev,#btnSaveRev2,#btnReset,#btnReset2,#btnImportJson,#btnLoadPaste,#btnAddRisk,#btnInflReset,#btnCopyLink,.rowchk").forEach(el=>{ el.style.display="none"; });
+}
+function renderSummary(c){
+  const a=c.approval,m=a.target,ebitPct=m.rev?m.ebit/m.rev:0;
+  const kpis=[
+    {v:eur(a.totalCOS),l:"Total cost of sales",s:"material + labour + indirect",cls:""},
+    {v:eur(c.warranty+c.profit),l:"Provisions + margin",s:"warranty + profit",cls:""},
+    {v:eur(c.salesTotal),l:"Target sales price",s:(state.project.newProject||"new object"),cls:"good"},
+    {v:eur(m.ebit),l:"EBIT",s:pct(ebitPct)+" of revenue",cls:m.ebit>=0?"good":"bad"},
+    {v:hrs(c.DH+c.PH)+" h",l:"Total hours",s:hrs(c.DH)+" design · "+hrs(c.PH)+" prod",cls:""},
+  ];
+  document.getElementById("summary").innerHTML=kpis.map(k=>
+    `<div class="kpi ${k.cls}"><div class="v">${k.v}</div><div class="l">${k.l}</div><div class="s">${k.s}</div></div>`).join("");
+}
+function renderCost(c){
+  const body=document.getElementById("costBody"); body.innerHTML="";
+  const order=Object.keys(GROUP_NAMES).filter(g=>state.lines.some(l=>l.group===g));
+  order.forEach(g=>{
+    const G=c.groups[g]||{mat:0,labour:0,cos:0,sales:0};
+    const col=GROUP_COLOR[g]||"#8a9bb2", share=c.V?G.cosIncl/c.V:0;
+    const baseMatG=state.lines.filter(l=>l.group===g&&l.active).reduce((s,l)=>s+l.baseMat,0);
+    const tr=document.createElement("tr"); tr.className="grp";
+    tr.innerHTML=`<td></td>
+      <td data-g="${g}" colspan="2"><span class="dot" style="background:${col}"></span>${g} · ${esc(GROUP_NAMES[g])}
+        <span class="muted">${collapsed[g]?"▸":"▾"}</span>
+        <button class="btn sm" data-addline="${g}" title="add a line to this group" style="margin-left:8px">+ line</button></td>
+      <td class="r basecol">${eur(baseMatG)}</td><td></td>
+      <td class="r b">${eur(G.mat)}</td><td class="r"></td><td class="r"></td><td class="r"></td>
+      <td class="r">${eur(G.labour)}</td><td class="r b">${eur(G.cos)}</td><td class="r b">${eur(G.sales)}</td>
+      <td class="r">${pct(share)}</td><td></td>`;
+    body.appendChild(tr);
+    if(collapsed[g]) return;
+    state.lines.forEach((l,idx)=>{
+      if(l.group!==g) return;
+      const v=l._v||lineValues(l);
+      const tr2=document.createElement("tr"); if(!l.active) tr2.className="off";
+      tr2.innerHTML=`
+        <td><input type="checkbox" class="rowchk" data-act="${idx}" ${l.active?"checked":""}></td>
+        <td><input class="cellinp code" data-txt="${idx}" data-tf="code" value="${esc(l.code)}"></td>
+        <td class="desc"><input class="cellinp" data-txt="${idx}" data-tf="desc" value="${esc(l.desc)}"></td>
+        <td class="r basecol">${eur(l.baseMat)}</td>
+        <td class="r basecol">${hrs(l.baseDesignH)} / ${hrs(l.baseTotalH)}</td>
+        ${editCell(idx,"mat",v.mat,v.ov.mat)}
+        ${editCell(idx,"dh",v.dh,v.ov.dh,true)}
+        ${editCell(idx,"ph",v.ph,v.ov.ph,true)}
+        ${editCell(idx,"other",v.other,!!num(l.other3rd))}
+        <td class="r muted">${eur(v.labour)}</td>
+        <td class="r">${eur(v.cos)}</td><td class="r b">${eur(v.sales)}</td>
+        <td class="r muted">${l.active&&c.V?pct(v.cosIncl/c.V):"—"}</td>
+        <td><button class="btn sm" data-del="${idx}" title="delete line">✕</button></td>`;
+      body.appendChild(tr2);
+    });
+  });
+  const f=document.getElementById("costFoot");
+  f.innerHTML=`<tr><td></td><td colspan="2">TOTAL <span class="muted">(${state.lines.filter(l=>l.active).length} active)</span></td>
+    <td class="r muted">${eur(state.lines.filter(l=>l.active).reduce((s,l)=>s+l.baseMat,0))}</td><td></td>
+    <td class="r">${eur(c.MAT)}</td><td class="r">${hrs(c.DH)} h</td><td class="r">${hrs(c.PH)} h</td>
+    <td class="r">${eur(c.OTHER)}</td><td class="r">${eur(c.LAB)}</td>
+    <td class="r">${eur(c.COS)}</td><td class="r">${eur(c.salesTotal)}</td><td class="r">100%</td><td></td></tr>`;
+}
+function editCell(idx,field,val,ov,isHrs){
+  const disp=isHrs?hrs(val):eur(val);
+  return `<td class="edit ${ov?'ov':''}" data-line="${idx}" data-field="${field}" data-hrs="${isHrs?1:0}">${ov?'<span class="fx">ƒ</span>':''}${disp}</td>`;
+}
+
+// ---- cost interactions
+let hintEl=null;
+const costBody=document.getElementById("costBody");
+costBody.addEventListener("click", e=>{
+  const g=e.target.closest("td[data-g]");
+  const add=e.target.closest("button[data-addline]");
+  const del=e.target.closest("button[data-del]");
+  if(add){ addLine(add.dataset.addline); return; }
+  if(del){ state.lines.splice(+del.dataset.del,1); render(); return; }
+  if(g && !add){ const k=g.getAttribute("data-g"); collapsed[k]=!collapsed[k]; render(); return; }
+  const td=e.target.closest("td.edit"); if(!td || td.querySelector("input")) return;
+  startCellEdit(td);
+});
+costBody.addEventListener("change", e=>{
+  const a=e.target.closest("input[data-act]");
+  if(a){ state.lines[+a.dataset.act].active=a.checked; render(); }
+});
+costBody.addEventListener("input", e=>{
+  const t=e.target.closest("input[data-txt]");
+  if(t){ state.lines[+t.dataset.txt][t.dataset.tf]=t.value; save(); } // light save, no full re-render (keep caret)
+});
+function startCellEdit(td){
+  if(READONLY) return;
+  const idx=+td.dataset.line, field=td.dataset.field, isHrs=td.dataset.hrs==="1", l=state.lines[idx], v=l._v||lineValues(l);
+  const exprMap={mat:"matExpr",dh:"designExpr",ph:"prodExpr",other:null};
+  let cur;
+  if(field==="other") cur=(l.other3rd||l.other3rd===0)?String(l.other3rd):"";
+  else cur = l[exprMap[field]] ? l[exprMap[field]]           // keep an existing formula
+            : String(Math.round((field==="mat"?v.mat:field==="dh"?v.dh:v.ph)* (isHrs?10:1))/(isHrs?10:1)); // else the current number
+  td.innerHTML=`<input value="${String(cur).replace(/"/g,'&quot;')}">`;
+  const inp=td.querySelector("input"); inp.focus(); inp.select(); showHint(td,field);
+  const commit=()=>{
+    const raw=inp.value.trim();
+    if(field==="other"){ const val=evalExpr(raw,{}); l.other3rd = raw===""?0:(isNaN(val)?0:val); }
+    else { l[exprMap[field]]=raw; }
+    hideHint(); render();
+  };
+  inp.addEventListener("keydown", ev=>{ if(ev.key==="Enter") commit(); else if(ev.key==="Escape"){ hideHint(); render(); } });
+  inp.addEventListener("blur", commit);
+}
+function addLine(g){
+  if(READONLY) return;
+  const codes=state.lines.filter(l=>l.group===g).map(l=>+l.code).filter(n=>!isNaN(n));
+  const next=(codes.length?Math.max(...codes)+1:(+g)*10+1);
+  const at=(()=>{ let last=-1; state.lines.forEach((l,i)=>{ if(l.group===g) last=i; }); return last; })();
+  const nl={code:String(next),desc:"New line",group:g,baseMat:0,baseDesignH:0,baseTotalH:0,baseProdH:0,
+    matExpr:"",designExpr:"",prodExpr:"",other3rd:0,riskPct:"",rdPct:"",active:true};
+  if(at>=0) state.lines.splice(at+1,0,nl); else state.lines.push(nl);
+  collapsed[g]=false; render(); flash("Line added to "+GROUP_NAMES[g]);
+}
+function showHint(td,field){
+  hideHint();
+  const auto=field==="mat"?"size-scaled material":field==="dh"?"size-scaled design h":field==="ph"?"size-scaled prod h":"0";
+  hintEl=document.createElement("div"); hintEl.className="cellhint";
+  hintEl.innerHTML=`<b>Number or formula.</b><br><code>auto</code> = ${auto}, <code>base</code> = post-calc value.<br>`+
+    `e.g. <code>auto+300</code> · <code>base*0.8</code> · <code>1200*1.1</code>. Enter to apply, Esc to cancel, empty = auto.`;
+  document.body.appendChild(hintEl);
+  const r=td.getBoundingClientRect();
+  hintEl.style.left=Math.max(8,Math.min(r.left,window.innerWidth-300))+"px";
+  hintEl.style.top=(r.bottom+6)+"px";
+}
+function hideHint(){ if(hintEl){ hintEl.remove(); hintEl=null; } }
+
+// ------------------------------------------------------------------ inflation calculator
+function inflSrc(){ return INFL_DATA[params().inflSource]||INFL_DATA.euro; }
+function fillInfl(overwrite){
+  const p=params(); p.inflRates=p.inflRates||{};
+  if(p.inflSource==="custom"){ // just ensure keys exist
+    for(let y=(+p.inflBaseYear)+1;y<=(+p.inflDeliveryYear);y++) if(p.inflRates[y]==null) p.inflRates[y]=INFL_FORECAST;
+    return;
+  }
+  const src=inflSrc();
+  for(let y=(+p.inflBaseYear)+1;y<=(+p.inflDeliveryYear);y++){
+    if(overwrite || p.inflRates[y]==null){ const r=src.rates[y]; p.inflRates[y]=(r==null?INFL_FORECAST:r); }
+  }
+}
+function renderInfl(){
+  const p=params(); const wrap=document.getElementById("inflTableWrap");
+  document.getElementById("inflSource").value=p.inflSource;
+  fillInfl(false);
+  const b=+p.inflBaseYear, d=+p.inflDeliveryYear, src=inflSrc();
+  if(d<=b){ wrap.innerHTML=`<div class="note">Delivery year equals base year — no inflation applied (factor 1.000). Set a later delivery year to escalate material cost.</div>`;
+    document.getElementById("inflNote").innerHTML=""; return; }
+  let rows="";
+  for(let y=b+1;y<=d;y++){
+    const isFore = p.inflSource==="custom" ? false : (y>src.last);
+    rows+=`<tr><td>${y}</td>
+      <td class="r"><input class="risk-in" style="width:64px" data-infl="${y}" value="${p.inflRates[y]!=null?p.inflRates[y]:""}"></td>
+      <td>${p.inflSource==="custom"?'':(isFore?'<span class="yfore">forecast</span>':'<span class="yactual">actual</span>')}</td></tr>`;
+  }
+  wrap.innerHTML=`<div class="tblwrap"><table class="infl"><thead><tr><th>Year</th><th class="r">Inflation %</th><th>Basis</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const srcTxt = p.inflSource==="custom" ? "Custom values (enter your own)."
+    : `${src.source}. Actuals to ${src.last}; later years default to the ECB ~2% target and are editable.`;
+  document.getElementById("inflNote").innerHTML=`Material cost is escalated from ${b} to ${d}. ${srcTxt}`;
+}
+document.getElementById("inflSource").addEventListener("change", e=>{ params().inflSource=e.target.value; fillInfl(true); render(); });
+document.getElementById("btnInflReset").addEventListener("click", ()=>{ fillInfl(true); render(); flash("Inflation reset to source values"); });
+document.getElementById("inflTableWrap").addEventListener("input", e=>{
+  const t=e.target.closest("input[data-infl]"); if(!t) return;
+  const v=parseFloat(t.value); params().inflRates[t.dataset.infl]=isFinite(v)?v:0;
+  document.getElementById("inflOut").textContent=inflationFactor().toLocaleString("en-GB",{maximumFractionDigits:3});
+  // recompute downstream without rebuilding the infl table (keep caret)
+  const c=compute(); renderSummary(c); renderCost(c); renderApproval(c); save();
+});
+
+// ------------------------------------------------------------------ risk
+function riskBand(n){ return n<=5?"lo":n<=10?"md":"hi"; }
+function renderRisk(){
+  const body=document.getElementById("riskBody"); body.innerHTML="";
+  state.risks.forEach((r,i)=>{
+    const n0=num(r.p0)*num(r.c0), n1=num(r.p1)*num(r.c1);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><textarea class="risk-txt" data-ri="${i}" data-rf="risk">${esc(r.risk||"")}</textarea></td>
+      <td><textarea class="risk-txt" data-ri="${i}" data-rf="desc">${esc(r.desc||"")}</textarea></td>
+      <td class="r">${sel(i,"p0",r.p0)}</td><td class="r">${sel(i,"c0",r.c0)}</td>
+      <td class="r"><span class="rk ${riskBand(n0)}">${n0}</span></td>
+      <td><textarea class="risk-txt" data-ri="${i}" data-rf="action">${esc(r.action||"")}</textarea></td>
+      <td><input class="risk-txt" style="min-height:auto" data-ri="${i}" data-rf="resp" value="${esc(r.resp||"")}"></td>
+      <td class="r">${sel(i,"p1",r.p1)}</td><td class="r">${sel(i,"c1",r.c1)}</td>
+      <td class="r"><span class="rk ${riskBand(n1)}">${n1}</span></td>
+      <td>${statusSel(i,r.status)}</td>
+      <td><button class="btn sm" data-del="${i}" title="remove">✕</button></td>`;
+    body.appendChild(tr);
+  });
+  if(READONLY) applyRO();
+}
+function sel(i,f,val){ let o=""; for(let n=1;n<=5;n++) o+=`<option value="${n}" ${+val===n?"selected":""}>${n}</option>`;
+  return `<select class="risk-in" data-ri="${i}" data-rf="${f}">${o}</select>`; }
+function statusSel(i,val){ const opts=["Not started","Started","Further investigated","Done"];
+  return `<select class="risk-in" style="width:auto" data-ri="${i}" data-rf="status">`+opts.map(o=>`<option ${o===val?"selected":""}>${o}</option>`).join("")+`</select>`; }
+document.getElementById("riskBody").addEventListener("input", e=>{
+  const el=e.target; if(el.dataset.ri==null) return;
+  state.risks[+el.dataset.ri][el.dataset.rf]=el.value; save();
+  if(["p0","c0","p1","c1"].includes(el.dataset.rf)) renderRisk();
+});
+document.getElementById("riskBody").addEventListener("click", e=>{
+  const b=e.target.closest("button[data-del]"); if(!b) return;
+  state.risks.splice(+b.dataset.del,1); renderRisk();
+});
+document.getElementById("btnAddRisk").addEventListener("click", ()=>{
+  state.risks.push({risk:"",desc:"",p0:3,c0:3,action:"",resp:"",date:"",p1:2,c1:2,status:"Not started"}); renderRisk(); render();
+});
+
+// ------------------------------------------------------------------ approval
+function approvalHTML(c, forPrint){
+  const a=c.approval,t=a.target,d=a.disc,p=state.project,pr=params();
+  const row=(lab,cE,cP,gE)=>`<div class="aprow"><div class="lab">${lab}</div><div class="r">${cE}</div><div class="r muted">${cP}</div><div class="r">${gE}</div></div>`;
+  const ebitTag=t.ebit>=0?(t.ebit/t.rev>=0.08?"ok":"warn"):"bad";
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
+      <div><h2 style="margin-bottom:4px">Business approval form</h2>
+      <div class="note">Approval according to the standing rules · significant business contracts</div></div>
+      <div class="tag ${ebitTag}">EBIT ${pct(t.rev?t.ebit/t.rev:0)}</div>
+    </div>
+    <div class="grid g3" style="margin:16px 0 6px">
+      <div class="fld"><label>Customer</label><div class="apbig" style="font-size:15px">${esc(p.customer||"—")}</div></div>
+      <div class="fld"><label>Contract (yacht)</label><div class="apbig" style="font-size:15px">${esc(p.yacht||p.newProject||"—")}</div></div>
+      <div class="fld"><label>Agent</label><div class="apbig" style="font-size:15px">${esc(p.agent||"—")}</div></div>
+    </div>
+    <h2 style="margin-top:18px">Cost information</h2>
+    <div class="aprow aphead"><div>Item</div><div class="r">€</div><div class="r">hours</div><div class="r">rate €/h</div></div>
+    ${row("Material &amp; 3rd-party cost", eur(a.material3rd), "", "")}
+    <div class="aprow"><div class="lab">Design</div><div class="r">${eur(a.design)}</div><div class="r muted">${hrs(c.DH)} h</div><div class="r">${pr.engRate}</div></div>
+    <div class="aprow"><div class="lab">Production</div><div class="r">${eur(a.production)}</div><div class="r muted">${hrs(c.PH)} h</div><div class="r">${pr.prodRate}</div></div>
+    <div class="aprow"><div class="lab">Fixed cost</div><div class="r">${eur(a.fixed)}</div><div class="r muted">${hrs(c.DH+c.PH)} h</div><div class="r">${pr.companyRate}</div></div>
+    <div class="aprow" style="border-top:1px solid var(--line)"><div class="lab b">Total cost of sales</div><div class="r b">${eur(a.totalCOS)}</div><div class="r"></div><div class="r"></div></div>
+    <h2 style="margin-top:18px">Provisions</h2>
+    <div class="aprow aphead"><div>Item</div><div class="r">€</div><div class="r">% of COS</div><div class="r"></div></div>
+    <div class="aprow"><div class="lab">Warranty</div><div class="r">${eur(a.warranty)}</div><div class="r muted">${pct(a.totalCOS?a.warranty/a.totalCOS:0)}</div><div class="r"></div></div>
+    <div class="aprow"><div class="lab">Technology &amp; R&amp;D</div><div class="r">${eur(a.rd)}</div><div class="r muted">${pct(a.totalCOS?a.rd/a.totalCOS:0)}</div><div class="r"></div></div>
+    <div class="aprow"><div class="lab">Pre-engineering (in price)</div><div class="r">${eur(a.preEng)}</div><div class="r muted"></div><div class="r"></div></div>
+    <h2 style="margin-top:18px">Revenue &amp; margins</h2>
+    <div class="aprow aphead"><div>Item</div><div class="r">at target €</div><div class="r">% of rev</div><div class="r">at max disc. €</div></div>
+    ${row("Target revenue", `<b>${eur(t.rev)}</b>`, `discount ${pct(a.discPct)}`, `<b>${eur(d.rev)}</b>`)}
+    ${row("Contribution margin I", eur(t.cm1), pct(t.rev?t.cm1/t.rev:0), eur(d.cm1))}
+    ${row("Contribution margin II", eur(t.cm2), pct(t.rev?t.cm2/t.rev:0), eur(d.cm2))}
+    ${row("Contribution margin III", eur(t.cm3), pct(t.rev?t.cm3/t.rev:0), eur(d.cm3))}
+    ${row("EBIT", `<b>${eur(t.ebit)}</b>`, `<b>${pct(t.rev?t.ebit/t.rev:0)}</b>`, `<b>${eur(d.ebit)}</b>`)}
+    <div class="grid g2" style="margin-top:18px">
+      <div><h2>Attachments</h2>
+        <div class="note">Calculation scheme (cost build-up), Risk assessment (${state.risks.length} risks), Business approval form.</div>
+        <div class="note" style="margin-top:8px">Compiled by: <b>${esc(p.compiledBy||"—")}</b> · Date: <b>${esc(p.date||"—")}</b></div></div>
+      <div><h2>Room for negotiation</h2>
+        <div class="note">At the max approved discount of <b>${pct(a.discPct)}</b>, revenue falls to <b>${eur(d.rev)}</b>
+        and EBIT to <b>${eur(d.ebit)}</b> (${pct(d.rev?d.ebit/d.rev:0)}). Below this, escalate to the board.</div></div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="sigbox">Board of Directors affirms the information is complete and based on a thorough evaluation.<br><br>______________________________<br>Date, name</div>
+      <div class="sigbox">Shareholder approves the above contract to be signed.<br><br>______________________________<br>Date, name</div>
+    </div>`;
+}
+function renderApproval(c){ document.getElementById("approvalCard").innerHTML=approvalHTML(c,false); }
+
+// ------------------------------------------------------------------ revisions
+function saveRevision(note){
+  if(READONLY) return;
+  const c=compute(), m=c.approval.target;
+  const rev={ n: (state.revisions.length? Math.max(...state.revisions.map(r=>r.n))+1 : 1),
+    date: new Date().toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}),
+    note: note||"", kpis:{sales:c.salesTotal,cos:c.approval.totalCOS,ebit:m.ebit,ebitPct:m.rev?m.ebit/m.rev:0},
+    snap: clone({project:state.project,params:state.params,lines:state.lines,risks:state.risks}) };
+  state.revisions.push(rev); render(); renderRev(); flash("Saved as Rev "+rev.n);
+}
+function renderRev(){
+  const body=document.getElementById("revBody"); body.innerHTML="";
+  if(!state.revisions.length){ body.innerHTML=`<tr><td colspan="7" class="muted" style="padding:14px">No revisions saved yet. Use “Save current as revision”.</td></tr>`; return; }
+  state.revisions.slice().reverse().forEach(r=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="b">Rev ${r.n}</td><td class="muted">${esc(r.date)}</td><td>${esc(r.note||"—")}</td>
+      <td class="r">${eur(r.kpis.sales)}</td><td class="r">${eur(r.kpis.ebit)}</td><td class="r">${pct(r.kpis.ebitPct)}</td>
+      <td><button class="btn sm" data-restore="${r.n}">Restore</button> <button class="btn sm" data-delrev="${r.n}">✕</button></td>`;
+    body.appendChild(tr);
+  });
+}
+document.getElementById("revBody").addEventListener("click", e=>{
+  if(READONLY) return;
+  const rs=e.target.closest("button[data-restore]"), dl=e.target.closest("button[data-delrev]");
+  if(rs){ const r=state.revisions.find(x=>x.n===+rs.dataset.restore); if(r && confirm("Restore Rev "+r.n+"? Current unsaved changes will be replaced.")){
+    const snap=clone(r.snap); state.project=snap.project; state.params=snap.params; state.lines=snap.lines; state.risks=snap.risks;
+    syncInputs(); renderRisk(); render(); renderRev(); flash("Restored Rev "+r.n); } }
+  if(dl){ const i=state.revisions.findIndex(x=>x.n===+dl.dataset.delrev); if(i>=0){ state.revisions.splice(i,1); render(); renderRev(); } }
+});
+document.getElementById("btnSaveRev").addEventListener("click", ()=>saveRevision(prompt("Revision note (optional):")||""));
+document.getElementById("btnSaveRev2").addEventListener("click", ()=>{ const n=document.getElementById("revNote"); saveRevision(n.value); n.value=""; });
+
+// ------------------------------------------------------------------ inputs binding
+document.querySelectorAll("[data-param]").forEach(inp=>{
+  inp.value=state.params[inp.dataset.param];
+  const isSelect=inp.tagName==="SELECT";
+  inp.addEventListener(isSelect?"change":"input", ()=>{
+    if(isSelect){ state.params[inp.dataset.param]=inp.value; }
+    else { const v=parseFloat(inp.value); state.params[inp.dataset.param]=isFinite(v)?v:0; }
+    render();
+  });
+});
+document.querySelectorAll("[data-proj]").forEach(inp=>{
+  inp.value=state.project[inp.dataset.proj]||"";
+  inp.addEventListener("input", ()=>{ state.project[inp.dataset.proj]=inp.value; render(); });
+});
+function syncInputs(){
+  document.querySelectorAll("[data-param]").forEach(i=>i.value=state.params[i.dataset.param]);
+  document.querySelectorAll("[data-proj]").forEach(i=>i.value=state.project[i.dataset.proj]||"");
+}
+
+// ------------------------------------------------------------------ tabs
+document.getElementById("tabs").addEventListener("click", e=>{
+  const t=e.target.closest(".tab"); if(!t) return;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active"); document.getElementById("view-"+t.dataset.v).classList.add("active");
+  if(t.dataset.v==="rev") renderRev();
+  setTopbarH();
+});
+
+// ------------------------------------------------------------------ project link handoff
+function readProjectLink(){
+  try{
+    const q=new URLSearchParams(location.search).get("project"); if(!q) return;
+    const data=JSON.parse(decodeURIComponent(escape(atob(q))));
+    ["customer","yacht","agent","date","baseProject","newProject","compiledBy"].forEach(k=>{ if(data[k]!=null) state.project[k]=data[k]; });
+    ["sfBase","sfNew","inflBaseYear","inflDeliveryYear"].forEach(k=>{ if(data[k]!=null) state.params[k]=data[k]; });
+    syncInputs(); flash("Project loaded from Workspace handoff");
+  }catch(e){}
+}
+function makeProjectLink(){
+  const p=state.project, pr=state.params;
+  const payload={customer:p.customer,yacht:p.yacht,agent:p.agent,date:p.date,baseProject:p.baseProject,
+    newProject:p.newProject,compiledBy:p.compiledBy,sfBase:pr.sfBase,sfNew:pr.sfNew,
+    inflBaseYear:pr.inflBaseYear,inflDeliveryYear:pr.inflDeliveryYear};
+  const enc=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  return location.origin+location.pathname+"?project="+enc;
+}
+document.getElementById("btnCopyLink").addEventListener("click", ()=>{
+  const url=makeProjectLink();
+  navigator.clipboard&&navigator.clipboard.writeText(url).then(()=>flash("Project link copied — open it to pre-fill this tool"),
+    ()=>prompt("Project link:",url));
+  if(!navigator.clipboard) prompt("Project link:",url);
+});
+
+// ------------------------------------------------------------------ import / export / reset
+document.getElementById("btnLoadPaste").addEventListener("click", ()=>{
+  const txt=document.getElementById("pasteBox").value.trim();
+  if(!txt){ msg("Nothing to load — paste rows first.","warn"); return; }
+  const lines=[]; let group="00";
+  txt.split(/\r?\n/).forEach(row=>{
+    const cols=row.split("\t").map(s=>s.trim()); if(cols.length<2) return;
+    const code=cols[0].replace(/[^0-9]/g,""); if(!code) return;
+    const desc=cols[1]||code, mat=num(cols[2]), dh=num(cols[3]), th=num(cols[4]);
+    if(code.length<=2){ group=code.padStart(2,"0"); GROUP_NAMES[group]=desc; return; }
+    lines.push({code,desc,group,baseMat:mat,baseDesignH:dh,baseTotalH:th,baseProdH:Math.max(th-dh,0),
+      matExpr:"",designExpr:"",prodExpr:"",other3rd:0,riskPct:"",rdPct:"",active:true});
+  });
+  if(!lines.length){ msg("Could not parse any 3-digit chapter rows.","bad"); return; }
+  state.lines=lines; document.getElementById("pasteBox").value="";
+  msg(lines.length+" lines loaded.","ok"); render(); flash("Imported "+lines.length+" post-calc lines");
+});
+function resetExample(){ state=clone(SEED); syncInputs(); renderRisk(); render(); renderRev(); flash("Restored the example post-calc"); }
+document.getElementById("btnReset").addEventListener("click", ()=>{ if(confirm("Reset everything to the example post-calc? Your changes and revisions will be lost.")) resetExample(); });
+document.getElementById("btnReset2").addEventListener("click", resetExample);
+document.getElementById("btnExport").addEventListener("click", ()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=(state.project.yacht||state.project.newProject||"price-calc")+".json"; a.click(); flash("Exported your pricing file");
+});
+document.getElementById("btnImportJson").addEventListener("click", ()=>document.getElementById("fileJson").click());
+document.getElementById("fileJson").addEventListener("change", e=>{
+  const f=e.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{ try{ const s=JSON.parse(r.result); if(s.lines){ state=migrate(s); syncInputs(); renderRisk(); render(); renderRev(); flash("Loaded "+f.name);} else msg("Not a pricing file.","bad"); }catch(err){ flash("Could not read that file"); } };
+  r.readAsText(f);
+});
+
+// ------------------------------------------------------------------ print approval -> PDF preview window
+function printApproval(){
+  const c=compute(); const html=approvalHTML(c,true);
+  const p=state.project;
+  const css=`
+    *{box-sizing:border-box} body{font-family:'Segoe UI',Arial,sans-serif;color:#12233a;margin:0;padding:16mm;font-size:12px}
+    @page{size:A4;margin:14mm}
+    h1{font-size:18px;margin:0} h1 span{color:#12508f}
+    h2{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#12508f;margin:14px 0 4px}
+    .doc-sub{color:#5a6b80;font-size:11px}
+    .hint{display:none}
+    .grid{display:grid;gap:14px} .g2{grid-template-columns:1fr 1fr} .g3{grid-template-columns:1fr 1fr 1fr}
+    .fld label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#5a6b80;margin-bottom:3px}
+    .apbig{font-weight:700}
+    .aprow{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;border-bottom:1px solid #dce4f0;padding:6px 0}
+    .aprow .lab{color:#33445a} .aprow .r{text-align:right;font-variant-numeric:tabular-nums} .aprow .muted{color:#7a8aa0}
+    .aphead{color:#5a6b80;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+    .note{color:#5a6b80;font-size:11px;line-height:1.5}
+    .tag{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;border:1px solid #ccc}
+    .tag.ok{background:#e7f6ee;color:#1f7a52} .tag.warn{background:#fbf3e0;color:#8a6d1a} .tag.bad{background:#fbe7e7;color:#b23b3b}
+    .sigbox{border:1px dashed #aaa;border-radius:8px;padding:20px 14px 8px;margin-top:8px;color:#33445a;font-size:11px}
+    :root{--line:#cbd5e6}`;
+  const head=`<header style="border-bottom:2px solid #12508f;padding-bottom:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:flex-end">
+    <div><h1>Baltic Yachts · <span>Business Approval</span></h1>
+    <div class="doc-sub">${esc(p.yacht||p.newProject||"")}${p.customer?" · "+esc(p.customer):""}</div></div>
+    <div class="doc-sub">${new Date().toLocaleDateString("en-GB")}</div></header>`;
+  const doc=`<!doctype html><html><head><meta charset="utf-8"><title>Business Approval — ${esc(p.yacht||p.newProject||"Baltic Yachts")}</title><style>${css}</style></head><body>${head}${html}<div class="note" style="margin-top:14px;border-top:1px solid #dce4f0;padding-top:6px">Generated from the Baltic Yachts Price Calculation tool.</div></body></html>`;
+  const w=window.open("","_blank");
+  if(!w){ // popup blocked -> fall back to in-place print of approval tab
+    document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    document.getElementById("view-approval").classList.add("active");
+    window.print(); return;
+  }
+  w.document.open(); w.document.write(doc); w.document.close(); w.focus();
+  setTimeout(()=>{ try{ w.print(); }catch(e){} }, 350);
+}
+document.getElementById("btnPrint").addEventListener("click", printApproval);
+
+// ------------------------------------------------------------------ misc
+function msg(t,cls){ const m=document.getElementById("importMsg"); m.textContent=t;
+  m.style.color=cls==="ok"?"var(--green)":cls==="bad"?"var(--red)":cls==="warn"?"var(--yellow)":"var(--mut3)"; }
+let flashT; function flash(t){ const f=document.getElementById("flash"); f.textContent=t; f.classList.add("show");
+  clearTimeout(flashT); flashT=setTimeout(()=>f.classList.remove("show"),2200); }
+function setTopbarH(){ const tb=document.getElementById("topbar"); if(tb) document.documentElement.style.setProperty("--topbar-h", tb.offsetHeight+"px"); }
+window.addEventListener("resize", setTopbarH);
+window.addEventListener("load", setTopbarH);
+
+// ------------------------------------------------------------------ embedding boot
+if(EMBED){
+  const sub=document.querySelector(".sub");
+  if(sub) sub.textContent="Per-project pricing file · "+HULL+(MODE==="view"?" · read-only":"");
+  if(state.project) state.project.yacht=state.project.yacht||HULL;
+  if(READONLY){
+    const rb=document.getElementById("roRibbon"); rb.style.display="flex";
+    rb.textContent = MODE==="view"
+      ? "Read-only — the frozen price calculation that flowed from Sales when this project was realized. The live risk register is on the project page."
+      : "This project is realized — the price calculation is locked (as-sold). A read-only copy has flowed to the Projects side.";
+  }
+}
+
+// ------------------------------------------------------------------ go
+readProjectLink();
+renderRisk();
+render();
+renderRev();
+setTopbarH();
+</script>
+</body>
+</html>
