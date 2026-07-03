@@ -299,7 +299,6 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
 /* --- v27: editor tables (shared rich-text spec editor) --- */
 .sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
@@ -738,39 +737,6 @@ body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
 .dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
 a.dl-chip:hover{background:var(--brand-2);color:#fff}
 
-/* --- v39: price calculation host + risk register --- */
-.pc-h2{font:600 15px/1.3 var(--serif);margin:0 0 6px;color:var(--ink)}
-.pc-h2 .pc-hint{font:500 12px/1 var(--sans);color:var(--muted);margin-left:8px;text-transform:none;letter-spacing:0}
-.pc-lead{font:500 13.5px/1.6 var(--sans);color:var(--muted);margin:0 0 4px}
-.pc-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
-.pc-bar label{font:600 12px/1 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.pc-bar select{font:500 13.5px/1.3 var(--sans);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:280px}
-.pc-hint{font:500 12.5px/1.5 var(--sans);color:var(--muted)}
-.pc-frame{width:100%;height:86vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
-/* full-bleed: break out of the ~1120px content column so the tool gets the whole width */
-.pc-host{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;box-sizing:border-box;padding:0 clamp(12px,3vw,40px)}
-/* full screen: the iframe fills the whole window */
-.pc-frame.fs{position:fixed;inset:0;width:100vw;height:100vh;min-height:0;z-index:9999;border:0;border-radius:0}
-.pc-fsexit{position:fixed;top:12px;right:16px;z-index:10000;display:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.pc-fsexit.show{display:inline-flex}
-.pc-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:flex-start}
-.pc-note svg{width:16px;height:16px;stroke:var(--brand-2);fill:none;stroke-width:1.7;flex:0 0 auto;margin-top:1px}
-.rk-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0}
-table.rk{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:900px}
-table.rk th,table.rk td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
-table.rk th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.rk td.r,table.rk th.r{text-align:right}
-.rk-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.rk-txt{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.rk-sel{padding:4px 6px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1 var(--sans)}
-.rk-score{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.rk-lo{background:#e7f6ee;color:#1f7a52}.rk-md{background:#fbf3e0;color:#8a6d1a}.rk-hi{background:#fbe7e7;color:#b23b3b}
-.rk-ro td{color:var(--ink)}
-.rk-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.rk-role{font:500 12.5px/1.5 var(--sans);margin:6px 0 0}
-.rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
-.rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
-
 /* --- v27: Engineering Projects — force the app's dark palette on these pages --- */
 body.eng-dark{
   --bg:#0d1318; --surface:#161f29; --surface-2:#131c25;
@@ -1140,7 +1106,7 @@ window.ENGX = (function(){
     <h1>Specification</h1>
     <p>The project specification, from engineering. <strong>Read-only</strong> &mdash; the live, editable spec lives in the Projects area.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html" class="on">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="eng-readonly-bar"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Read-only engineering view of <span class="pj-proj-ref"></span>. Reflects the shared project specification.</span></div>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html" class="on">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="eng-readonly-bar"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Read-only engineering view of <span class="pj-proj-ref"></span>. Reflects the shared project specification.</span></div>
   <div class="sp-doc card" id="sp-doc">
 <nav class="sp-toc" id="sp-toc" aria-label="Table of contents"><h2>Contents</h2><ol><li><a href="#area-GP"><span class="toc-code">GP</span><span>General Particulars</span></a><ol><li class="toc-sub"><a href="#h-GP-1"><span>Principal dimensions</span></a></li><li class="toc-sub"><a href="#h-GP-2"><span>Construction</span></a></li><li class="toc-sub"><a href="#h-GP-3"><span>Equipment</span></a></li><li class="toc-sub"><a href="#h-GP-4"><span>Design</span></a></li></ol></li><li><a href="#area-00"><span class="toc-code">00</span><span>General Conditions</span></a><ol><li class="toc-sub"><a href="#h-00-1"><span>Specification</span></a></li><li class="toc-sub"><a href="#h-00-2"><span>Articles supplied by shipyard and owner</span></a></li><li class="toc-sub"><a href="#h-00-3"><span>Access</span></a></li><li class="toc-sub"><a href="#h-00-4"><span>Materials and workmanship</span></a></li><li class="toc-sub"><a href="#h-00-5"><span>Insurance</span></a></li><li class="toc-sub"><a href="#h-00-6"><span>Warranty</span></a></li><li class="toc-sub"><a href="#h-00-7"><span>Drawings and Definitions</span></a></li><li class="toc-sub"><a href="#h-00-8"><span>Classification and Compliance</span></a></li><li class="toc-sub"><a href="#h-00-9"><span>Flag state requirements</span></a></li><li class="toc-sub"><a href="#h-00-10"><span>Weight control</span></a></li><li class="toc-sub"><a href="#h-00-11"><span>Commissioning and Testing</span></a></li><li class="toc-sub"><a href="#h-00-12"><span>Delivery of yacht</span></a></li></ol></li><li><a href="#area-10"><span class="toc-code">10</span><span>Hull</span></a><ol><li class="toc-sub"><a href="#h-10-1"><span>General Concept</span></a></li><li class="toc-sub"><a href="#h-10-2"><span>101  Hull structures</span></a></li><li class="toc-sub"><a href="#h-10-3"><span>102  Hull finish and fairing</span></a></li><li class="toc-sub"><a href="#h-10-4"><span>103  Transom, swim and boarding platform</span></a></li><li class="toc-sub"><a href="#h-10-5"><span>105  Anchoring system</span></a></li><li class="toc-sub"><a href="#h-10-6"><span>106  Hull fittings and hardware</span></a></li><li class="toc-sub"><a href="#h-10-7"><span>150  Pivoting daggerboard and skeg system</span></a></li></ol></li><li><a href="#area-20"><span class="toc-code">20</span><span>Deck</span></a><ol><li class="toc-sub"><a href="#h-20-1"><span>General concept</span></a></li><li class="toc-sub"><a href="#h-20-2"><span>201  Deck structure</span></a></li><li class="toc-sub"><a href="#h-20-3"><span>202  Finish</span></a></li><li class="toc-sub"><a href="#h-20-4"><span>204  Decking</span></a></li><li class="toc-sub"><a href="#h-20-5"><span>210  Deck fittings and hardware</span></a></li><li class="toc-sub"><a href="#h-20-6"><span>211  Deck sail handling gear</span></a></li></ol></li><li><a href="#area-30"><span class="toc-code">30</span><span>Interior</span></a><ol><li class="toc-sub"><a href="#h-30-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-30-2"><span>301  Cabins, heads and showers</span></a></li></ol></li><li><a href="#area-40"><span class="toc-code">40</span><span>Engine</span></a><ol><li class="toc-sub"><a href="#h-40-1"><span>401  Engine room</span></a></li><li class="toc-sub"><a href="#h-40-2"><span>402  Engine and propulsion system</span></a></li><li class="toc-sub"><a href="#h-40-3"><span>403  Diesel Generator</span></a></li><li class="toc-sub"><a href="#h-40-4"><span>404  Fuel and oil system</span></a></li><li class="toc-sub"><a href="#h-40-5"><span>405  Exhaust system</span></a></li><li class="toc-sub"><a href="#h-40-6"><span>406  Engine room ventilation system</span></a></li></ol></li><li><a href="#area-50"><span class="toc-code">50</span><span>Plumbing</span></a><ol><li class="toc-sub"><a href="#h-50-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-50-2"><span>General</span></a></li><li class="toc-sub"><a href="#h-50-3"><span>Fresh water tanks</span></a></li><li class="toc-sub"><a href="#h-50-4"><span>Hot water boilers</span></a></li><li class="toc-sub"><a href="#h-50-5"><span>502  Waste water system</span></a></li></ol></li><li><a href="#area-60"><span class="toc-code">60</span><span>Electrical</span></a><ol><li class="toc-sub"><a href="#h-60-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-60-2"><span>One line diagram</span></a></li><li class="toc-sub"><a href="#h-60-3"><span>Cables and Supports</span></a></li><li class="toc-sub"><a href="#h-60-4"><span>Switchgear and Panels</span></a></li><li class="toc-sub"><a href="#h-60-5"><span>Grounding system and Corrosion prevention</span></a></li><li class="toc-sub"><a href="#h-60-6"><span>601  AC system</span></a></li><li class="toc-sub"><a href="#h-60-7"><span>602  DC systems</span></a></li><li class="toc-sub"><a href="#h-60-8"><span>603  Control and Monitoring system</span></a></li><li class="toc-sub"><a href="#h-60-9"><span>605  Navigation system</span></a></li><li class="toc-sub"><a href="#h-60-10"><span>606  Audio / Video</span></a></li></ol></li><li><a href="#area-70"><span class="toc-code">70</span><span>Rigging</span></a><ol><li class="toc-sub"><a href="#h-70-1"><span>701  Mast and rig (owner supplied)</span></a></li><li class="toc-sub"><a href="#h-70-2"><span>702  Sails</span></a></li></ol></li><li><a href="#area-90"><span class="toc-code">90</span><span>Miscellaneous</span></a></li></ol></nav><div id="sp-sections"><section class="sp-area" id="area-GP">
 <div class="sp-bc">GP › General Particulars</div>
@@ -1599,7 +1565,6 @@ window.ENGX = (function(){
   }catch(e){}
 })();
 </script>
-
 <footer>
   <div class="wrap foot-inner">
     <span>Baltic Yachts · Sales — Yacht Builder</span>

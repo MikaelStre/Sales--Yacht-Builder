@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Quality & Sea Trials · Projects</title>
+<title>Procurement & Purchasing · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -771,6 +771,22 @@ table.rk td.r,table.rk th.r{text-align:right}
 .rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
 .rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
 </style>
+<style>
+.pm-lead{font:500 13.5px/1.6 var(--sans);color:var(--muted);margin:0 0 14px}
+.pm-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin:2px 0 20px}
+.pm-stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.pm-stat .v{font:700 22px/1.05 var(--sans);color:var(--ink)}
+.pm-stat .l{margin-top:6px;font:700 11px/1.2 var(--sans);text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.pm-stat .s{margin-top:2px;font:500 11px/1.3 var(--sans);color:var(--faint)}
+.pm-stat.good .v{color:var(--good)} .pm-stat.bad .v{color:#c0392b} .pm-stat.warn .v{color:#b7791f}
+.pm-empty{background:var(--surface-2);border:1px dashed var(--line);border-radius:12px;padding:18px;color:var(--muted);font:500 13px/1.55 var(--sans);margin-bottom:20px}
+.pm-secttl{font:700 12px/1 var(--sans);text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:22px 0 10px}
+.pm-out table{width:100%;border-collapse:collapse;font:500 13px/1.4 var(--sans)}
+.pm-out th,.pm-out td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+.pm-out th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.pm-badge{font:700 10px/1 var(--sans);padding:3px 8px;border-radius:20px;white-space:nowrap}
+.pm-badge.out{background:#fdecea;color:#c0392b} .pm-badge.way{background:#fef6e7;color:#b7791f}
+</style>
 </head>
 <body>
 <header class="bar">
@@ -949,11 +965,16 @@ window.PJX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Quality & Sea Trials</div>
-    <h1>Quality & Sea Trials</h1>
-    <p>Inspections, NCRs, commissioning and sea trials.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / Procurement</div>
+    <h1>Procurement & Purchasing</h1>
+    <p>Supplier orders, lead times and deliveries for the build.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><strong>Quality & Sea Trials</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <p class="pm-lead">The material position for this project — budget, still-to-buy and cost-to-complete
+    forecast — with the operational tools. Figures update from the Still-to-Buy tool; change orders flow in from the PM.</p>
+  <div id="pm-position" class="pm-stats"></div>
+  <div class="pm-secttl">Operational tools</div>
+  <div class="pj-grid"><a class="pj-tile live" href="still-to-buy.html"><div class="pj-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1 12H6z"/><path d="M9 7a3 3 0 0 1 6 0"/><path d="M9 12h6M9 15h4"/></svg></div><h3>Still to Buy &middot; Project Material</h3><p>Material budget, the still-to-buy list and cost-to-complete forecast. Change orders read in from the PM; the purchasing team updates the list.</p></a><div class="pj-tile soon"><div class="pj-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M6 7V5h12v2M8 11h8M8 15h5"/></svg></div><h3>Supplier orders &amp; deliveries</h3><p>Purchase orders, lead times and deliveries against the still-to-buy list. Coming next.</p></div></div>
+  <div class="card" id="pm-out-card" style="display:none;margin-top:20px"><h2 class="pm-secttl" style="margin-top:0">Outstanding long-lead items</h2><div id="pm-outstanding" class="pm-out"></div></div>
 
 
 <script>
@@ -1059,5 +1080,30 @@ window.PJX = (function(){
     }
   })();
 </script>
+<script>(function(){
+  var H=(window.PJ_HULL||'').toUpperCase(), carry=(window.PJ_CARRY||'');
+  function n(v){ var x=parseFloat(v); return isFinite(x)?x:0; }
+  function eur(v){ return (v<0?'\u2212':'')+'\u20ac'+Math.abs(Math.round(v)).toLocaleString('en-GB'); }
+  function esc(x){ return (x==null?'':String(x)).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+  var host=document.getElementById('pm-position'); if(!host) return;
+  var s=null; try{ s=JSON.parse(localStorage.getItem('pw_stb_'+H)); }catch(e){}
+  if(!s||!s.stb){ host.className=''; host.innerHTML='<div class="pm-empty">No material file for <b>'+(esc(H)||'this project')+'</b> yet. Open <a href="still-to-buy.html'+carry+'">Still to Buy</a> \u2014 it seeds and autosaves the material budget, still-to-buy list and forecast, and this page fills in.</div>'; return; }
+  var m=s.meta||{};
+  var budget=n(m.budgetStart)+n(m.ownersSupply)+n(m.changeOrders)+n(m.allowances)+n(m.internalCO);
+  var stb=0,areas=(s.stb||[]).length; (s.stb||[]).forEach(function(g){ (g.lines||[]).forEach(function(l){ if(l.active!==false) stb+=n(l.stb); }); });
+  var diff=budget-(n(m.actualMaterial)+stb);
+  var pr=s.topPriority||[], out=pr.filter(function(p){return (p.status||'')==='Outstanding';}), way=pr.filter(function(p){return (p.status||'')==='On the way';});
+  host.innerHTML=[
+    ['', eur(budget), 'Material budget', 'current, incl. CO'],
+    ['warn', eur(stb), 'Still to buy', areas+' areas'],
+    [diff>=0?'good':'bad', (diff>=0?'+':'')+eur(diff), 'Diff to budget', 'incl. still to buy'],
+    ['bad', String(out.length), 'Outstanding long-lead', 'not yet ordered']
+  ].map(function(k){ return '<div class="pm-stat '+k[0]+'"><div class="v">'+k[1]+'</div><div class="l">'+k[2]+'</div><div class="s">'+k[3]+'</div></div>'; }).join('');
+  var rows=out.concat(way), card=document.getElementById('pm-out-card');
+  if(rows.length && card){ card.style.display='';
+    document.getElementById('pm-outstanding').innerHTML='<table><thead><tr><th>Sub-ID</th><th>Item</th><th>Supplier</th><th>Status</th></tr></thead><tbody>'+
+      rows.map(function(p){ var b=(p.status==='Outstanding')?'out':'way'; return '<tr><td>'+esc(p.area)+'</td><td>'+esc(p.item)+'</td><td>'+esc(p.supplier||'')+'</td><td><span class="pm-badge '+b+'">'+esc(p.status)+'</span></td></tr>'; }).join('')+'</tbody></table>';
+  }
+})();</script>
 </body>
 </html>

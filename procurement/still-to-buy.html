@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-GB" dir="ltr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Quality & Sea Trials · Projects</title>
+<title>Still to Buy · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -812,150 +812,38 @@ table.rk td.r,table.rk th.r{text-align:right}
 })();
 </script>
 
-<script>
-window.PJX = (function(){
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-  function nowISO(){ try{ return new Date().toISOString(); }catch(e){ return ''; } }
-  function fmt(iso){ try{ var d=new Date(iso); return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
-  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  function curUser(){ try{ return localStorage.getItem('pw_user') || window.PW_USER_DEFAULT || 'You'; }catch(e){ return window.PW_USER_DEFAULT||'You'; } }
-  function setUser(u){ try{ localStorage.setItem('pw_user', u); }catch(e){} }
-  // simulated Teams/email notification toast (matches the Sales editor look)
-  var nEl;
-  function notify(html, kind){
-    if(!nEl){ nEl=document.createElement('div'); document.body.appendChild(nEl); }
-    nEl.className='sp-notify'+(kind?(' '+kind):'');
-    var ic = kind==='warn'
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>';
-    nEl.innerHTML=ic+'<span>'+html+'</span>'; nEl.classList.add('show');
-    clearTimeout(nEl._t); nEl._t=setTimeout(function(){ nEl.classList.remove('show'); }, 6500);
-  }
-  // identity switcher (shared pw_user) -> calls onChange(user)
-  function identityBar(host, onChange){
-    var all=[]; (window.PJ_PMS||[]).concat(window.PJ_ENG||[],window.PJ_FOREMEN||[]).forEach(function(n){ if(all.indexOf(n)<0)all.push(n); });
-    var wrap=document.createElement('span'); wrap.className='sp-userbar';
-    wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Viewing as</span>';
-    var sel=document.createElement('select'); sel.className='sp-user-sel';
-    if(all.indexOf(curUser())<0){ var x=document.createElement('option'); x.value=curUser(); x.textContent=curUser(); sel.appendChild(x); }
-    all.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; if(n===curUser())o.selected=true; sel.appendChild(o); });
-    sel.value=curUser();
-    sel.addEventListener('change', function(){ setUser(sel.value); if(onChange)onChange(sel.value); });
-    wrap.appendChild(sel); host.appendChild(wrap); return sel;
-  }
-  // snapshot + manual-update bar. keys() -> array of per-project storage keys.
-  function snapBar(host, hull, keysFn, versionFn){
-    var KEY='pw_snapshots_'+hull;
-    var bar=document.createElement('div'); bar.className='snap-bar';
-    function paint(){
-      var snaps=load(KEY,[]);
-      bar.innerHTML='<span class="snap-v">'+esc(versionFn?versionFn():'')+'</span>'+
-        '<span>Local working copy · '+snaps.length+' snapshot'+(snaps.length===1?'':'s')+'</span><span class="snap-sp"></span>'+
-        '<button type="button" class="snap-btn" data-a="snap"><svg viewBox="0 0 24 24"><path d="M5 7h3l1-2h6l1 2h3v12H5z"/><circle cx="12" cy="13" r="3"/></svg>Take snapshot</button>'+
-        '<button type="button" class="snap-btn" data-a="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Snapshots ('+snaps.length+')</button>'+
-        '<button type="button" class="snap-btn" data-a="upd"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Update now</button>';
-    }
-    paint();
-    bar.addEventListener('click', function(e){
-      var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
-      if(a==='snap'){
-        var lab=prompt('Snapshot label:', 'Snapshot '+today()); if(lab===null) return;
-        var data={}; keysFn().forEach(function(k){ var v=localStorage.getItem(k); if(v!=null) data[k]=v; });
-        var snaps=load(KEY,[]); snaps.unshift({ts:nowISO(), label:lab, by:curUser(), data:data, version:(versionFn?versionFn():'')});
-        save(KEY,snaps); paint(); notify('Snapshot <b>'+esc(lab)+'</b> saved ('+keysFn().length+' items).');
-      } else if(a==='upd'){
-        notify('Updated — reloaded the latest saved state.'); setTimeout(function(){ location.reload(); }, 500);
-      } else if(a==='list'){ openSnaps(); }
-    });
-    function openSnaps(){
-      var snaps=load(KEY,[]);
-      var ov=document.createElement('div'); ov.className='cmt-overlay';
-      var body = snaps.length ? snaps.map(function(s,i){
-        return '<div class="rev-row"><div class="rev-v">#'+(snaps.length-i)+'</div><div class="rev-main">'+
-          '<div class="rev-sum">'+esc(s.label)+'</div><div class="rev-meta">'+esc(fmt(s.ts))+' · by '+esc(s.by)+(s.version?(' · '+esc(s.version)):'')+
-          ' · <a href="#" data-restore="'+i+'">Restore</a> · <a href="#" data-del="'+i+'">Delete</a></div></div></div>';
-      }).join('') : '<div class="pj-empty">No snapshots yet. Take one to capture the current state.</div>';
-      ov.innerHTML='<div class="cmt-sheet"><div class="cmt-sheet-top"><h3>Snapshots — '+esc(hull)+'</h3>'+
-        '<span class="cmt-sheet-tools"><button type="button" class="primary" data-close>Close</button></span></div>'+
-        '<p class="cmt-sheet-sub">Point-in-time copies of this project’s working data (spec, comments, change orders, revisions, planning).</p>'+body+'</div>';
-      document.body.appendChild(ov);
-      ov.addEventListener('click', function(e){
-        if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
-        var r=e.target.closest('[data-restore]'); var d=e.target.closest('[data-del]');
-        if(r){ e.preventDefault(); var i=+r.getAttribute('data-restore'); var s=load(KEY,[])[i];
-          if(s && confirm('Restore snapshot “'+s.label+'”? This overwrites the current working copy.')){
-            Object.keys(s.data).forEach(function(k){ localStorage.setItem(k, s.data[k]); }); location.reload(); } }
-        if(d){ e.preventDefault(); var j=+d.getAttribute('data-del'); var arr=load(KEY,[]); arr.splice(j,1); save(KEY,arr); ov.remove(); paint(); openSnaps(); }
-      });
-    }
-    host.appendChild(bar); return bar;
-  }
-  // mini rich-text editor: returns {el, getHTML, setHTML}
-  function richEditor(initialHTML, readOnly){
-    var box=document.createElement('div'); box.className='co-rt';
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    var area=document.createElement('div'); area.className='co-rt-area'; area.setAttribute('contenteditable', readOnly?'false':'true');
-    area.innerHTML=initialHTML||'';
-    var cmds=[['B','bold','Bold'],['I','italic','Italic'],['U','underline','Underline'],['•','insertUnorderedList','Bulleted list'],['1.','insertOrderedList','Numbered list'],['↺','removeFormat','Clear formatting']];
-    cmds.forEach(function(c){ var b=document.createElement('button'); b.type='button'; b.textContent=c[0]; b.title=c[2];
-      if(c[0]==='I')b.style.fontStyle='italic'; if(c[0]==='U')b.style.textDecoration='underline';
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly)return; document.execCommand(c[1],false,null); area.focus(); }); bar.appendChild(b); });
-    if(readOnly){ bar.style.display='none'; }
-    box.appendChild(bar); box.appendChild(area);
-    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
-  }
-  // file chip as an HTML string — a clickable link (opens in a new tab) when the
-  // file carries data/url, else a plain badge.
-  function chipHTML(f){
-    var name=(f&&f.name)||'file';
-    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
-    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
-    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
-    var src=(f&&(f.data||f.url))||'';
-    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
-    return '<span class="dl-chip">'+ic+label+'</span>';
-  }
-  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
-  function _openData(href, name){
-    try{
-      var c=href.indexOf(","); if(c<0) return false;
-      var meta=href.substring(5,c), data=href.substring(c+1);
-      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
-      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
-      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
-      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
-      var w=window.open(url,"_blank");
-      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
-      return true;
-    }catch(e){ return false; }
-  }
-  try{ document.addEventListener("click", function(e){
-    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
-    if(!a) return; var href=a.getAttribute("href")||"";
-    if(href.indexOf("data:")!==0) return;
-    e.preventDefault();
-    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
-    _openData(href, nm);
-  }, false); }catch(e){}
-  return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
-})();
-</script>
-
 <main class="wrap">
-
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Quality & Sea Trials</div>
-    <h1>Quality & Sea Trials</h1>
-    <p>Inspections, NCRs, commissioning and sea trials.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Procurement</a> / Still to Buy</div>
+    <h1>Still to Buy</h1>
+    <p class="pc-lead">Project material forecast and the still-to-buy list. Change orders flow in <strong>read-only</strong>
+    from the PM&rsquo;s Change-orders page; the list is updated by the <strong>purchasing team</strong>.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg><strong>Quality & Sea Trials</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+  <nav class="pj-sub"><a href="index.html">Overview</a><a href="still-to-buy.html" class="on">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>
+  <div class="pc-host">
+    <div class="pc-bar"><h2 class="pc-h2" style="margin:0">Still to Buy <span class="pc-hint">project material · forecast</span></h2>
+      <button type="button" class="btn-row" id="pc-fs" style="margin-left:auto">&#9974; Full screen</button>
+      <a class="btn-row" id="pc-open" target="_blank" rel="noopener">Open in new tab &#8599;</a></div>
+    <iframe id="pc-frame" class="pc-frame" title="Still to Buy" src="about:blank"></iframe>
+    <div class="pc-note"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <span>Per-project material file (<code>pw_stb_&lt;hull&gt;</code>). Change orders read from <code>pw_cos_&lt;hull&gt;</code>.
+      Use <b>Full screen</b> for the widest view.</span></div>
+  </div>
+  <button type="button" class="btn-row pc-fsexit" id="pc-fsexit">&#9974; Exit full screen (Esc)</button>
+</main>
 
-
+<script>(function(){
+  var f=document.getElementById('pc-frame');
+  var hull=(window.PJ_HULL||'B121-01');
+  var src='still-to-buy-tool.html?p='+encodeURIComponent(hull);
+  if(f) f.src=src;
+  var op=document.getElementById('pc-open'); if(op) op.href=src;
+  var fsBtn=document.getElementById('pc-fs'), fsExit=document.getElementById('pc-fsexit');
+  function setFs(on){ if(!f)return; f.classList.toggle('fs',on); if(fsExit)fsExit.classList.toggle('show',on); }
+  if(fsBtn) fsBtn.addEventListener('click',function(){ setFs(!f.classList.contains('fs')); });
+  if(fsExit) fsExit.addEventListener('click',function(){ setFs(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') setFs(false); });
+})();</script>
 <script>
 /* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
    links, and reflects the project name in headers. */
@@ -983,81 +871,6 @@ window.PJX = (function(){
     if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
   }catch(e){}
 })();
-</script>
-</main>
-
-<footer>
-  <div class="wrap foot-inner">
-    <span>Baltic Yachts · Sales — Yacht Builder</span>
-    <span>Static design · Revision 1 · Internal review</span>
-  </div>
-</footer>
-<div id="toast" role="status" aria-live="polite"></div>
-<script>
-  (function () {
-    var toast = document.getElementById('toast');
-    if (!toast) return;
-    var timer;
-    function show(msg) {
-      toast.textContent = msg; toast.classList.add('show');
-      clearTimeout(timer); timer = setTimeout(function () { toast.classList.remove('show'); }, 2800);
-    }
-    window.__toast = show;
-    document.querySelectorAll('[data-action]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var p = window.__proj;
-        show((p ? '[' + p + '] ' : '') + '“' + btn.getAttribute('data-action') + '” will run here once connected.');
-      });
-    });
-
-    function _el(tag, cls, txt) { var e = document.createElement(tag); e.className = cls; e.textContent = txt; return e; }
-    document.querySelectorAll('.up-card').forEach(function (card) {
-      var input = card.querySelector('input[type=file]');
-      var addBtn = card.querySelector('.up-add');
-      var dz = card.querySelector('.dropzone');
-      var dzFile = card.querySelector('.dz-file');
-      var list = card.querySelector('.rev-list');
-      var badge = card.querySelector('.up-revbadge');
-      function pick() { if (input.files.length) { dzFile.textContent = input.files[0].name; addBtn.disabled = false; } }
-      input.addEventListener('change', pick);
-      ['dragover', 'dragenter'].forEach(function (e) { dz.addEventListener(e, function (ev) { ev.preventDefault(); dz.classList.add('drag'); }); });
-      ['dragleave', 'dragend'].forEach(function (e) { dz.addEventListener(e, function () { dz.classList.remove('drag'); }); });
-      dz.addEventListener('drop', function (ev) { ev.preventDefault(); dz.classList.remove('drag'); if (ev.dataTransfer.files.length) { input.files = ev.dataTransfer.files; pick(); } });
-      addBtn.addEventListener('click', function () {
-        if (!input.files.length) return;
-        var rev = (parseInt(card.getAttribute('data-rev'), 10) || 0) + 1;
-        card.setAttribute('data-rev', rev);
-        var fname = input.files[0].name;
-        var when = new Date().toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-        var empty = list.querySelector('.rev-empty'); if (empty) empty.remove();
-        var li = document.createElement('li'); li.className = 'rev-row';
-        li.appendChild(_el('span', 'rev-tag', 'Rev ' + rev));
-        li.appendChild(_el('span', 'rev-name', fname));
-        li.appendChild(_el('span', 'rev-when', when));
-        list.insertBefore(li, list.firstChild);
-        badge.textContent = 'Rev ' + rev + ' · latest'; badge.classList.add('has-rev');
-        input.value = ''; dzFile.textContent = ''; addBtn.disabled = true;
-      });
-    });
-
-    var _q = document.getElementById('sol-search');
-    if (_q) {
-      _q.addEventListener('input', function () {
-        var term = _q.value.trim().toLowerCase();
-        document.querySelectorAll('.sol-grid').forEach(function (grid) {
-          var vis = 0;
-          grid.querySelectorAll('.sol-card').forEach(function (c) {
-            var hit = !term || c.textContent.toLowerCase().indexOf(term) >= 0;
-            c.style.display = hit ? '' : 'none';
-            if (hit) vis++;
-          });
-          var head = grid.previousElementSibling;
-          if (head && (head.classList.contains('sol-group') || head.classList.contains('sol-h'))) head.style.display = vis ? '' : 'none';
-          grid.style.display = vis ? '' : 'none';
-        });
-      });
-    }
-  })();
 </script>
 </body>
 </html>
