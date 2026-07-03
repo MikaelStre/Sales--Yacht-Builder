@@ -746,7 +746,13 @@ a.dl-chip:hover{background:var(--brand-2);color:#fff}
 .pc-bar label{font:600 12px/1 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .pc-bar select{font:500 13.5px/1.3 var(--sans);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:280px}
 .pc-hint{font:500 12.5px/1.5 var(--sans);color:var(--muted)}
-.pc-frame{width:100%;height:82vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
+.pc-frame{width:100%;height:86vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
+/* full-bleed: break out of the ~1120px content column so the tool gets the whole width */
+.pc-host{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;box-sizing:border-box;padding:0 clamp(12px,3vw,40px)}
+/* full screen: the iframe fills the whole window */
+.pc-frame.fs{position:fixed;inset:0;width:100vw;height:100vh;min-height:0;z-index:9999;border:0;border-radius:0}
+.pc-fsexit{position:fixed;top:12px;right:16px;z-index:10000;display:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.pc-fsexit.show{display:inline-flex}
 .pc-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:flex-start}
 .pc-note svg{width:16px;height:16px;stroke:var(--brand-2);fill:none;stroke-width:1.7;flex:0 0 auto;margin-top:1px}
 .rk-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0}
@@ -784,16 +790,18 @@ table.rk td.r,table.rk th.r{text-align:right}
     <h1>Price calculation</h1>
     <p class="pc-lead">Per-project costing &amp; pricing. Import the base project post-calc, apply the size factor, gross tonnage and inflation, set rates &amp; provisions, then review the business approval. Each project keeps its own file; once the project is <strong>realized</strong> the calculation is locked as-sold and a read-only copy flows to the Projects area.</p>
   </div>
-  <div class="card">
+  <div class="pc-host">
     <div class="pc-bar">
       <label for="pc-pick">Project</label>
       <select id="pc-pick"></select>
       <span class="pc-hint" id="pc-hint"></span>
-      <a class="btn-row" id="pc-open" target="_blank" rel="noopener" style="margin-left:auto">Open full screen &#8599;</a>
+      <button type="button" class="btn-row" id="pc-fs" style="margin-left:auto">&#9974; Full screen</button>
+      <a class="btn-row" id="pc-open" target="_blank" rel="noopener">Open in new tab &#8599;</a>
     </div>
     <iframe id="pc-frame" class="pc-frame" title="Price calculation" src="about:blank"></iframe>
-    <div class="pc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Saved in this browser as the project&rsquo;s pricing file (<code>pw_price_&lt;hull&gt;</code>). Realize the project from Ongoing/Resting to freeze it.</span></div>
+    <div class="pc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Saved in this browser as the project&rsquo;s pricing file (<code>pw_price_&lt;hull&gt;</code>). Use <b>Full screen</b> for the widest view, or realize the project from Ongoing/Resting to freeze it.</span></div>
   </div>
+  <button type="button" class="btn-row pc-fsexit" id="pc-fsexit">&#9974; Exit full screen (Esc)</button>
 <script>
 (function(){
   var SEED=[{"hull": "B107C", "name": "B107C", "type": "Sail", "owner": "MS", "stage": "Specification · Rev C (draft)", "status": "ongoing", "updated": "2026-06-20", "paused": "", "last": ""}, {"hull": "B123-45", "name": "Blue Horizon", "type": "Sail", "owner": "KK", "stage": "Pricing calculation", "status": "ongoing", "updated": "2026-06-18", "paused": "", "last": ""}, {"hull": "B156-02", "name": "Aurora", "type": "Power", "owner": "SH", "stage": "Initial 10-pager", "status": "ongoing", "updated": "2026-06-12", "paused": "", "last": ""}, {"hull": "B098-11", "name": "Norderö", "type": "Sail", "owner": "AB", "stage": "Specification · Rev B (released)", "status": "resting", "updated": "2026-04-08", "paused": "2026-04-10", "last": "2026-04-08"}, {"hull": "B142-03", "name": "Silver Lining", "type": "Catamaran", "owner": "PH", "stage": "Pricing calculation", "status": "resting", "updated": "2026-04-28", "paused": "2026-05-02", "last": "2026-04-28"}];
@@ -811,6 +819,11 @@ table.rk td.r,table.rk th.r{text-align:right}
     var rz=moves[h]&&moves[h].to==="realized"; hint.textContent = rz ? "Realized \u2014 locked (as sold)." : "Editable working calculation."; }
   sel.addEventListener("change", function(){ apply(sel.value); var u=new URL(location); u.searchParams.set("p",sel.value); history.replaceState(null,"",u); });
   apply(cur);
+  var exitBtn=document.getElementById("pc-fsexit"), fsBtn=document.getElementById("pc-fs");
+  function setFS(on){ frame.classList.toggle("fs",on); exitBtn.classList.toggle("show",on); document.body.style.overflow=on?"hidden":""; }
+  fsBtn.addEventListener("click", function(){ setFS(true); });
+  exitBtn.addEventListener("click", function(){ setFS(false); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") setFS(false); });
 })();
 </script>
 </main>
