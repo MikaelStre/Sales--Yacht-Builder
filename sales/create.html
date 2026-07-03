@@ -784,8 +784,14 @@
       try {
         var list = JSON.parse(localStorage.getItem('pw_created')) || [];
         if (!list.some(function(c){ return (c.hull||'').toUpperCase() === no.toUpperCase(); })) {
-          list.push({hull:no, name:nm||'New project', type:$('f-type').value, owner:'—',
-                     stage:'New — details entered', status:'ongoing',
+          function gv(id){ var e=$(id); return e?e.value:''; }
+          var pinfo={hull:no, name:nm||'New project', type:$('f-type').value, client:gv('f-client'),
+                     model:gv('f-model'), loa:gv('f-loa'), designer:gv('f-designer'),
+                     leadEng:gv('f-lead'), pm:gv('f-pm')};
+          try{ localStorage.setItem('pw_projinfo_'+no.toUpperCase(), JSON.stringify(pinfo)); }catch(e){}
+          list.push({hull:no, name:pinfo.name, type:pinfo.type, owner:pinfo.pm||'—',
+                     client:pinfo.client, model:pinfo.model, designer:pinfo.designer,
+                     leadEng:pinfo.leadEng, pm:pinfo.pm, stage:'New — details entered', status:'ongoing',
                      updated:new Date().toISOString().slice(0,10), paused:'', last:''});
           localStorage.setItem('pw_created', JSON.stringify(list));
         }

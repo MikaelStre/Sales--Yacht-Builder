@@ -953,8 +953,19 @@ window.PJX = (function(){
     <div class="pc-note"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Frozen copy from Sales (<code>pw_pprice_&lt;hull&gt;</code>). To change pricing, a new revision is issued on the Sales side.</span></div>
   </div>
   <div class="card">
-    <h2 class="pc-h2">Risk register <span class="pc-hint">live · mirrors to management follow-up</span></h2>
-    <div id="rk-idbar" class="pj-idbar"></div>
+    <h2 class="pc-h2">Who are you <span class="pc-hint">actions below are identity-gated</span></h2>
+    <div id="pj-idbar"></div>
+  </div>
+  <div class="card">
+    <h2 class="pc-h2">Project manager <span class="pc-hint">reassignable by the Head of Projects</span></h2>
+    <div id="pm-reassign"></div>
+  </div>
+  <div class="card">
+    <h2 class="pc-h2">Engineering risks — shared <span class="pc-hint">from Engineering; the PM adds them to the register</span></h2>
+    <div id="engrisk-host"></div>
+  </div>
+  <div class="card">
+    <h2 class="pc-h2">Project risk register <span class="pc-hint">live · mirrors to management follow-up</span></h2>
     <div id="rk-role" class="rk-role view"></div>
     <div id="rk-host"></div>
   </div>
@@ -962,62 +973,89 @@ window.PJX = (function(){
 
 <script>
 (function(){
-  var X=window.PJX, H=(window.PJ_HULL||'B107C');
-  var proj=window.PJ_PROJ||{}; var PM=proj.pm||'';
-  var KEY='pw_proj_risks_'+H;
-  var host=document.getElementById('rk-host'); if(!host||!X) return;
-  var roleEl=document.getElementById('rk-role');
-  function canEdit(){ return X.curUser()===PM; }
-  function load(){ return X.load(KEY, []) || []; }
-  function saveAll(a){ X.save(KEY, a); }
-  function band(n){ return n<=5?'rk-lo':n<=10?'rk-md':'rk-hi'; }
+  var X=window.PJX, H=(window.PJ_HULL||'B107C'); if(!X) return;
+  var HEAD='Patric Brännbacka', CEO='Tom von Bonsdorff', PMS=window.PJ_PMS||[];
+  var KEY='pw_proj_risks_'+H, EKEY='pw_eng_risks_'+H;
   function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
+  function band(n){ return n<=5?'rk-lo':n<=10?'rk-md':'rk-hi'; }
+  function pinfo(){ return X.load('pw_projinfo_'+H,{})||{}; }
+  function PM(){ var pi=pinfo(); return pi.pm||(window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
+  function isPM(){ return X.curUser()===PM(); }
+  function loadR(){ return X.load(KEY,[])||[]; }  function saveR(a){ X.save(KEY,a); }
+
+  // ---- PM reassignment (Head of Projects / CEO) ----
+  function renderPM(){
+    var host=document.getElementById('pm-reassign'); if(!host) return;
+    var me=X.curUser(), gov=(me===HEAD||me===CEO);
+    if(gov){
+      host.innerHTML='Reassign PM: <select id="pmsel2" class="rk-sel">'+PMS.map(function(x){return '<option'+(x===PM()?' selected':'')+'>'+X.esc(x)+'</option>';}).join('')+
+        '</select> <button class="btn-row" id="pmapply2">Apply</button> <span class="pc-hint">acting as '+X.esc(me)+'</span>';
+      document.getElementById('pmapply2').addEventListener('click', function(){ var v=document.getElementById('pmsel2').value; var pi=pinfo(); pi.pm=v; X.save('pw_projinfo_'+H,pi); X.notify('PM reassigned to <b>'+X.esc(v)+'</b>.'); renderAll(); });
+    } else {
+      host.innerHTML='PM: <b>'+X.esc(PM()||'—')+'</b> <span class="pc-hint">— assigned at creation; only the Head of Projects (<b>'+X.esc(HEAD)+'</b>) or the CEO ('+X.esc(CEO)+') may reassign. Switch identity above.</span>';
+    }
+  }
+
+  // ---- shared engineering risks -> add to project register (PM only) ----
+  function renderIntake(){
+    var host=document.getElementById('engrisk-host'); if(!host) return;
+    var shared=(X.load(EKEY,[])||[]).filter(function(r){ return r.shared && !r.added; });
+    var ed=isPM();
+    if(!shared.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks shared for '+X.esc(H)+' yet. Engineering shares them from <b>Engineering Projects → Risks</b>.</div>'; return; }
+    host.innerHTML='<div class="rk-wrap"><table class="rk"><thead><tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P×C</th><th>From</th><th></th></tr></thead><tbody>'+
+      shared.map(function(r,i){ var n=num(r.p0)*num(r.c0);
+        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td class="r"><span class="rk-score '+band(n)+'">'+n+'</span></td><td>'+X.esc(r.by||'Engineering')+'</td>'+
+        '<td>'+(ed?'<button class="btn-row" data-add="'+X.esc(r.id||('e'+i))+'">Add to register</button>':'<span class="pc-hint">PM adds</span>')+'</td></tr>';
+      }).join('')+'</tbody></table></div>'+(ed?'':'<div class="rk-role view" style="margin-top:8px">Only the project PM (<b>'+X.esc(PM()||'—')+'</b>) can add shared risks.</div>');
+    if(ed) host.querySelectorAll('[data-add]').forEach(function(b){ b.addEventListener('click', function(){
+      var id=b.dataset.add; var es=X.load(EKEY,[])||[]; var src=es.filter(function(r){return (r.id||'')===id;})[0]; if(!src) return;
+      var a=loadR(); a.push({risk:src.risk,desc:src.desc||'',p0:src.p0,c0:src.c0,action:src.action||'',resp:src.resp||'Engineering',date:X.today(),p1:src.p1||src.p0,c1:src.c1||src.c0,status:'Started',fromEng:true});
+      saveR(a); for(var i=0;i<es.length;i++){ if((es[i].id||'')===id) es[i].added=true; } X.save(EKEY,es);
+      X.notify('Added <b>'+X.esc(src.risk||'risk')+'</b> to the project risk register.'); renderAll();
+    }); });
+  }
+
+  // ---- editable project risk register (PM) / read-only (others) ----
   function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="rk-sel" data-ri="'+i+'" data-rf="'+f+'">'+o+'</select>'; }
   function statusSel(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="rk-sel" data-ri="'+i+'" data-rf="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
-  function render(){
-    var ed=canEdit(); var a=load();
-    if(roleEl){ roleEl.className='rk-role '+(ed?'edit':'view'); roleEl.innerHTML = ed
-      ? 'You are the project PM (<b>'+X.esc(PM)+'</b>) — the risk register is editable and mirrors to the management follow-up.'
-      : 'Read-only — only the project PM (<b>'+X.esc(PM||'—')+'</b>) may edit. Switch identity via the bar above.'; }
-    if(!a.length){ host.innerHTML='<div class="rk-wrap" style="padding:14px;color:var(--muted)">No risks yet. '+(ed?'Add the first risk below.':'The register is seeded from the price calculation when the project is realized.')+'</div>'+(ed?addBtn():''); wire(); return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0), n1=num(r.p1)*num(r.c1);
+  function renderRisk(){
+    var host=document.getElementById('rk-host'), roleEl=document.getElementById('rk-role'); if(!host) return;
+    var ed=isPM(), a=loadR();
+    if(roleEl){ roleEl.className='rk-role '+(ed?'edit':'view'); roleEl.innerHTML=ed
+      ? 'You are the project PM (<b>'+X.esc(PM())+'</b>) — editable; mirrors to the management follow-up.'
+      : 'Read-only — only the project PM (<b>'+X.esc(PM()||'—')+'</b>) may edit. Switch identity above.'; }
+    if(!a.length){ host.innerHTML='<div class="rk-wrap" style="padding:14px;color:var(--muted)">No risks yet. '+(ed?'Add one below, or add a shared engineering risk above.':'Seeded from the price calculation when the project is realized.')+'</div>'+(ed?addBtn():''); wire(ed); return; }
+    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0), n1=num(r.p1)*num(r.c1); var tag=r.fromEng?' <span class="pc-hint">(eng)</span>':'';
       if(ed){ return '<tr>'+
-        '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="risk">'+X.esc(r.risk||'')+'</textarea></td>'+
+        '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="risk">'+X.esc(r.risk||'')+'</textarea>'+tag+'</td>'+
         '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="desc">'+X.esc(r.desc||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td>'+
-        '<td class="r"><span class="rk-score '+band(n0)+'">'+n0+'</span></td>'+
+        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="rk-score '+band(n0)+'">'+n0+'</span></td>'+
         '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="action">'+X.esc(r.action||'')+'</textarea></td>'+
         '<td><input class="rk-txt" style="min-height:auto" data-ri="'+i+'" data-rf="resp" value="'+X.esc(r.resp||'')+'"></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td>'+
-        '<td class="r"><span class="rk-score '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+statusSel(i,r.status)+'</td>'+
-        '<td><button class="btn-row" data-del="'+i+'" title="remove">✕</button></td></tr>';
+        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="rk-score '+band(n1)+'">'+n1+'</span></td>'+
+        '<td>'+statusSel(i,r.status)+'</td><td><button class="btn-row" data-del="'+i+'">✕</button></td></tr>';
       }
-      return '<tr class="rk-ro">'+
-        '<td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.desc||'')+'</td>'+
+      return '<tr class="rk-ro"><td>'+X.esc(r.risk||'')+tag+'</td><td>'+X.esc(r.desc||'')+'</td>'+
         '<td class="r">'+num(r.p0)+'</td><td class="r">'+num(r.c0)+'</td><td class="r"><span class="rk-score '+band(n0)+'">'+n0+'</span></td>'+
         '<td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
         '<td class="r">'+num(r.p1)+'</td><td class="r">'+num(r.c1)+'</td><td class="r"><span class="rk-score '+band(n1)+'">'+n1+'</span></td>'+
         '<td>'+X.esc(r.status||'')+'</td><td></td></tr>';
     }).join('');
-    host.innerHTML='<div class="rk-wrap"><table class="rk"><thead><tr>'+
-      '<th>Identified risk</th><th>Description</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th>'+
-      '<th>Mitigating action</th><th>Resp.</th><th class="r">P′</th><th class="r">C′</th><th class="r">Residual</th><th>Status</th><th></th>'+
-      '</tr></thead><tbody>'+rows+'</tbody></table></div>'+
-      '<div class="rk-legend"><span>Scales <b>1–5</b>.</span><span><span class="rk-score rk-lo">0–5</span> no action</span>'+
-      '<span><span class="rk-score rk-md">6–10</span> investigate</span><span><span class="rk-score rk-hi">11–25</span> rectify</span></div>'+
-      (ed?addBtn():'');
-    wire();
+    host.innerHTML='<div class="rk-wrap"><table class="rk"><thead><tr><th>Identified risk</th><th>Description</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">P′</th><th class="r">C′</th><th class="r">Residual</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+      '<div class="rk-legend"><span>Scales <b>1–5</b>.</span><span><span class="rk-score rk-lo">0–5</span> no action</span><span><span class="rk-score rk-md">6–10</span> investigate</span><span><span class="rk-score rk-hi">11–25</span> rectify</span></div>'+(ed?addBtn():'');
+    wire(ed);
   }
   function addBtn(){ return '<button type="button" class="rk-add" id="rk-add">+ Add risk</button>'; }
-  function wire(){
-    if(!canEdit()) return;
-    host.querySelectorAll('[data-ri]').forEach(function(el){ el.addEventListener('input', function(){ var a=load(); a[+el.dataset.ri][el.dataset.rf]=el.value; saveAll(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.rf)>=0) render(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=load(); a.splice(+b.dataset.del,1); saveAll(a); render(); }); });
-    var add=document.getElementById('rk-add'); if(add) add.addEventListener('click', function(){ var a=load(); a.push({risk:'',desc:'',p0:3,c0:3,action:'',resp:'',date:'',p1:2,c1:2,status:'Not started'}); saveAll(a); render(); });
+  function wire(ed){ if(!ed) return;
+    var host=document.getElementById('rk-host');
+    host.querySelectorAll('[data-ri]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadR(); a[+el.dataset.ri][el.dataset.rf]=el.value; saveR(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.rf)>=0) renderRisk(); }); });
+    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadR(); a.splice(+b.dataset.del,1); saveR(a); renderRisk(); }); });
+    var add=document.getElementById('rk-add'); if(add) add.addEventListener('click', function(){ var a=loadR(); a.push({risk:'',desc:'',p0:3,c0:3,action:'',resp:'',date:'',p1:2,c1:2,status:'Not started'}); saveR(a); renderRisk(); });
   }
-  if(X.identityBar){ X.identityBar(document.getElementById('rk-idbar'), function(){ render(); }); }
-  render();
+
+  function renderAll(){ renderPM(); renderIntake(); renderRisk(); }
+  if(X.identityBar) X.identityBar(document.getElementById('pj-idbar'), function(){ renderAll(); });
+  renderAll();
 })();
 </script>
 
