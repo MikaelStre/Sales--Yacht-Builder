@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Handover & Delivery · Projects</title>
+<title>Change Orders · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -949,12 +949,27 @@ window.PJX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Handover & Delivery</div>
-    <h1>Handover & Delivery</h1>
-    <p>Delivery checklist, owner handover and final documentation.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Change orders</div>
+    <h1>Change orders</h1>
+    <p>Change orders for <span class="pj-proj-ref"></span>. A CO is linked to a spec <strong>area &middot; section &middot; row</strong>. The <strong>PM initiates</strong>; engineers and production foremen are involved. Moving a CO to <strong>Suggestive</strong> notifies the concerned engineering resource; <strong>Approved</strong> flows back to the spec and raises its version.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg><strong>Handover & Delivery</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html" class="on">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div id="pj-snap"></div>
+  <div class="role-bar" id="co-role"></div>
+  <div style="margin:2px 0 14px"><button type="button" class="co-new" id="co-new"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>New change order</button></div>
+  <div class="co-list" id="co-list"></div>
 
+
+<script>
+(function(){
+  var host=document.getElementById('pj-snap'); if(!host||!window.PJX) return;
+  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
+  function keys(){ return ['pw_pspec_'+H,'pw_pcomments_'+H,'pw_pcover_'+H,'pw_cos_'+H,'pw_revisions_'+H,
+    'pw_planning_'+H,'pw_memos_'+H,'pw_specflags_'+H,'pw_assold_'+H]; }
+  function version(){ var r=[]; try{ r=JSON.parse(localStorage.getItem('pw_revisions_'+H))||[]; }catch(e){}
+    return r.length ? ('Spec '+(r[0].version||'v1.0')) : 'Spec v1.0 (as sold)'; }
+  window.PJX.snapBar(host, H, keys, version);
+})();
+</script>
 
 <script>
 /* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
@@ -985,6 +1000,246 @@ window.PJX = (function(){
 })();
 </script>
 </main>
+<script>window.PJ_AREAS=[{"code": "GP", "title": "General Particulars", "sections": [{"name": "Principal dimensions", "rows": ["L.O.A.", "D.W.L.", "Beam", "Draft", "Displacement (light)", "I / I’ / I’’", "J / J / J code", "P", "E"]}, {"name": "Construction", "rows": ["Hull", "Keel", "Deck", "Interior"]}, {"name": "Equipment", "rows": ["Winches", "Anchoring system", "Fuel tanks", "Fresh water", "Holding tank", "Watermaker", "Heating / AC", "Main engine", "Generators", "Propeller", "Bow &amp; stern thruster", "Mast &amp; rigging", "Batteries", "AC system", "Electronics"]}, {"name": "Design", "rows": ["Naval architect", "Exterior &amp; interior design", "Project management", "Classification", "Flag state", "Cabins", "Delivery"]}]}, {"code": "00", "title": "General Conditions", "sections": [{"name": "Specification", "rows": ["The purpose of the Technical Specification is to define the …", "The Technical Specification will be accompanied by the Gener…", "The intent is to produce a lightweight, comfortable, perform…", "In case of either gaps, or conflict, between the drawings an…", "Work shown in the drawings and not in the specs, or vice ver…", "The Builder undertakes to ensure that the boat is built in a…"]}, {"name": "Articles supplied by shipyard and owner", "rows": ["The yard to receive and take responsibility for all articles…"]}, {"name": "Access", "rows": ["The owner, the naval architect, his representatives and or a…"]}, {"name": "Materials and workmanship", "rows": ["All materials and manufactured articles furnished by the yar…", "If the yard proposes an equivalent substitution that differs…", "The Builder shall use skilled workmanship, in keeping with t…", "Materials and workmanship can be regularly inspected by the …", "Particular care is to be taken to avoid bimetallic corrosion…", "All materials to be in accordance with class regulations."]}, {"name": "Insurance", "rows": ["See Yacht Construction Agreement."]}, {"name": "Warranty", "rows": ["See Yacht Construction Agreement."]}, {"name": "Drawings and Definitions", "rows": ["All drawings, specification and further information supplied…", "The drawings will be interpreted and completed with referenc…", "All the drawings will be drawn to scale but not all will con…", "The Builder will correct any defects or errors, which may oc…", "The Builder shall follow all details and dimensions shown on…", "The Builder is to review all plans, drawings, subcontractor …", "The Builder’s drawings", "The Builder is responsible for making and submitting all oth…"]}, {"name": "Classification and Compliance", "rows": ["The Yacht will be constructed in accordance with the class r…", "Certification of Class, Hull and Machinery DNV GL.", "Mast and rig class certification. To be decided if any."]}, {"name": "Flag state requirements", "rows": ["The flag state will be Malta.", "A change of flag state during the build may cause additional…"]}, {"name": "Weight control", "rows": ["The builder shall supply a detailed weight study which also …"]}, {"name": "Commissioning and Testing", "rows": ["The builder has developed an extensive commissioning process…", "The builders project team hands over the testing of the boat…", "All commissioning and test protocols to be accepted by the c…", "Following Hand over documents are prepared.", "Owner’s manual", "Warranty cards", "Warranty registration cards", "Warranty certificate"]}, {"name": "Delivery of yacht", "rows": ["If on delivery of the yacht to the owner any item of work sh…", "At delivery of the yacht Baltic Yachts will provide two pers…"]}]}, {"code": "10", "title": "Hull", "sections": [{"name": "General Concept", "rows": ["Hull lines will be in accordance with Naval Architect design…", "Details of engineering and construction according to the Str…", "The hulls and wetdeck (bridge between the hulls) will be bui…", "Hulls and wetdeck are built in advanced composite sandwich c…", "Inner skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "Core: Corecell core bonded under vacuum to obtain best bondi…", "Outer skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "For the lamination, an oven will be assembled around the mou…"]}, {"name": "101  Hull structures", "rows": ["The hull shell will be supported by transverse and longitudi…", "The high-stress areas, such as the ones surrounding the pivo…", "Hull internal structures and bulkheads will be provided with…", "Structural engineering to be done by Rivoyre Ingenierie.", "Hull will be NDT checked and report to be shared with owner’…", "Structural bulkheads", "All bulkheads have a sandwich construction with skins made o…", "The bulkheads are manufactured on a vacuum table, to be flat…"]}, {"name": "102  Hull finish and fairing", "rows": ["General", "The complete paint system shall be Awlcraft as per yards’ st…", "A complete kit for touch up or small repairs to be supplied …", "The colours will be following the preliminary OWNER’s wishes…", "Metallic Flag Blue colour for the topsides,", "White or Oyster White for the deck and superstructure and fl…", "Black for the under-waterline paint", "Hull sides, transom and superstructure"]}, {"name": "103  Transom, swim and boarding platform", "rows": ["Transom", "Two transom doors shall be included and serve as access door…", "Transom swim platform", "A hydraulic tender lifting platform from TENDERLIFT will be …", "In lowered position, the platform must be deeply submerged t…", "The platform can also be lowered at the same level as the tr…", "The hull shapes will not be symmetrical to their respective …", "Platform to serve as swim platform when open, teak covered a…"]}, {"name": "105  Anchoring system", "rows": ["The ground tackle is to meet class rules. The builder is to …", "The anchor and chain handling systems are to be installed in…", "A mock-up in plywood will be made of the anchor handling arr…", "Windlass", "One Maxwell 8000 VWCLP hydraulically driven windlass to be i…", "The windlass motor shall be dual speed controlled. A chain c…", "Brakes and clutches for manual release shall be fitted to th…", "Anchor"]}, {"name": "106  Hull fittings and hardware", "rows": ["Hull windows", "All hull windows are to be installed according to class rule…", "Bow and stern thruster and Installation.", "Bow thruster foundation to be made according to the specific…", "Thrusters shall be controlled at both helm stations by a sma…", "Bow thruster", "OMS hydraulic swing thruster H-0300-S.", "Stern thruster"]}, {"name": "150  Pivoting daggerboard and skeg system", "rows": ["The boat is fitted with 2 fixed skegs and pivoting daggerboa…", "The daggerboard is a composite structure made of carbon lami…", "The skeg is incorporated to the hulls and will house the piv…", "Skegs:", "Lateral area: 1.7 m2 each", "Span: 0.4 m", "Carbon pivoting boards:", "Lateral area: 5.0 m2 each"]}]}, {"code": "20", "title": "Deck", "sections": [{"name": "General concept", "rows": ["The deck will have a superstructure including a flybridge.", "The deck will incorporate a toe rail in composite, details s…", "The flybridge will have twin helm stations one (1) port side…", "The area forward incorporates a comfortable relaxing cockpit…", "The main tender is stored on a tenderlift most aft. The crew…"]}, {"name": "201  Deck structure", "rows": ["General", "Deck is built in female moulds which are strong and airtight…", "The deck will be built using composite construction with epo…", "For the lamination, an oven will be assembled around the mou…", "The deck shell will be supported by transversal and longitud…"]}, {"name": "202  Finish", "rows": ["See hull finish 102"]}, {"name": "204  Decking", "rows": ["Standard deck", "Teak will be of the best available quality, quarter sawn Ind…", "A teak deck will be provided for the side decks and cockpits…", "Margin planks around hatches and fittings;", "1. 35 – 50 mm margin plank around hatch cut out. Corners to …", "Detail 1. 35mm margin plank w/ caulking", "In the corners", "15367073025"]}, {"name": "210  Deck fittings and hardware", "rows": ["General", "All deck equipment will be installed by means of through bol…", "When non-ferrous metal is used, titanium should be preferred…", "Deck fillers", "Deck fillers, one each filling point for fresh water and one…", "Pulpit, pushpit and stanchions", "Pulpit, pushpit and stanchions will be built according to de…", "Pulpit, pushpit and stanchions will be made from carbon usin…"]}, {"name": "211  Deck sail handling gear", "rows": ["General", "The sail handling gear will be supplied by Harken or equival…", "The maximum working load for standing and running rigging is…", "All hydraulic cylinders to be in anodized aluminum body and …", "Bobstay", "N/A", "Main sail system", "Main sheet xx kg"]}]}, {"code": "30", "title": "Interior", "sections": [{"name": "General", "rows": ["General", "The interior styling is done by Jamie Bush and the following…", "240425_ZETEO_DESIGN DEVELOPMENT PRESENTATION compressed-Mock…", "240531_APPLIANCES SCHEDULE", "240531_PLUMBING SCHEDULE", "240531_WOOD SCHEDULE", "BALTIC PERFORMANCE LIGHT (BENCHMARK LIARA AND HER DUAL ROLES…", "GENERAL The BALTIC PERFORMANCE LIGHT class uses specialist t…"]}, {"name": "301  Cabins, heads and showers", "rows": ["Bulkheads", "Advanced lightweight construction techniques are used in the…", "Main bulkheads are made on a vacuum table and the core is ma…", "BHDs will be built in by additional interior panels. Painted…", "Interior walls build-up specified in Noise and vibration stu…", "Floors", "Cabin soles throughout the entire Yacht will be a composite/…", "Main Deck: -Teak."]}]}, {"code": "40", "title": "Engine", "sections": [{"name": "401  Engine room", "rows": ["General", "The engine rooms are internally insulated for both fire safe…", "Access to the engine rooms will be through watertight deck h…", "The walls and ceilings of the engine room will be clad with …", "The engine room insulation will consist of two layers of hig…", "The engine room floor will be made of GRP or Aluminum plates…", "If space permits A workbench with a vice will be installed i…", "Pipes in the engine room, machinery spaces, and other areas …"]}, {"name": "402  Engine and propulsion system", "rows": ["Main engines", "There will be similar setups on each side. The propulsion sy…", "The electrical propulsion engine is a Danfoss Editron EM-PMI…", "Propeller &amp; Shaft setup", "Brunton's Varifold 4-bladed folding propeller to be provided…", "2 Stainless Steel 1.4460 Propeller shaft (front-side propell…", "2 stern tubes, length and diameter to be defined, flange on …", "2 Stand-by Seal, inflatable, for shaft with Stainless Steel …"]}, {"name": "403  Diesel Generator", "rows": ["General", "Monitoring and controlling the generators is done from the v…", "The diesel generators will have an HMI page that tracks vari…", "Oil pressure", "Oil temperature", "Wet exhaust temperature", "Dry exhaust temperatures", "High-level water sensor for silencer"]}, {"name": "404  Fuel and oil system", "rows": ["Schematic drawing: 1221-404001(P1) Fuel system.", "General", "The fuel system is to comply with class requirements. All va…", "The fuel system serves the two generators onboard and the di…", "Fuel polishing", "Two fuel polishing systems are installed, one per side, mode…", "Fuel tanks", "The fuel tanks are made in stainless steel. There are four 1…"]}, {"name": "405  Exhaust system", "rows": ["Schematic drawing: 1221-405001(P1) Exhaust System.", "The generators have exhaust systems where exhaust gases are …", "The exhaust equipment, piping, lift silencer and water separ…"]}, {"name": "406  Engine room ventilation system", "rows": ["Schematic drawing: 1221-406001(P1) Engine room ventilation.", "Engine room ventilation is based on the requirements of the …", "The requirements of the installed equipment are manufacturer…", "Control of engine room ventilation", "The system is based on temperature control; this will try to…", "Engine room ventilation system Main components", "A60 Fire dampers installed in Engine room", "Engine room air inlet via water trap"]}]}, {"code": "50", "title": "Plumbing", "sections": [{"name": "General", "rows": ["All piping systems are designed and optimized for their purp…", "For freshwater, wastewater +GF+ ABS plastic piping and Hep2O…", "501 Fresh water system"]}, {"name": "General", "rows": ["Schematic drawing: 1221-501001(P2) Fresh water system.", "The freshwater system is optimized for the yacht considering…", "The supply of pressurized water is achieved by two pressure …", "Shore water supply is connected in the lazarette via a filte…", "The freshwater system will supply water to the following are…"]}, {"name": "Fresh water tanks", "rows": ["Two 2000 litre HDPE freshwater tanks are installed, one in e…"]}, {"name": "Hot water boilers", "rows": ["One 200L hot water boiler per hull with electric heating ele…", "Main components of the Fresh water system:", "Component", "Pcs", "Type", "Fresh water tanks", "2", "4000 liters (divided into port &amp; Stb) *"]}, {"name": "502  Waste water system", "rows": ["General", "Schematic drawing: 1221-502001(P1) Waste water system.", "All grey water collected from showers, wash basins and galle…", "Tanks", "The waste tanks are made of HDPE plastic. There is one holdi…", "All tanks are equipped with service valves and service hatch…", "Waste system main components", "Component"]}]}, {"code": "60", "title": "Electrical", "sections": [{"name": "General", "rows": ["General", "This specification outlines the installation of a hybrid pro…", "The power sources for this system include shore power and ge…", "Given that the HVDC battery bank continuously provides power…"]}, {"name": "One line diagram", "rows": ["The electrical system is divided into two sides for redundan…"]}, {"name": "Cables and Supports", "rows": ["All wiring will be installed within conduits or stainless-st…", "The Builder will ensure the use of lightweight marine-grade …", "Cables passing through structures and exposed to potential m…"]}, {"name": "Switchgear and Panels", "rows": ["General", "All switchboards and distribution boards shall be housed in …", "Switchboards with removable fuses shall be equipped with a f…"]}, {"name": "Grounding system and Corrosion prevention", "rows": ["A lightning conductor is installed in the mast, with an elec…", "Corrosion prevention anodes will be recessed in the hull, an…"]}, {"name": "601  AC system", "rows": ["General", "The two three-phase main inverters are supplying 230/400VAC …", "The types of consumers on the AC bus include:", "• Galley equipment", "• Water heater", "• Water maker", "• Air conditioning compressors", "• Battery chargers for 24V systems"]}, {"name": "602  DC systems", "rows": ["All critical data from DC systems will be monitored through …", "All DC equipment will be isolated from the hull.", "In addition to the electronic cathodic protection system, th…", "HVDC battery system", "The high voltage battery bank shall consist of 2 (two) separ…", "Aiming for a minimum of 8 hours silent night period in accor…", "HVDC system main components:", "2x Permanent magnet generators."]}, {"name": "603  Control and Monitoring system", "rows": ["The monitoring and control system utilizes a decentralized I…", "HMI is based in a webserver, any device or computer connecte…", "Each monitoring screen will have a small fan less computer d…", "Service", "Pcs", "Type", "Master PLC", "2"]}, {"name": "605  Navigation system", "rows": ["General", "Assuming built as pleasure yacht i.e. Malta CYC2020 does not…", "Sailing instruments (preliminary allowance list)", "Processors", "One (1) B&amp;G Hercules WTP sailing processor with interfac…", "Sensors", "One (1) B&amp;G WS730 VMHU in mast top, connected to NMEA 20…", "One (1) B&amp;G DST800 Depth, speed and temp sensor (235kHz)…"]}, {"name": "606  Audio / Video", "rows": ["N/A. For details see Preliminary allowance list P1.", "Central system", "Sonance DSP 8-130 Amplifier 5", "WiiM Pro music streamer 11", "Flybridge", "Sonance VPXT6R 4", "Bathing platform", "Sonance VPXT6R 2"]}]}, {"code": "70", "title": "Rigging", "sections": [{"name": "701  Mast and rig (owner supplied)", "rows": ["General", "Mast, rigging and boom are to be owner supplied. A prelimina…", "Stability has been performed at MLDC in the figure below to …", "Dimensions:", "I 38.0 m", "J 13.0 m", "P 38.7 m", "E 11.4 m"]}, {"name": "702  Sails", "rows": ["Sails will be supplied by the Owner. The yard will support t…", "The inventory and dimensions are provisional pending final d…", "Mainsail", "Area: 296 m²", "P: 38.7 m", "E: 11.4 m", "Genoa", "Area: 276 m²"]}]}, {"code": "90", "title": "Miscellaneous", "sections": []}];</script>
+
+<script>
+(function(){
+  var X=window.PJX; if(!X) return;
+  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C'; var KEY='pw_cos_'+H;
+  var AREAS=window.PJ_AREAS||[]; var PMS=window.PJ_PMS||[];
+  var listEl=document.getElementById('co-list'); var roleEl=document.getElementById('co-role'); var newBtn=document.getElementById('co-new');
+  var STAGES=['Draft','Suggestive','Awaiting sign-off','Approved','Implemented'];
+  function isPM(u){ return PMS.indexOf(u)>=0; }
+  function projPM(){ return (window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
+
+  function load(){ return X.load(KEY,[]); }
+  function save(a){ X.save(KEY,a); }
+  function nextNo(){ var a=load(); var n=a.length+1; return 'CO-'+('00'+n).slice(-3); }
+  function totalHours(co){ return (+co.engHours||0)+(+co.prodHours||0); }
+
+  function role(){
+    roleEl.innerHTML='';
+    X.identityBar(roleEl, function(){ render(); });
+    var u=X.curUser(); var note=document.createElement('span');
+    if(isPM(u)){ note.className='role-note edit'; note.innerHTML='Editing as project manager — you can raise, progress and sign off change orders.'; newBtn.style.display=''; }
+    else { note.className='role-note view'; note.innerHTML='Viewer — only a project manager initiates change orders. '+
+      (projPM()?('<button type="button" id="co-be">Switch to '+X.esc(projPM())+'</button>'):''); newBtn.style.display='none'; }
+    roleEl.appendChild(note);
+    var be=document.getElementById('co-be'); if(be) be.addEventListener('click', function(){ X.setUser(projPM()); role(); render(); });
+  }
+
+  function refName(co){ return co.area+(co.section&&co.section!=='(General)'?(' · '+co.section):'')+(co.row?(' · '+co.row):''); }
+
+  function bumpVersion(cur){
+    var m=/v(\d+)\.(\d+)/.exec(cur||'v1.0'); var maj=m?+m[1]:1, min=m?+m[2]:0; min++; return 'v'+maj+'.'+min;
+  }
+  function currentVersion(){ var r=X.load('pw_revisions_'+H,null); return (r&&r.length)?(r[0].version||'v1.0'):'v1.0'; }
+
+  function approveFlowback(co){
+    var revs=X.load('pw_revisions_'+H,null);
+    if(!revs){ var as=null; try{ as=JSON.parse(localStorage.getItem('pw_assold_'+H)); }catch(e){}
+      revs=[{version:'v1.0',date:(as&&as.when)||'—',summary:'As-sold specification — baseline.',author:(as&&as.by)||'Sales',source:'as-sold',co:null}]; }
+    var nv=bumpVersion(currentVersion());
+    revs.unshift({version:nv, date:X.today(), summary:co.title, author:X.curUser(), source:'change-order', co:co.no, ref:refName(co)});
+    X.save('pw_revisions_'+H, revs);
+    var flags=X.load('pw_specflags_'+H,{}); var arr=flags[co.area]||[];
+    arr.push({co:co.no, version:nv, ref:refName(co)}); flags[co.area]=arr; X.save('pw_specflags_'+H, flags);
+    co.version=nv;
+    return nv;
+  }
+
+  function setStatus(co, st){
+    var prev=co.status; co.status=st; var arr=load();
+    for(var i=0;i<arr.length;i++){ if(arr[i].no===co.no){ arr[i]=co; break; } } save(arr);
+    if(st==='Suggestive' && prev!=='Suggestive'){
+      var who=(co.involved||[]).filter(function(n){ return (window.PJ_ENG||[]).indexOf(n)>=0; });
+      var lead=who[0]||(co.involved&&co.involved[0])||'Engineering';
+      X.notify('<b>'+X.esc(lead)+'</b> notified via Teams / email — '+X.esc(co.no)+' is <b>suggestive</b> and concerns <b>'+X.esc(refName(co))+'</b>'+(who.length>1?(' (+'+(who.length-1)+' more)'):'')+'.');
+    } else if(st==='Awaiting sign-off' && prev!=='Awaiting sign-off'){
+      X.notify('<b>'+X.esc(co.no)+'</b> ready for <b>owner sign-off</b> — print or email it, then upload the signed copy.');
+    } else if(st==='Approved' && prev!=='Approved'){
+      var nv=approveFlowback(co); save(load().map(function(c){return c.no===co.no?co:c;}));
+      X.notify('<b>'+X.esc(co.no)+'</b> approved — specification raised to <b>'+X.esc(nv)+'</b>. Linked section <b>'+X.esc(refName(co))+'</b> flagged.');
+    } else if(st==='Implemented'){
+      X.notify('<b>'+X.esc(co.no)+'</b> marked implemented.');
+    }
+    render();
+  }
+
+  // ---- owner sign-off: printable CO document ----
+  function logoSrc(){ var im=document.querySelector('header img'); return im?im.src:''; }
+  function buildPrintDoc(co){
+    var holder=document.querySelector('.co-print'); if(!holder){ holder=document.createElement('div'); holder.className='co-print'; document.body.appendChild(holder); }
+    var proj=window.PJ_PROJ||{}; var pname=(proj.name&&proj.name!==H)?(H+' · '+proj.name):H;
+    holder.innerHTML='<div class="cop-doc">'+
+      (logoSrc()?'<img class="cop-logo" src="'+logoSrc()+'" alt="Baltic Yachts">':'')+
+      '<h1>Change Order '+X.esc(co.no)+'</h1>'+
+      '<div class="cop-sub">Owner sign-off &middot; '+X.esc(pname)+'</div>'+
+      '<dl class="cop-grid">'+
+        '<dt>Title</dt><dd>'+X.esc(co.title)+'</dd>'+
+        '<dt>Linked specification</dt><dd>'+X.esc(refName(co))+'</dd>'+
+        '<dt>Status</dt><dd>'+X.esc(co.status||'Draft')+'</dd>'+
+        '<dt>Engineering hours</dt><dd>'+(+co.engHours||0)+' h</dd>'+
+        '<dt>Production hours</dt><dd>'+(+co.prodHours||0)+' h</dd>'+
+        '<dt>Total hours</dt><dd>'+totalHours(co)+' h</dd>'+
+        '<dt>Cost / price impact</dt><dd>'+X.esc(co.cost||'—')+'</dd>'+
+        '<dt>Initiated by</dt><dd>'+X.esc(co.by||'')+' &middot; '+X.esc(co.date||'')+'</dd>'+
+        '<dt>Involved</dt><dd>'+X.esc((co.involved||[]).join(', ')||'—')+'</dd>'+
+      '</dl>'+
+      '<div class="cop-h">Description of change</div>'+
+      '<div class="cop-desc">'+(co.desc||'—')+'</div>'+
+      '<div class="cop-sign"><b>Owner approval</b>'+
+        '<p class="cop-note">By signing, the owner approves this change order and its hour and cost impact for the project specification.</p>'+
+        '<div class="cop-row"><div><div class="cop-line"></div><div class="cop-cap">Owner signature</div></div>'+
+        '<div><div class="cop-line"></div><div class="cop-cap">Date</div></div></div>'+
+        '<div class="cop-row"><div><div class="cop-line"></div><div class="cop-cap">Name (print)</div></div>'+
+        '<div><div class="cop-line"></div><div class="cop-cap">Place</div></div></div>'+
+      '</div></div>';
+    return holder;
+  }
+  function printCO(co){
+    buildPrintDoc(co); document.body.classList.add('co-printing');
+    function after(){ document.body.classList.remove('co-printing'); window.removeEventListener('afterprint', after); }
+    window.addEventListener('afterprint', after); window.print(); setTimeout(after, 1500);
+  }
+  // render-only preview of the sign-off sheet (used for documentation/QA)
+  window.__coPreview=function(no){ var co=load().filter(function(c){return c.no===no;})[0]; if(co){ buildPrintDoc(co); document.body.classList.add('co-printing'); } };
+
+  function mailCO(co){
+    var subj='Change Order '+co.no+' — '+co.title+' ('+H+')';
+    var body='Please review and sign the attached change order for project '+H+'.\n\n'+
+      'CO: '+co.no+'\nTitle: '+co.title+'\nLinked specification: '+refName(co)+'\n'+
+      'Engineering hours: '+(+co.engHours||0)+' h\nProduction hours: '+(+co.prodHours||0)+' h\nTotal: '+totalHours(co)+' h\n'+
+      'Cost / price impact: '+(co.cost||'—')+'\n\n'+
+      'Use the printed PDF (Print CO) for signature, then return the signed copy so we can approve it.';
+    try{ location.href='mailto:?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body); }catch(e){}
+    X.notify('<b>'+X.esc(co.no)+'</b> prepared for owner sign-off by email — attach the printed PDF and send.');
+    if(co.status==='Suggestive'){ setStatus(co,'Awaiting sign-off'); }
+  }
+
+  var fileInput;
+  function uploadSigned(co){
+    if(!fileInput){ fileInput=document.createElement('input'); fileInput.type='file'; fileInput.accept='.pdf,.png,.jpg,.jpeg'; fileInput.style.display='none'; document.body.appendChild(fileInput); }
+    fileInput.value='';
+    fileInput.onchange=function(){ var f=fileInput.files&&fileInput.files[0]; if(!f) return;
+      var fr=new FileReader();
+      fr.onload=function(){ var arr=load(); for(var i=0;i<arr.length;i++){ if(arr[i].no===co.no){ arr[i].signed={name:f.name, type:f.type, data:fr.result, when:X.today(), by:X.curUser()}; if(arr[i].status==='Suggestive') arr[i].status='Awaiting sign-off'; break; } } save(arr); render();
+        X.notify('Owner-signed copy <b>'+X.esc(f.name)+'</b> uploaded for <b>'+X.esc(co.no)+'</b>. Ready to approve.'); };
+      fr.readAsDataURL(f);
+    };
+    fileInput.click();
+  }
+
+  function findCO(no){ return load().filter(function(c){return c.no===no;})[0]; }
+
+  function render(){
+    var arr=load(); var u=X.curUser(); var pm=isPM(u);
+    if(!arr.length){ listEl.innerHTML='<div class="pj-empty">No change orders yet for '+X.esc(H)+'. '+(pm?'Use “New change order” to raise the first one.':'A project manager can raise the first one.')+'</div>'; return; }
+    listEl.innerHTML=arr.map(function(co){
+      var cls='st-'+(co.status||'Draft').toLowerCase().replace(/\s+/g,'-');
+      var inSignoff=(co.status==='Suggestive'||co.status==='Awaiting sign-off');
+      var adv='';
+      if(pm){
+        var idx=STAGES.indexOf(co.status||'Draft');
+        if(idx>=0 && idx<STAGES.length-1){ adv+='<button type="button" data-adv="'+co.no+'">Move to '+STAGES[idx+1]+'</button>'; }
+        adv+='<button type="button" data-print="'+co.no+'">Print CO</button>';
+        if(inSignoff){
+          adv+='<button type="button" data-mail="'+co.no+'">Email for sign-off</button>';
+          adv+='<button type="button" data-upload="'+co.no+'">'+(co.signed?'Replace signed copy':'Upload signed copy')+'</button>';
+        }
+        adv+='<button type="button" class="danger" data-rej="'+co.no+'">'+(co.status==='Rejected'?'Reopen':'Reject')+'</button>';
+        adv+='<button type="button" data-edit="'+co.no+'">Edit</button>';
+      }
+      var hrs=(co.engHours||co.prodHours)?(' · <span class="co-hrs">⏱ Eng '+(+co.engHours||0)+' h · Prod '+(+co.prodHours||0)+' h · '+totalHours(co)+' h total</span>'):'';
+      var awaiting=(co.status==='Awaiting sign-off' && !co.signed)?'<span class="co-await">⚠ Awaiting owner-signed copy</span>':'';
+      var signed=co.signed?('<div class="co-signed">✔ Owner-signed copy: <b>'+X.esc(co.signed.name)+'</b> · uploaded '+X.esc(co.signed.when)+' by '+X.esc(co.signed.by)+
+        ' · <a href="'+co.signed.data+'" download="'+X.esc(co.signed.name)+'" target="_blank" rel="noopener">View</a></div>'):'';
+      return '<div class="co-card"><div class="co-top"><span class="co-no">'+X.esc(co.no)+'</span>'+
+        '<span class="co-ttl">'+X.esc(co.title)+'</span><span class="co-ref">'+X.esc(refName(co))+'</span>'+
+        '<span class="pj-status '+cls+'">'+X.esc(co.status||'Draft')+'</span>'+(co.version?('<span class="co-ref">'+X.esc(co.version)+'</span>'):'')+awaiting+'</div>'+
+        '<div class="co-desc">'+(co.desc||'<em style="color:var(--faint)">No description.</em>')+'</div>'+
+        '<div class="co-meta co-people">Initiated by <b>'+X.esc(co.by||'')+'</b> · '+X.esc(co.date||'')+
+        ' · Involves: <b>'+X.esc((co.involved||[]).join(', ')||'—')+'</b>'+(co.cost?(' · Cost impact: <b>'+X.esc(co.cost)+'</b>'):'')+hrs+'</div>'+
+        signed+
+        '<div class="co-foot"><span class="co-adv">'+adv+'</span></div></div>';
+    }).join('');
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-adv]'), function(b){ b.addEventListener('click', function(){ var co=findCO(b.getAttribute('data-adv')); var i=STAGES.indexOf(co.status||'Draft'); var nxt=STAGES[i+1];
+      if(nxt==='Approved' && !co.signed){ X.notify('Upload the owner-signed copy before approving <b>'+X.esc(co.no)+'</b>.', 'warn'); return; }
+      setStatus(co, nxt); }); });
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-print]'), function(b){ b.addEventListener('click', function(){ printCO(findCO(b.getAttribute('data-print'))); }); });
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-mail]'), function(b){ b.addEventListener('click', function(){ mailCO(findCO(b.getAttribute('data-mail'))); }); });
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-upload]'), function(b){ b.addEventListener('click', function(){ uploadSigned(findCO(b.getAttribute('data-upload'))); }); });
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-rej]'), function(b){ b.addEventListener('click', function(){ var co=findCO(b.getAttribute('data-rej')); setStatus(co, co.status==='Rejected'?'Draft':'Rejected'); }); });
+    Array.prototype.forEach.call(listEl.querySelectorAll('[data-edit]'), function(b){ b.addEventListener('click', function(){ openSheet(findCO(b.getAttribute('data-edit'))); }); });
+  }
+
+  function openSheet(existing){
+    var ov=document.createElement('div'); ov.className='co-overlay';
+    var sheet=document.createElement('div'); sheet.className='co-sheet';
+    var areaOpts='<option value="">— area —</option>'+AREAS.map(function(a){ return '<option value="'+X.esc(a.code)+'">'+X.esc(a.code+' '+a.title)+'</option>'; }).join('');
+    sheet.innerHTML=
+      '<h3>'+(existing?'Edit ':'New ')+'change order</h3>'+
+      '<div class="co-field"><label>Title</label><input type="text" id="co-title" placeholder="Short summary of the change"></div>'+
+      '<div class="co-field"><label>Linked specification — area · section · row</label>'+
+        '<div class="co-cols"><select id="co-area">'+areaOpts+'</select>'+
+        '<select id="co-section"><option value="">— section —</option></select>'+
+        '<select id="co-row"><option value="">— row —</option></select></div></div>'+
+      '<div class="co-field"><label>Description</label><div id="co-desc-mount"></div></div>'+
+      '<div class="co-cols"><div class="co-field"><label>Engineering hours</label><input type="number" min="0" step="1" id="co-eng" placeholder="e.g. 40"></div>'+
+        '<div class="co-field"><label>Production hours</label><input type="number" min="0" step="1" id="co-prod" placeholder="e.g. 120"></div>'+
+        '<div class="co-field"><label>Total hours</label><input type="text" id="co-tot" disabled placeholder="—"></div></div>'+
+      '<div class="co-cols"><div class="co-field"><label>Initiated by (PM)</label><select id="co-by"></select></div>'+
+        '<div class="co-field" style="grid-column:span 2"><label>Cost / price impact (indicative)</label><input type="text" id="co-cost" placeholder="e.g. +12 000 € · TBC (pricing model pending)"></div></div>'+
+      '<div class="co-field"><label>Involved — engineers &amp; production foremen (notified at “Suggestive”)</label><div class="co-people-pick" id="co-people"></div></div>'+
+      '<div class="co-sheet-foot"><button type="button" id="co-cancel">Cancel</button><button type="button" class="go" id="co-save">'+(existing?'Save changes':'Create change order')+'</button></div>';
+    ov.appendChild(sheet); document.body.appendChild(ov);
+
+    var rt=X.richEditor(existing?existing.desc:'', false);
+    sheet.querySelector('#co-desc-mount').appendChild(rt.el);
+    var byS=sheet.querySelector('#co-by'); PMS.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; byS.appendChild(o); });
+    byS.value = (existing&&existing.by) || (PMS.indexOf(X.curUser())>=0?X.curUser():projPM()) || PMS[0];
+    var engI=sheet.querySelector('#co-eng'), prodI=sheet.querySelector('#co-prod'), totI=sheet.querySelector('#co-tot');
+    function syncTot(){ var t=(+engI.value||0)+(+prodI.value||0); totI.value = t? (t+' h') : ''; }
+    engI.addEventListener('input', syncTot); prodI.addEventListener('input', syncTot);
+    // people checkboxes
+    var pp=sheet.querySelector('#co-people'); var groups=[['Engineering', window.PJ_ENG||[]],['Production foremen', window.PJ_FOREMEN||[]]];
+    var chosen=(existing&&existing.involved)||[];
+    groups.forEach(function(g){ var h=document.createElement('div'); h.className='co-grp'; h.textContent=g[0]; pp.appendChild(h);
+      g[1].forEach(function(n){ var lab=document.createElement('label'); var cb=document.createElement('input'); cb.type='checkbox'; cb.value=n; if(chosen.indexOf(n)>=0)cb.checked=true; lab.appendChild(cb); lab.appendChild(document.createTextNode(' '+n)); pp.appendChild(lab); }); });
+    // area->section->row cascades
+    var aS=sheet.querySelector('#co-area'), sS=sheet.querySelector('#co-section'), rS=sheet.querySelector('#co-row');
+    function fillSections(){ var a=AREAS.filter(function(x){return x.code===aS.value;})[0]; sS.innerHTML='<option value="">— section —</option>'; rS.innerHTML='<option value="">— row —</option>';
+      if(a){ a.sections.forEach(function(s){ var o=document.createElement('option'); o.value=s.name; o.textContent=s.name; sS.appendChild(o); }); } }
+    function fillRows(){ var a=AREAS.filter(function(x){return x.code===aS.value;})[0]; rS.innerHTML='<option value="">— row —</option>';
+      if(a){ var s=a.sections.filter(function(x){return x.name===sS.value;})[0]; if(s){ s.rows.forEach(function(r){ var o=document.createElement('option'); o.value=r; o.textContent=r; rS.appendChild(o); }); } } }
+    aS.addEventListener('change', fillSections); sS.addEventListener('change', fillRows);
+    if(existing){ sheet.querySelector('#co-title').value=existing.title||''; sheet.querySelector('#co-cost').value=existing.cost||'';
+      engI.value=existing.engHours||''; prodI.value=existing.prodHours||''; syncTot();
+      aS.value=existing.area||''; fillSections(); sS.value=existing.section||''; fillRows(); rS.value=existing.row||''; }
+
+    sheet.querySelector('#co-cancel').addEventListener('click', function(){ ov.remove(); });
+    ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
+    sheet.querySelector('#co-save').addEventListener('click', function(){
+      var title=sheet.querySelector('#co-title').value.trim(); if(!title){ alert('Please add a title.'); return; }
+      if(!aS.value){ alert('Please link the change order to a spec area.'); return; }
+      var involved=Array.prototype.map.call(pp.querySelectorAll('input:checked'), function(c){return c.value;});
+      var eng=+engI.value||0, prod=+prodI.value||0;
+      var arr=load();
+      if(existing){ for(var i=0;i<arr.length;i++){ if(arr[i].no===existing.no){
+          arr[i].title=title; arr[i].area=aS.value; arr[i].section=sS.value; arr[i].row=rS.value;
+          arr[i].desc=rt.getHTML(); arr[i].by=byS.value; arr[i].cost=sheet.querySelector('#co-cost').value.trim();
+          arr[i].engHours=eng; arr[i].prodHours=prod; arr[i].involved=involved; break; } } }
+      else { arr.unshift({no:nextNo(), title:title, area:aS.value, section:sS.value, row:rS.value, desc:rt.getHTML(),
+        by:byS.value, cost:sheet.querySelector('#co-cost').value.trim(), engHours:eng, prodHours:prod, involved:involved,
+        status:'Draft', date:X.today(), version:null, signed:null}); }
+      save(arr); ov.remove(); render(); X.notify('Change order saved.');
+    });
+  }
+
+  newBtn.addEventListener('click', function(){ openSheet(null); });
+  role(); render();
+})();
+</script>
 
 <footer>
   <div class="wrap foot-inner">

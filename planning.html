@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Handover & Delivery · Projects</title>
+<title>Projects · Baltic Yachts</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -949,11 +949,27 @@ window.PJX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Handover & Delivery</div>
-    <h1>Handover & Delivery</h1>
-    <p>Delivery checklist, owner handover and final documentation.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Projects</div>
+    <h1>Projects</h1>
+    <p>Boats that have been <strong>sold and realized</strong> &mdash; transferred from Sales into the live build. Open a project to reach its approved specification, change orders and planning.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg><strong>Handover & Delivery</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card">
+    <table class="pj-port">
+      <thead><tr><th>Project</th><th>Type</th><th>Project manager</th><th>Stage</th><th>In build since</th><th></th></tr></thead>
+      <tbody id="pj-portfolio"><tr><td colspan="6"><div class="pj-empty">Loading projects&hellip;</div></td></tr></tbody>
+    </table>
+  </div>
+  <h2 class="sol-h" style="margin-top:26px">Project tools</h2>
+  <div class="pj-grid">
+    <a class="pj-tile live" href="specification.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div><h3>Specification</h3><p>The approved &ldquo;as sold&rdquo; spec under revision control.</p></a>
+    <a class="pj-tile live" href="change-orders.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M4 7h12M4 12h8M4 17h12"/><path d="M18 14l3 3-3 3"/></svg></div><h3>Change Orders</h3><p>Raise COs linked to a spec area &middot; section &middot; row.</p></a>
+    <a class="pj-tile live" href="planning.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3>Planning & Follow-up</h3><p>Planning, meetings, memos and the management follow-up.</p></a>
+    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Budget & Cost</h3><p>Cost control, budgets and committed spend per project.</p></div>
+    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 10.5a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg></div><h3>Procurement & Purchasing</h3><p>Supplier orders, lead times and deliveries.</p></div>
+    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Quality & Sea Trials</h3><p>Inspections, NCRs, commissioning and sea trials.</p></div>
+    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg></div><h3>Handover & Delivery</h3><p>Delivery checklist, owner handover and documentation.</p></div>
+  </div>
+  <p class="src-note" style="margin-top:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; realized projects and all edits are saved in this browser. A shared <strong>Projects</strong> store and real notifications are the Azure backend step.</span></p>
 
 
 <script>
@@ -985,6 +1001,23 @@ window.PJX = (function(){
 })();
 </script>
 </main>
+
+<script>
+(function(){
+  var tb=document.getElementById('pj-portfolio'); if(!tb||!window.PJ_LIST) return;
+  var list=window.PJ_LIST();
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="pj-empty">No realized projects yet. Realize a project from Sales (Ongoing/Resting) to transfer it here.</div></td></tr>'; return; }
+  tb.innerHTML=list.map(function(p){
+    var q='?p='+encodeURIComponent(p.hull);
+    return '<tr><td><div class="proj-cell"><span class="proj-hull">'+esc(p.hull)+'</span><span class="proj-name">'+esc(p.name||'')+'</span></div></td>'+
+      '<td>'+esc(p.type||'')+'</td><td>'+esc(p.pm||'—')+'</td><td>'+esc(p.stage||'')+'</td><td>'+esc(p.since||'—')+'</td>'+
+      '<td><div class="proj-acts"><a class="btn-row primary" href="specification.html'+q+'">Spec</a>'+
+      '<a class="btn-row" href="change-orders.html'+q+'">Change orders</a>'+
+      '<a class="btn-row" href="planning.html'+q+'">Planning</a></div></td></tr>';
+  }).join('');
+})();
+</script>
 
 <footer>
   <div class="wrap foot-inner">

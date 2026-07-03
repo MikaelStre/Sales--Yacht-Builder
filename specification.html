@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Handover & Delivery · Projects</title>
+<title>Revisions · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -949,12 +949,25 @@ window.PJX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Handover & Delivery</div>
-    <h1>Handover & Delivery</h1>
-    <p>Delivery checklist, owner handover and final documentation.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Revisions</div>
+    <h1>Revisions</h1>
+    <p>Specification version history for <span class="pj-proj-ref"></span>. The baseline is the locked <strong>as-sold</strong> spec (v1.0); every approved change order raises a new revision.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg><strong>Handover & Delivery</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html" class="on">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div id="pj-snap"></div>
+  <div id="pj-revlist"><div class="pj-empty">Loading revisions&hellip;</div></div>
 
+
+<script>
+(function(){
+  var host=document.getElementById('pj-snap'); if(!host||!window.PJX) return;
+  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
+  function keys(){ return ['pw_pspec_'+H,'pw_pcomments_'+H,'pw_pcover_'+H,'pw_cos_'+H,'pw_revisions_'+H,
+    'pw_planning_'+H,'pw_memos_'+H,'pw_specflags_'+H,'pw_assold_'+H]; }
+  function version(){ var r=[]; try{ r=JSON.parse(localStorage.getItem('pw_revisions_'+H))||[]; }catch(e){}
+    return r.length ? ('Spec '+(r[0].version||'v1.0')) : 'Spec v1.0 (as sold)'; }
+  window.PJX.snapBar(host, H, keys, version);
+})();
+</script>
 
 <script>
 /* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
@@ -985,6 +998,35 @@ window.PJX = (function(){
 })();
 </script>
 </main>
+
+<script>
+(function(){
+  var host=document.getElementById('pj-revlist'); if(!host||!window.PJX) return;
+  var X=window.PJX; var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C'; var KEY='pw_revisions_'+H;
+  function baseline(){
+    var as=null; try{ as=JSON.parse(localStorage.getItem('pw_assold_'+H)); }catch(e){}
+    return {version:'v1.0', date:(as&&as.when)||'—', summary:'As-sold specification — baseline at handover from Sales.',
+            author:(as&&as.by)||'Sales', source:'as-sold', co:null};
+  }
+  function list(){
+    var r=X.load(KEY,null);
+    if(!r){ r=[baseline()]; X.save(KEY,r); }
+    return r;
+  }
+  function render(){
+    var r=list();
+    host.innerHTML = r.map(function(rev){
+      var src = rev.co ? ('<a href="change-orders.html?p='+encodeURIComponent(H)+'">'+X.esc(rev.co)+'</a> approved') : 'Baseline';
+      return '<div class="rev-row"><div class="rev-v">'+X.esc(rev.version)+'</div><div class="rev-main">'+
+        '<div class="rev-sum">'+X.esc(rev.summary)+'</div>'+
+        '<div class="rev-meta">'+X.esc(rev.date)+' · by '+X.esc(rev.author)+' · '+src+
+        (rev.ref?(' · <b>'+X.esc(rev.ref)+'</b>'):'')+'</div></div></div>';
+    }).join('');
+  }
+  render();
+  window.addEventListener('storage', render);
+})();
+</script>
 
 <footer>
   <div class="wrap foot-inner">

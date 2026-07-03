@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Handover & Delivery · Projects</title>
+<title>Project development · Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -949,11 +949,14 @@ window.PJX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Handover & Delivery</div>
-    <h1>Handover & Delivery</h1>
-    <p>Delivery checklist, owner handover and final documentation.</p>
+    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Project development</div>
+    <h1>Project development</h1>
+    <p>The in-house view of <strong>how we adapt during development</strong> &mdash; reference material sent from Engineering (<em>Area &amp; tools</em>). The <strong>PM</strong> accepts or declines each suggestion. Engineering <strong>calculations</strong> sent here are reviewed by <strong>Engineering + Production + PM</strong> — when all three agree the calc is <strong>approved</strong> and the approved revision is shown.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg><strong>Handover & Delivery</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html" class="on">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="role-bar" id="pd-role"></div>
+  <div id="pd-calcs"></div>
+  <div id="pd-list"></div>
+<script>window.PD_AREAS={"GP": "General Particulars", "00": "General Conditions", "10": "Hull", "20": "Deck", "30": "Interior", "40": "Engine", "50": "Plumbing", "60": "Electrical", "70": "Rigging", "90": "Miscellaneous"};</script>
 
 
 <script>
@@ -985,6 +988,81 @@ window.PJX = (function(){
 })();
 </script>
 </main>
+
+<script>
+(function(){
+  var X=window.PJX;
+  var host=document.getElementById('pd-list'); if(!host) return;
+  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
+  var AT=window.PD_AREAS||{};
+  var CKEY='pw_proj_calcs_'+H, PJENG=window.PJ_ENG||[], PJFORE=window.PJ_FOREMEN||[];
+  function cRoleOf(u){ if(u===projPM())return 'pm'; if(PJFORE.indexOf(u)>=0)return 'fore'; if(PJENG.indexOf(u)>=0)return 'eng'; return ''; }
+  function cApproved(c){ var a=c.agree||{}; return a.eng&&a.fore&&a.pm; }
+  function cChip(c,slot,label){ var a=c.agree||{}, who=a[slot];
+    if(who) return '<span class="agree-chip done"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>'+label+': '+X.esc(who)+'</span>';
+    return '<span class="agree-chip" data-cagree="'+X.esc(c.calcId)+'" data-cslot="'+slot+'"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>Agree as '+label+'</span>'; }
+  function renderCalcs(){
+    var cs=document.getElementById('pd-calcs'); if(!cs) return; var arr=X.load(CKEY,[])||[];
+    if(!arr.length){ cs.innerHTML=''; return; }
+    cs.innerHTML='<div class="co-grp">Calculations under review</div>'+arr.map(function(c,i){
+      var ap=cApproved(c), st=ap?'Approved':(c.status||'Under review'), cls=ap?'st-implemented':'st-suggestive';
+      var fc=(c.files||[]).map(function(f){ return X.chipHTML(f); }).join('');
+      return '<div class="co-card'+(ap?' co-steer':'')+'"><div class="co-top"><span class="co-no">'+X.esc(c.area)+'</span>'+
+        '<span class="co-ttl">'+X.esc(c.title)+'</span><span style="flex:1"></span>'+
+        '<span class="pj-status st-suggestive">Rev '+X.esc(c.rev||'—')+'</span> <span class="pj-status '+cls+'">'+X.esc(st)+'</span> '+
+        '<button type="button" class="btn-row" data-ct="'+i+'">View</button></div>'+
+        '<div class="co-meta">Issued by <b>'+X.esc(c.by||'—')+'</b> · '+X.esc(X.fmt(c.when))+(c.doc?(' · '+X.esc(c.doc)):'')+'</div>'+
+        (fc?('<div style="margin-top:7px">'+fc+'</div>'):'')+
+        '<div class="agree-row">'+cChip(c,'eng','Engineering')+cChip(c,'fore','Production')+cChip(c,'pm','PM')+'</div>'+
+        '<div class="co-desc" id="pdc-'+i+'" style="display:none;margin-top:9px">'+(c.text||'')+'</div></div>';
+    }).join('');
+    Array.prototype.forEach.call(cs.querySelectorAll('[data-ct]'), function(b){ b.addEventListener('click', function(){ var v=document.getElementById('pdc-'+b.getAttribute('data-ct')); var o=v.style.display!=='none'; v.style.display=o?'none':''; b.textContent=o?'View':'Hide'; }); });
+    Array.prototype.forEach.call(cs.querySelectorAll('[data-cagree]'), function(b){ b.addEventListener('click', function(){
+      var slot=b.getAttribute('data-cslot'); if(cRoleOf(X.curUser())!==slot){ X.notify('Switch to the right role (Engineering / Production / PM) to agree as this party.','warn'); return; }
+      var cid=b.getAttribute('data-cagree'), arr=X.load(CKEY,[])||[], done=null;
+      for(var i=0;i<arr.length;i++){ if(arr[i].calcId===cid){ arr[i].agree=arr[i].agree||{}; arr[i].agree[slot]=X.curUser(); if(arr[i].agree.eng&&arr[i].agree.fore&&arr[i].agree.pm){ arr[i].status='Approved'; } done=arr[i]; } }
+      X.save(CKEY,arr); renderCalcs();
+      if(done&&cApproved(done)){ X.notify('All parties agreed — <b>'+X.esc(done.title)+'</b> (Rev '+X.esc(done.rev)+') is approved.'); }
+    }); });
+  }
+  function projPM(){ return (window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
+  var roleEl=document.getElementById('pd-role');
+  function role(){
+    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ role(); render(); renderCalcs(); });
+    var note=document.createElement('span');
+    if(X.curUser()===projPM()){ note.className='role-note edit'; note.innerHTML='You are the <b>PM</b> — review, accept or decline material sent to this project.'; }
+    else { note.className='role-note view'; note.innerHTML='Only the project PM (<b>'+X.esc(projPM()||'—')+'</b>) accepts or declines.'; }
+    roleEl.appendChild(note);
+  }
+  function items(){
+    var out=[]; var pfx='pw_eng_projdoc_'+H+'_';
+    for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k&&k.indexOf(pfx)===0){ var d=X.load(k,null); if(d&&d.html){ out.push({code:k.slice(pfx.length), d:d}); } } }
+    out.sort(function(a,b){ return a.code.localeCompare(b.code); });
+    return out;
+  }
+  function decide(code,status){ var k='pw_eng_projdoc_'+H+'_'+code; var d=X.load(k,null); if(!d) return;
+    d.status=status; d.decidedBy=X.curUser(); d.decidedWhen=X.nowISO(); X.save(k,d);
+    X.notify('Reference material for <b>'+X.esc(code)+'</b> <b>'+X.esc(status.toLowerCase())+'</b> by the PM.'); render(); }
+  function render(){
+    var isPM=X.curUser()===projPM(); var list=items();
+    if(!list.length){ host.innerHTML='<div class="pj-empty">Nothing yet. Engineering sends reference material from <b>Area &amp; tools &rarr; Send to project</b>; it lands here for the PM to accept or decline.</div>'; return; }
+    host.innerHTML=list.map(function(f,i){
+      var st=f.d.status||'Pending'; var cls=st==='Accepted'?'st-implemented':(st==='Declined'?'st-rejected':'st-suggestive');
+      var decided=f.d.decidedBy?('<div class="co-people">'+X.esc(st)+' by <b>'+X.esc(f.d.decidedBy)+'</b> · '+X.esc(X.fmt(f.d.decidedWhen))+'</div>'):'';
+      var acts=(isPM&&st==='Pending')?('<div class="co-foot"><span class="co-adv"><button type="button" data-acc="'+X.esc(f.code)+'">Accept</button><button type="button" class="danger" data-dec="'+X.esc(f.code)+'">Decline</button></span></div>'):'';
+      var fc=(f.d.files||[]).map(function(x){ return X.chipHTML(x); }).join('');
+      return '<div class="co-card"><div class="co-top"><span class="co-no">'+X.esc(f.code)+'</span><span class="co-ttl">'+X.esc(AT[f.code]||f.code)+'</span>'+
+        '<span style="flex:1"></span><span class="pj-status '+cls+'">'+X.esc(st)+'</span> <button type="button" class="btn-row" data-t="'+i+'">View</button></div>'+
+        '<div class="co-meta">Sent by <b>'+X.esc(f.d.by||'—')+'</b> · '+X.esc(X.fmt(f.d.when))+'</div>'+decided+(fc?('<div style="margin-top:7px">'+fc+'</div>'):'')+
+        '<div class="co-desc" id="pd-'+i+'" style="display:none">'+(f.d.html||'')+'</div>'+acts+'</div>';
+    }).join('');
+    Array.prototype.forEach.call(host.querySelectorAll('[data-t]'),function(b){ b.addEventListener('click',function(){ var v=document.getElementById('pd-'+b.getAttribute('data-t')); var o=v.style.display!=='none'; v.style.display=o?'none':''; b.textContent=o?'View':'Hide'; }); });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-acc]'),function(b){ b.addEventListener('click',function(){ decide(b.getAttribute('data-acc'),'Accepted'); }); });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-dec]'),function(b){ b.addEventListener('click',function(){ decide(b.getAttribute('data-dec'),'Declined'); }); });
+  }
+  role(); render(); renderCalcs();
+})();
+</script>
 
 <footer>
   <div class="wrap foot-inner">
