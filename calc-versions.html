@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Risks · Engineering Projects</title>
+<title>Disciplines · Engineering</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -1136,123 +1136,41 @@ window.ENGX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Risks</div>
-    <h1>Risks</h1>
-    <p>The <strong>project risk register</strong> (read-only, maintained by the PM on the project side) for <span class="pj-proj-ref"></span>, and the <strong>engineering risk list</strong> for this project. Engineers add risks and <strong>Share to project</strong>; the PM folds shared risks into the register (no approve/decline needed).</p>
+    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / Yacht Builder Suite</div>
+    <h1>Yacht Builder Suite</h1>
+    <p>Pick your <strong>discipline</strong>. Each one opens its calculations and its <strong>documents &amp; materials</strong> site &mdash; read the current material, work the material, and keep lessons learned.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html" class="on">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="role-bar" id="er-role"></div>
-  <div class="eng-panel"><h2 class="er-h">Project risk register <span class="er-sub">read-only · from the project</span></h2><div id="er-proj"></div></div>
-  <div class="eng-panel"><h2 class="er-h">Engineering risk list <span class="er-sub">this project · share to the project</span></h2><div id="er-eng"></div></div>
 
+  <div class="home-grid">
+    <a class="home-block primary" href="systems.html">
+      <div class="home-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/><circle cx="16" cy="14" r="2"/></svg></div>
+      <h2>Systems</h2>
+      <p>Engine, plumbing, HVAC and monitoring &amp; control.</p>
+      <div class="home-foot"><span class="dot good"></span><span class="home-cta">Open &rarr; <span style="color:var(--faint);font-weight:500">areas 40, 50</span></span></div>
+    </a>
+    <a class="home-block primary" href="interior.html">
+      <div class="home-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 11h18v6H3z"/><path d="M6 17v2M18 17v2"/></svg></div>
+      <h2>Interior</h2>
+      <p>Joinery, materials &amp; fabrics, surfaces and fit-out.</p>
+      <div class="home-foot"><span class="dot good"></span><span class="home-cta">Open &rarr; <span style="color:var(--faint);font-weight:500">areas 30</span></span></div>
+    </a>
+    <a class="home-block primary" href="mechanical.html">
+      <div class="home-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div>
+      <h2>Mechanical</h2>
+      <p>Hull, deck, structures, deck gear and rig.</p>
+      <div class="home-foot"><span class="dot good"></span><span class="home-cta">Open &rarr; <span style="color:var(--faint);font-weight:500">areas 10, 20, 70</span></span></div>
+    </a>
+    <a class="home-block primary" href="electrical.html">
+      <div class="home-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+      <h2>Electrical</h2>
+      <p>Power, distribution, lighting and navigation.</p>
+      <div class="home-foot"><span class="dot good"></span><span class="home-cta">Open &rarr; <span style="color:var(--faint);font-weight:500">areas 60</span></span></div>
+    </a>
+  </div>
 
-<script>
-/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
-   links, and reflects the project name in headers. */
-(function(){
-  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
-  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
-  var list = window.PJ_LIST ? window.PJ_LIST() : [];
-  var pick=document.getElementById('pj-pick');
-  if(pick){
-    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
-      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
-    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
-    var h=a.getAttribute('href')||'';
-    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
-    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
-  });
-  // badge the Project development tab when reference proposals are pending the PM
-  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
-    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
-    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
-    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
-  }catch(e){}
-})();
-</script>
+  <p class="src-note" style="margin-top:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>The full <a href="../suite/">Calculation Suite</a> app is here too. More disciplines can be added over time.</span></p>
+
 </main>
-
-<style>
-.er-h{font:700 14px/1.3 var(--sans);margin:0 0 4px;color:var(--ink)}
-.er-sub{font:500 11px/1 var(--sans);color:var(--faint);text-transform:none;margin-left:8px}
-.er-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:9px}
-table.er{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:880px}
-table.er th,table.er td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;color:var(--ink)}
-table.er th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.er td.r,table.er th.r{text-align:right}
-.er-sc{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.er-lo{background:rgba(91,214,163,.14);color:#5bd6a3}.er-md{background:rgba(255,209,102,.14);color:#ffd166}.er-hi{background:rgba(255,123,123,.16);color:#ff8b8b}
-.er-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.er-tx{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.er-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.er-shared{color:#5bd6a3;font-weight:700}
-</style>
-<script>
-(function(){
-  var X=window.PJX; if(!X) return;
-  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
-  var EKEY='pw_eng_risks_'+H, PKEY='pw_proj_risks_'+H;
-  var ENG=window.PJ_ENG||[], DEF=window.PW_USER_DEFAULT||'';
-  var roleEl=document.getElementById('er-role');
-  function canEdit(){ var u=X.curUser(); return ENG.indexOf(u)>=0 || u===DEF; }
-  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
-  function band(n){ return n<=5?'er-lo':n<=10?'er-md':'er-hi'; }
-  function loadE(){ return X.load(EKEY,[])||[]; }  function saveE(a){ X.save(EKEY,a); }
-  function role(){
-    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ renderAll(); });
-    var note=document.createElement('span');
-    if(canEdit()){ note.className='role-note edit'; note.innerHTML='Editing as <b>'+X.esc(X.curUser())+'</b> — add engineering risks and share them to the project.'; }
-    else { note.className='role-note view'; note.innerHTML='Viewer — switch to an engineer to author risks.'; }
-    roleEl.appendChild(note);
-  }
-  function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="er-in" data-ei="'+i+'" data-ef="'+f+'">'+o+'</select>'; }
-  function stat(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="er-in" style="width:auto" data-ei="'+i+'" data-ef="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
-
-  function renderProj(){
-    var host=document.getElementById('er-proj'); var a=X.load(PKEY,[])||[];
-    if(!a.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No project risks recorded yet for '+X.esc(H)+'.</div>'; return; }
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead><tr><th>Identified risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">Initial</th><th class="r">Residual</th><th>Status</th></tr></thead><tbody>'+
-      a.map(function(r){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td><td>'+X.esc(r.status||'')+'</td></tr>'; }).join('')+'</tbody></table></div>';
-  }
-  function renderEng(){
-    var host=document.getElementById('er-eng'); var ed=canEdit(); var a=loadE();
-    if(!a.length && !ed){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks yet. Switch to an engineer to add them.</div>'; return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-      if(ed){ return '<tr>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="risk">'+X.esc(r.risk||'')+'</textarea></td>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="action">'+X.esc(r.action||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+stat(i,r.status)+'</td>'+
-        '<td>'+(r.added?'<span class="er-shared">in register</span>':'<button class="eng-btn" data-share="'+i+'">'+(r.shared?'Shared ✓':'Share to project')+'</button>')+
-        ' <button class="eng-btn" data-del="'+i+'">✕</button></td></tr>';
-      }
-      return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+X.esc(r.status||'')+'</td><td>'+(r.shared?'<span class="er-shared">shared</span>':'')+'</td></tr>';
-    }).join('');
-    var head = ed
-      ? '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th class="r">P′</th><th class="r">C′</th><th class="r">Resid.</th><th>Status</th><th>Share</th></tr>'
-      : '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">Risk</th><th class="r">Resid.</th><th>Status</th><th></th></tr>';
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
-      (ed?'<button type="button" class="er-add" id="er-add">+ Add engineering risk</button>':'');
-    if(ed) wire();
-  }
-  function wire(){
-    var host=document.getElementById('er-eng');
-    host.querySelectorAll('[data-ei]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadE(); a[+el.dataset.ei][el.dataset.ef]=el.value; saveE(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.ef)>=0) renderEng(); }); });
-    host.querySelectorAll('[data-share]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); var r=a[+b.dataset.share]; r.shared=!r.shared; saveE(a); X.notify(r.shared?'Shared to project — the PM can add it to the register.':'Unshared.'); renderEng(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); a.splice(+b.dataset.del,1); saveE(a); renderEng(); }); });
-    var add=document.getElementById('er-add'); if(add) add.addEventListener('click', function(){ var a=loadE(); a.push({id:'ER-'+(a.length+1)+'-'+H,risk:'',desc:'',p0:3,c0:3,action:'',resp:'Engineering',p1:2,c1:2,status:'Not started',shared:false,by:X.curUser()}); saveE(a); renderEng(); }); }
-  function renderAll(){ role(); renderProj(); renderEng(); }
-  renderAll();
-})();
-</script>
 
 <footer>
   <div class="wrap foot-inner">

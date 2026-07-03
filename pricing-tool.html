@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Price calculation · Projects</title>
+<title>Ongoing Projects · Yacht Builder</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -784,317 +784,150 @@ table.rk td.r,table.rk th.r{text-align:right}
   </div>
 </header>
 
-<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script>
-<script>
-/* Runs FIRST (before any per-page app): resolves the active project from ?p and
-   exposes window.PJ_HULL / PJ_PROJ / PJ_LIST / PJ_CARRY. No DOM access here so it
-   is safe to run at the top of the page. */
-(function(){
-  var seed = window.PJ_SEED || [];
-  function realizedList(){
-    var rl=[]; try{ rl=JSON.parse(localStorage.getItem('pw_realized'))||[]; }catch(e){}
-    var map={}; var out=[];
-    seed.forEach(function(p){ map[p.hull.toUpperCase()]=Object.assign({},p); });
-    rl.forEach(function(p){ var k=(p.hull||'').toUpperCase(); if(!k) return;
-      map[k]=Object.assign({stage:'Realized — transferred from Sales'}, map[k]||{}, p); });
-    Object.keys(map).forEach(function(k){ out.push(map[k]); });
-    out.sort(function(a,b){ return (a.hull||'').localeCompare(b.hull||''); });
-    return out;
-  }
-  window.PJ_LIST = realizedList;
-  var list = realizedList();
-  var qp = new URLSearchParams(location.search).get('p');
-  var hull = qp || (list[0]&&list[0].hull) || window.PJ_DEFAULT;
-  window.PJ_HULL = (hull||'').toUpperCase();
-  window.PJ_PROJ = list.filter(function(p){return (p.hull||'').toUpperCase()===window.PJ_HULL;})[0]
-                   || {hull:hull,name:hull,pm:'',stage:''};
-  window.PJ_CARRY = '?p='+encodeURIComponent(hull);
-})();
-</script>
-
-<script>
-window.PJX = (function(){
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-  function nowISO(){ try{ return new Date().toISOString(); }catch(e){ return ''; } }
-  function fmt(iso){ try{ var d=new Date(iso); return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
-  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  function curUser(){ try{ return localStorage.getItem('pw_user') || window.PW_USER_DEFAULT || 'You'; }catch(e){ return window.PW_USER_DEFAULT||'You'; } }
-  function setUser(u){ try{ localStorage.setItem('pw_user', u); }catch(e){} }
-  // simulated Teams/email notification toast (matches the Sales editor look)
-  var nEl;
-  function notify(html, kind){
-    if(!nEl){ nEl=document.createElement('div'); document.body.appendChild(nEl); }
-    nEl.className='sp-notify'+(kind?(' '+kind):'');
-    var ic = kind==='warn'
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>';
-    nEl.innerHTML=ic+'<span>'+html+'</span>'; nEl.classList.add('show');
-    clearTimeout(nEl._t); nEl._t=setTimeout(function(){ nEl.classList.remove('show'); }, 6500);
-  }
-  // identity switcher (shared pw_user) -> calls onChange(user)
-  function identityBar(host, onChange){
-    var all=[]; (window.PJ_PMS||[]).concat(window.PJ_ENG||[],window.PJ_FOREMEN||[]).forEach(function(n){ if(all.indexOf(n)<0)all.push(n); });
-    var wrap=document.createElement('span'); wrap.className='sp-userbar';
-    wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Viewing as</span>';
-    var sel=document.createElement('select'); sel.className='sp-user-sel';
-    if(all.indexOf(curUser())<0){ var x=document.createElement('option'); x.value=curUser(); x.textContent=curUser(); sel.appendChild(x); }
-    all.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; if(n===curUser())o.selected=true; sel.appendChild(o); });
-    sel.value=curUser();
-    sel.addEventListener('change', function(){ setUser(sel.value); if(onChange)onChange(sel.value); });
-    wrap.appendChild(sel); host.appendChild(wrap); return sel;
-  }
-  // snapshot + manual-update bar. keys() -> array of per-project storage keys.
-  function snapBar(host, hull, keysFn, versionFn){
-    var KEY='pw_snapshots_'+hull;
-    var bar=document.createElement('div'); bar.className='snap-bar';
-    function paint(){
-      var snaps=load(KEY,[]);
-      bar.innerHTML='<span class="snap-v">'+esc(versionFn?versionFn():'')+'</span>'+
-        '<span>Local working copy · '+snaps.length+' snapshot'+(snaps.length===1?'':'s')+'</span><span class="snap-sp"></span>'+
-        '<button type="button" class="snap-btn" data-a="snap"><svg viewBox="0 0 24 24"><path d="M5 7h3l1-2h6l1 2h3v12H5z"/><circle cx="12" cy="13" r="3"/></svg>Take snapshot</button>'+
-        '<button type="button" class="snap-btn" data-a="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Snapshots ('+snaps.length+')</button>'+
-        '<button type="button" class="snap-btn" data-a="upd"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Update now</button>';
-    }
-    paint();
-    bar.addEventListener('click', function(e){
-      var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
-      if(a==='snap'){
-        var lab=prompt('Snapshot label:', 'Snapshot '+today()); if(lab===null) return;
-        var data={}; keysFn().forEach(function(k){ var v=localStorage.getItem(k); if(v!=null) data[k]=v; });
-        var snaps=load(KEY,[]); snaps.unshift({ts:nowISO(), label:lab, by:curUser(), data:data, version:(versionFn?versionFn():'')});
-        save(KEY,snaps); paint(); notify('Snapshot <b>'+esc(lab)+'</b> saved ('+keysFn().length+' items).');
-      } else if(a==='upd'){
-        notify('Updated — reloaded the latest saved state.'); setTimeout(function(){ location.reload(); }, 500);
-      } else if(a==='list'){ openSnaps(); }
-    });
-    function openSnaps(){
-      var snaps=load(KEY,[]);
-      var ov=document.createElement('div'); ov.className='cmt-overlay';
-      var body = snaps.length ? snaps.map(function(s,i){
-        return '<div class="rev-row"><div class="rev-v">#'+(snaps.length-i)+'</div><div class="rev-main">'+
-          '<div class="rev-sum">'+esc(s.label)+'</div><div class="rev-meta">'+esc(fmt(s.ts))+' · by '+esc(s.by)+(s.version?(' · '+esc(s.version)):'')+
-          ' · <a href="#" data-restore="'+i+'">Restore</a> · <a href="#" data-del="'+i+'">Delete</a></div></div></div>';
-      }).join('') : '<div class="pj-empty">No snapshots yet. Take one to capture the current state.</div>';
-      ov.innerHTML='<div class="cmt-sheet"><div class="cmt-sheet-top"><h3>Snapshots — '+esc(hull)+'</h3>'+
-        '<span class="cmt-sheet-tools"><button type="button" class="primary" data-close>Close</button></span></div>'+
-        '<p class="cmt-sheet-sub">Point-in-time copies of this project’s working data (spec, comments, change orders, revisions, planning).</p>'+body+'</div>';
-      document.body.appendChild(ov);
-      ov.addEventListener('click', function(e){
-        if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
-        var r=e.target.closest('[data-restore]'); var d=e.target.closest('[data-del]');
-        if(r){ e.preventDefault(); var i=+r.getAttribute('data-restore'); var s=load(KEY,[])[i];
-          if(s && confirm('Restore snapshot “'+s.label+'”? This overwrites the current working copy.')){
-            Object.keys(s.data).forEach(function(k){ localStorage.setItem(k, s.data[k]); }); location.reload(); } }
-        if(d){ e.preventDefault(); var j=+d.getAttribute('data-del'); var arr=load(KEY,[]); arr.splice(j,1); save(KEY,arr); ov.remove(); paint(); openSnaps(); }
-      });
-    }
-    host.appendChild(bar); return bar;
-  }
-  // mini rich-text editor: returns {el, getHTML, setHTML}
-  function richEditor(initialHTML, readOnly){
-    var box=document.createElement('div'); box.className='co-rt';
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    var area=document.createElement('div'); area.className='co-rt-area'; area.setAttribute('contenteditable', readOnly?'false':'true');
-    area.innerHTML=initialHTML||'';
-    var cmds=[['B','bold','Bold'],['I','italic','Italic'],['U','underline','Underline'],['•','insertUnorderedList','Bulleted list'],['1.','insertOrderedList','Numbered list'],['↺','removeFormat','Clear formatting']];
-    cmds.forEach(function(c){ var b=document.createElement('button'); b.type='button'; b.textContent=c[0]; b.title=c[2];
-      if(c[0]==='I')b.style.fontStyle='italic'; if(c[0]==='U')b.style.textDecoration='underline';
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly)return; document.execCommand(c[1],false,null); area.focus(); }); bar.appendChild(b); });
-    if(readOnly){ bar.style.display='none'; }
-    box.appendChild(bar); box.appendChild(area);
-    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
-  }
-  // file chip as an HTML string — a clickable link (opens in a new tab) when the
-  // file carries data/url, else a plain badge.
-  function chipHTML(f){
-    var name=(f&&f.name)||'file';
-    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
-    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
-    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
-    var src=(f&&(f.data||f.url))||'';
-    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
-    return '<span class="dl-chip">'+ic+label+'</span>';
-  }
-  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
-  function _openData(href, name){
-    try{
-      var c=href.indexOf(","); if(c<0) return false;
-      var meta=href.substring(5,c), data=href.substring(c+1);
-      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
-      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
-      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
-      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
-      var w=window.open(url,"_blank");
-      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
-      return true;
-    }catch(e){ return false; }
-  }
-  try{ document.addEventListener("click", function(e){
-    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
-    if(!a) return; var href=a.getAttribute("href")||"";
-    if(href.indexOf("data:")!==0) return;
-    e.preventDefault();
-    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
-    _openData(href, nm);
-  }, false); }catch(e){}
-  return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
-})();
-</script>
-
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Price calculation</div>
-    <h1>Price calculation</h1>
-    <p class="pc-lead">The price calculation as it flowed from Sales when this project was realized. The calculation is <strong>read-only</strong>; the <strong>risk register</strong> below is maintained by the project PM as the build develops and is mirrored into the management follow-up.</p>
+    <div class="crumb"><a href="index.html">Yacht Builder</a> / Ongoing Projects</div>
+    <h1>Ongoing Projects</h1>
+    <p>Projects currently in progress. Open one to reach its specification and revisions, or pause it to Resting.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html" class="on">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="pc-host">
-    <div class="pc-bar"><h2 class="pc-h2" style="margin:0">Price calculation <span class="pc-hint">read-only · as sold</span></h2><button type="button" class="btn-row" id="pc-fs" style="margin-left:auto">&#9974; Full screen</button><a class="btn-row" id="pc-open" target="_blank" rel="noopener">Open in new tab &#8599;</a></div>
-    <iframe id="pc-frame" class="pc-frame" title="Price calculation (read-only)" src="about:blank"></iframe>
-    <div class="pc-note"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Frozen copy from Sales (<code>pw_pprice_&lt;hull&gt;</code>). Use <b>Full screen</b> for the widest view. To change pricing, a new revision is issued on the Sales side.</span></div>
-  </div>
-  <button type="button" class="btn-row pc-fsexit" id="pc-fsexit">&#9974; Exit full screen (Esc)</button>
+  <div class="src-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; moves are saved in this browser; the list will read live from the <strong>Projects</strong> folder once connected.</span></div>
   <div class="card">
-    <h2 class="pc-h2">Who are you <span class="pc-hint">actions below are identity-gated</span></h2>
-    <div id="pj-idbar"></div>
+    <table>
+      <thead><tr><th>Project</th><th>Type</th><th>Stage</th><th>Owner</th><th>Updated</th><th></th></tr></thead>
+      <tbody id="pw-tbody"><tr data-hull="B107C"><td><div class="proj-cell"><span class="proj-hull">B107C</span><span class="proj-name">B107C</span></div></td><td>Sail</td><td>Specification · Rev C (draft)</td><td>MS</td><td>2026-06-20</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B107C">Open</a><a class="btn-row" href="pricing.html?p=B107C">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B107C">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B107C" data-name="B107C" data-type="Sail" data-owner="MS">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B107C" data-name="B107C" data-type="Sail" data-owner="MS">Realize &rarr;</button></div></td></tr><tr data-hull="B123-45"><td><div class="proj-cell"><span class="proj-hull">B123-45</span><span class="proj-name">Blue Horizon</span></div></td><td>Sail</td><td>Pricing calculation</td><td>KK</td><td>2026-06-18</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B123-45">Open</a><a class="btn-row" href="pricing.html?p=B123-45">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B123-45">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B123-45" data-name="Blue Horizon" data-type="Sail" data-owner="KK">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B123-45" data-name="Blue Horizon" data-type="Sail" data-owner="KK">Realize &rarr;</button></div></td></tr><tr data-hull="B156-02"><td><div class="proj-cell"><span class="proj-hull">B156-02</span><span class="proj-name">Aurora</span></div></td><td>Power</td><td>Initial 10-pager</td><td>SH</td><td>2026-06-12</td><td><div class="proj-acts"><a class="btn-row primary" href="specification.html?p=B156-02">Open</a><a class="btn-row" href="pricing.html?p=B156-02">Price calc</a><a class="btn-row" href="specification-revisions.html?p=B156-02">Revisions</a><button type="button" class="btn-row" data-move-to="resting" data-hull="B156-02" data-name="Aurora" data-type="Power" data-owner="SH">Pause</button><button type="button" class="btn-row realize" data-move-to="realized" data-hull="B156-02" data-name="Aurora" data-type="Power" data-owner="SH">Realize &rarr;</button></div></td></tr></tbody>
+    </table>
   </div>
-  <div class="card">
-    <h2 class="pc-h2">Project manager <span class="pc-hint">reassignable by the Head of Projects</span></h2>
-    <div id="pm-reassign"></div>
-  </div>
-  <div class="card">
-    <h2 class="pc-h2">Engineering risks — shared <span class="pc-hint">from Engineering; the PM adds them to the register</span></h2>
-    <div id="engrisk-host"></div>
-  </div>
-  <div class="card">
-    <h2 class="pc-h2">Project risk register <span class="pc-hint">live · mirrors to management follow-up</span></h2>
-    <div id="rk-role" class="rk-role view"></div>
-    <div id="rk-host"></div>
-  </div>
-<script>(function(){ var f=document.getElementById("pc-frame"); var src="pricing-tool.html?p="+encodeURIComponent(window.PJ_HULL||"B107C")+"&m=view"; if(f) f.src=src; var o=document.getElementById("pc-open"); if(o) o.href=src; var exitBtn=document.getElementById("pc-fsexit"), fsBtn=document.getElementById("pc-fs"); function setFS(on){ f.classList.toggle("fs",on); exitBtn.classList.toggle("show",on); document.body.style.overflow=on?"hidden":""; } if(fsBtn) fsBtn.addEventListener("click", function(){ setFS(true); }); if(exitBtn) exitBtn.addEventListener("click", function(){ setFS(false); }); document.addEventListener("keydown", function(e){ if(e.key==="Escape") setFS(false); }); })();</script>
+  <script>window.PW_PROJECTS = [{"hull": "B107C", "name": "B107C", "type": "Sail", "owner": "MS", "stage": "Specification · Rev C (draft)", "status": "ongoing", "updated": "2026-06-20", "paused": "", "last": ""}, {"hull": "B123-45", "name": "Blue Horizon", "type": "Sail", "owner": "KK", "stage": "Pricing calculation", "status": "ongoing", "updated": "2026-06-18", "paused": "", "last": ""}, {"hull": "B156-02", "name": "Aurora", "type": "Power", "owner": "SH", "stage": "Initial 10-pager", "status": "ongoing", "updated": "2026-06-12", "paused": "", "last": ""}, {"hull": "B098-11", "name": "Norderö", "type": "Sail", "owner": "AB", "stage": "Specification · Rev B (released)", "status": "resting", "updated": "2026-04-08", "paused": "2026-04-10", "last": "2026-04-08"}, {"hull": "B142-03", "name": "Silver Lining", "type": "Catamaran", "owner": "PH", "stage": "Pricing calculation", "status": "resting", "updated": "2026-04-28", "paused": "2026-05-02", "last": "2026-04-28"}];</script>
 
+
+<div class="pw-modal" id="pw-modal" role="dialog" aria-modal="true" aria-labelledby="pw-mtitle">
+  <div class="pw-dialog">
+    <h3 id="pw-mtitle">Move project</h3>
+    <p class="pw-sub" id="pw-msub"></p>
+    <dl class="pw-id">
+      <dt>Hull no.</dt><dd id="pw-id-hull"></dd>
+      <dt>Name</dt><dd id="pw-id-name"></dd>
+      <dt>Type</dt><dd id="pw-id-type"></dd>
+      <dt>Owner</dt><dd id="pw-id-owner"></dd>
+    </dl>
+    <div class="pw-acts">
+      <button type="button" class="pw-btn" id="pw-cancel">Cancel</button>
+      <button type="button" class="pw-btn go" id="pw-confirm">Move</button>
+    </div>
+  </div>
+</div>
 <script>
 (function(){
-  var X=window.PJX, H=(window.PJ_HULL||'B107C'); if(!X) return;
-  var HEAD='Patric Brännbacka', CEO='Tom von Bonsdorff', PMS=window.PJ_PMS||[];
-  var KEY='pw_proj_risks_'+H, EKEY='pw_eng_risks_'+H;
-  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
-  function band(n){ return n<=5?'rk-lo':n<=10?'rk-md':'rk-hi'; }
-  function pinfo(){ return X.load('pw_projinfo_'+H,{})||{}; }
-  function PM(){ var pi=pinfo(); return pi.pm||(window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
-  function isPM(){ return X.curUser()===PM(); }
-  function loadR(){ return X.load(KEY,[])||[]; }  function saveR(a){ X.save(KEY,a); }
-
-  // ---- PM reassignment (Head of Projects / CEO) ----
-  function renderPM(){
-    var host=document.getElementById('pm-reassign'); if(!host) return;
-    var me=X.curUser(), gov=(me===HEAD||me===CEO);
-    if(gov){
-      host.innerHTML='Reassign PM: <select id="pmsel2" class="rk-sel">'+PMS.map(function(x){return '<option'+(x===PM()?' selected':'')+'>'+X.esc(x)+'</option>';}).join('')+
-        '</select> <button class="btn-row" id="pmapply2">Apply</button> <span class="pc-hint">acting as '+X.esc(me)+'</span>';
-      document.getElementById('pmapply2').addEventListener('click', function(){ var v=document.getElementById('pmsel2').value; var pi=pinfo(); pi.pm=v; X.save('pw_projinfo_'+H,pi); X.notify('PM reassigned to <b>'+X.esc(v)+'</b>.'); renderAll(); });
-    } else {
-      host.innerHTML='PM: <b>'+X.esc(PM()||'—')+'</b> <span class="pc-hint">— assigned at creation; only the Head of Projects (<b>'+X.esc(HEAD)+'</b>) or the CEO ('+X.esc(CEO)+') may reassign. Switch identity above.</span>';
+  var PAGE = "ongoing";
+  var SEED = window.PW_PROJECTS || [];
+  var EMPTY = "<tr class=\"tbl-empty\"><td colspan=\"6\"><div class=\"empty\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 9h18\"/></svg>No active projects right now. Create one, or resume a resting project.</div></td></tr>";
+  function ls(k,d){ try{ return JSON.parse(localStorage.getItem(k)) || d; }catch(e){ return d; } }
+  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  function moves(){ return ls('pw_moves', {}); }
+  function created(){ return ls('pw_created', []); }
+  function all(){ return SEED.concat(created()); }
+  function eff(p){ var m=moves()[p.hull]; return m ? m.to : p.status; }
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function actsHTML(p){
+    var d='data-hull="'+esc(p.hull)+'" data-name="'+esc(p.name)+'" data-type="'+esc(p.type)+'" data-owner="'+esc(p.owner)+'"';
+    var open='<a class="btn-row primary" href="specification.html?p='+encodeURIComponent(p.hull)+'">Open</a>';
+    var price='<a class="btn-row" href="pricing.html?p='+encodeURIComponent(p.hull)+'">Price calc</a>';
+    var realize='<button type="button" class="btn-row realize" data-move-to="realized" '+d+'>Realize &rarr;</button>';
+    if(PAGE==='ongoing'){
+      return '<div class="proj-acts">'+open+price+
+        '<a class="btn-row" href="specification-revisions.html?p='+encodeURIComponent(p.hull)+'">Revisions</a>'+
+        '<button type="button" class="btn-row" data-move-to="resting" '+d+'>Pause</button>'+realize+'</div>';
     }
+    return '<div class="proj-acts">'+open+price+
+      '<button type="button" class="btn-row" data-move-to="ongoing" '+d+'>Resume</button>'+realize+'</div>';
   }
-
-  // ---- shared engineering risks -> add to project register (PM only) ----
-  function renderIntake(){
-    var host=document.getElementById('engrisk-host'); if(!host) return;
-    var shared=(X.load(EKEY,[])||[]).filter(function(r){ return r.shared && !r.added; });
-    var ed=isPM();
-    if(!shared.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks shared for '+X.esc(H)+' yet. Engineering shares them from <b>Engineering Projects → Risks</b>.</div>'; return; }
-    host.innerHTML='<div class="rk-wrap"><table class="rk"><thead><tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P×C</th><th>From</th><th></th></tr></thead><tbody>'+
-      shared.map(function(r,i){ var n=num(r.p0)*num(r.c0);
-        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td class="r"><span class="rk-score '+band(n)+'">'+n+'</span></td><td>'+X.esc(r.by||'Engineering')+'</td>'+
-        '<td>'+(ed?'<button class="btn-row" data-add="'+X.esc(r.id||('e'+i))+'">Add to register</button>':'<span class="pc-hint">PM adds</span>')+'</td></tr>';
-      }).join('')+'</tbody></table></div>'+(ed?'':'<div class="rk-role view" style="margin-top:8px">Only the project PM (<b>'+X.esc(PM()||'—')+'</b>) can add shared risks.</div>');
-    if(ed) host.querySelectorAll('[data-add]').forEach(function(b){ b.addEventListener('click', function(){
-      var id=b.dataset.add; var es=X.load(EKEY,[])||[]; var src=es.filter(function(r){return (r.id||'')===id;})[0]; if(!src) return;
-      var a=loadR(); a.push({risk:src.risk,desc:src.desc||'',p0:src.p0,c0:src.c0,action:src.action||'',resp:src.resp||'Engineering',date:X.today(),p1:src.p1||src.p0,c1:src.c1||src.c0,status:'Started',fromEng:true});
-      saveR(a); for(var i=0;i<es.length;i++){ if((es[i].id||'')===id) es[i].added=true; } X.save(EKEY,es);
-      X.notify('Added <b>'+X.esc(src.risk||'risk')+'</b> to the project risk register.'); renderAll();
-    }); });
+  function rowHTML(p){
+    var mv=moves()[p.hull], c3, c5;
+    if(PAGE==='ongoing'){ c3=esc(p.stage)||'&mdash;'; c5=esc((mv&&mv.to==='ongoing'&&mv.when)?mv.when:(p.updated||'')); }
+    else { c3=esc((mv&&mv.to==='resting'&&mv.when)?mv.when:(p.paused||'')); c5=esc(p.last||p.updated||''); }
+    if(!c3) c3='&mdash;'; if(!c5) c5='&mdash;';
+    return '<tr data-hull="'+esc(p.hull)+'"><td><div class="proj-cell"><span class="proj-hull">'+esc(p.hull)+
+      '</span><span class="proj-name">'+esc(p.name)+'</span></div></td><td>'+esc(p.type)+'</td><td>'+c3+
+      '</td><td>'+esc(p.owner)+'</td><td>'+c5+'</td><td>'+actsHTML(p)+'</td></tr>';
   }
-
-  // ---- editable project risk register (PM) / read-only (others) ----
-  function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="rk-sel" data-ri="'+i+'" data-rf="'+f+'">'+o+'</select>'; }
-  function statusSel(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="rk-sel" data-ri="'+i+'" data-rf="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
-  function renderRisk(){
-    var host=document.getElementById('rk-host'), roleEl=document.getElementById('rk-role'); if(!host) return;
-    var ed=isPM(), a=loadR();
-    if(roleEl){ roleEl.className='rk-role '+(ed?'edit':'view'); roleEl.innerHTML=ed
-      ? 'You are the project PM (<b>'+X.esc(PM())+'</b>) — editable; mirrors to the management follow-up.'
-      : 'Read-only — only the project PM (<b>'+X.esc(PM()||'—')+'</b>) may edit. Switch identity above.'; }
-    if(!a.length){ host.innerHTML='<div class="rk-wrap" style="padding:14px;color:var(--muted)">No risks yet. '+(ed?'Add one below, or add a shared engineering risk above.':'Seeded from the price calculation when the project is realized.')+'</div>'+(ed?addBtn():''); wire(ed); return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0), n1=num(r.p1)*num(r.c1); var tag=r.fromEng?' <span class="pc-hint">(eng)</span>':'';
-      if(ed){ return '<tr>'+
-        '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="risk">'+X.esc(r.risk||'')+'</textarea>'+tag+'</td>'+
-        '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="desc">'+X.esc(r.desc||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="rk-score '+band(n0)+'">'+n0+'</span></td>'+
-        '<td><textarea class="rk-txt" data-ri="'+i+'" data-rf="action">'+X.esc(r.action||'')+'</textarea></td>'+
-        '<td><input class="rk-txt" style="min-height:auto" data-ri="'+i+'" data-rf="resp" value="'+X.esc(r.resp||'')+'"></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="rk-score '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+statusSel(i,r.status)+'</td><td><button class="btn-row" data-del="'+i+'">✕</button></td></tr>';
-      }
-      return '<tr class="rk-ro"><td>'+X.esc(r.risk||'')+tag+'</td><td>'+X.esc(r.desc||'')+'</td>'+
-        '<td class="r">'+num(r.p0)+'</td><td class="r">'+num(r.c0)+'</td><td class="r"><span class="rk-score '+band(n0)+'">'+n0+'</span></td>'+
-        '<td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
-        '<td class="r">'+num(r.p1)+'</td><td class="r">'+num(r.c1)+'</td><td class="r"><span class="rk-score '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+X.esc(r.status||'')+'</td><td></td></tr>';
-    }).join('');
-    host.innerHTML='<div class="rk-wrap"><table class="rk"><thead><tr><th>Identified risk</th><th>Description</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">P′</th><th class="r">C′</th><th class="r">Residual</th><th>Status</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
-      '<div class="rk-legend"><span>Scales <b>1–5</b>.</span><span><span class="rk-score rk-lo">0–5</span> no action</span><span><span class="rk-score rk-md">6–10</span> investigate</span><span><span class="rk-score rk-hi">11–25</span> rectify</span></div>'+(ed?addBtn():'');
-    wire(ed);
+  var tb=document.getElementById('pw-tbody');
+  var modal=document.getElementById('pw-modal'), pending=null;
+  function render(){
+    var list=all().filter(function(p){ return eff(p)===PAGE; });
+    tb.innerHTML = list.length ? list.map(rowHTML).join('') : EMPTY;
+    Array.prototype.forEach.call(tb.querySelectorAll('[data-move-to]'),function(b){
+      b.addEventListener('click',function(){
+        pending={to:b.getAttribute('data-move-to'),hull:b.getAttribute('data-hull'),
+                 name:b.getAttribute('data-name'),type:b.getAttribute('data-type'),
+                 owner:b.getAttribute('data-owner')};
+        openModal();
+      });
+    });
   }
-  function addBtn(){ return '<button type="button" class="rk-add" id="rk-add">+ Add risk</button>'; }
-  function wire(ed){ if(!ed) return;
-    var host=document.getElementById('rk-host');
-    host.querySelectorAll('[data-ri]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadR(); a[+el.dataset.ri][el.dataset.rf]=el.value; saveR(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.rf)>=0) renderRisk(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadR(); a.splice(+b.dataset.del,1); saveR(a); renderRisk(); }); });
-    var add=document.getElementById('rk-add'); if(add) add.addEventListener('click', function(){ var a=loadR(); a.push({risk:'',desc:'',p0:3,c0:3,action:'',resp:'',date:'',p1:2,c1:2,status:'Not started'}); saveR(a); renderRisk(); });
+  function openModal(){
+    var toResting = pending.to==='resting';
+    var toRealized = pending.to==='realized';
+    document.getElementById('pw-id-hull').textContent=pending.hull;
+    document.getElementById('pw-id-name').textContent=pending.name;
+    document.getElementById('pw-id-type').textContent=pending.type;
+    document.getElementById('pw-id-owner').textContent=pending.owner;
+    document.getElementById('pw-mtitle').textContent = toRealized ? 'Realize & transfer to Projects?'
+      : (toResting ? 'Move to Resting?' : 'Resume to Ongoing?');
+    document.getElementById('pw-msub').innerHTML = toRealized
+      ? 'The sale is final: this project is <b>transferred to the Projects area</b> (live build, change orders &amp; planning). A <b>locked, read-only &ldquo;as&nbsp;sold&rdquo; copy</b> of the approved specification stays here in Sales.'
+      : (toResting
+        ? 'This project moves out of Ongoing into Resting. You can resume it anytime.'
+        : 'This project moves back into Ongoing as active work.');
+    document.getElementById('pw-confirm').textContent = toRealized ? 'Realize & transfer'
+      : (toResting ? 'Move to Resting' : 'Resume to Ongoing');
+    modal.classList.add('open');
   }
-
-  function renderAll(){ renderPM(); renderIntake(); renderRisk(); }
-  if(X.identityBar) X.identityBar(document.getElementById('pj-idbar'), function(){ renderAll(); });
-  renderAll();
+  function closeModal(){ modal.classList.remove('open'); pending=null; }
+  document.getElementById('pw-cancel').addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.getElementById('pw-confirm').addEventListener('click', function(){
+    if(!pending) return;
+    var m=moves(); m[pending.hull]={to:pending.to, when:today()}; save('pw_moves', m);
+    var msg;
+    if(pending.to==='realized'){
+      // freeze a locked "as sold" copy of the approved spec, here in Sales
+      var H=(pending.hull||'').toUpperCase();
+      try{
+        if(!localStorage.getItem('pw_assold_'+H)){
+          var spec=localStorage.getItem('pw_spec_'+H);
+          var stamp={when:today(), by:'Sales', spec:spec||null};
+          localStorage.setItem('pw_assold_'+H, JSON.stringify(stamp));
+        }
+        var rl=ls('pw_realized', []);
+        if(!rl.some(function(x){return (x.hull||'').toUpperCase()===H;})){
+          rl.push({hull:pending.hull, name:pending.name, type:pending.type, owner:pending.owner, when:today()});
+          save('pw_realized', rl);
+        }
+        // freeze the price calculation as-sold + flow a read-only copy + seed the PM risk register
+        var pc=localStorage.getItem('pw_price_'+H);
+        if(pc){
+          if(!localStorage.getItem('pw_assold_price_'+H)) localStorage.setItem('pw_assold_price_'+H, pc);
+          if(!localStorage.getItem('pw_pprice_'+H)) localStorage.setItem('pw_pprice_'+H, pc);
+          if(!localStorage.getItem('pw_proj_risks_'+H)){
+            try{ var pj=JSON.parse(pc); if(pj&&pj.risks) localStorage.setItem('pw_proj_risks_'+H, JSON.stringify(pj.risks)); }catch(e2){}
+          }
+        }
+      }catch(e){}
+      msg='Realized ' + pending.hull + (pending.name ? ' “'+pending.name+'”' : '') + ' — transferred to Projects; as-sold copy locked in Sales.';
+    } else {
+      var where = pending.to==='resting' ? 'Resting' : 'Ongoing';
+      msg='Moved ' + pending.hull + (pending.name ? ' “'+pending.name+'”' : '') + ' to ' + where + '.';
+    }
+    closeModal(); render();
+    if(window.__toast) window.__toast(msg);
+  });
+  render();
 })();
 </script>
 
-
-<script>
-/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
-   links, and reflects the project name in headers. */
-(function(){
-  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
-  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
-  var list = window.PJ_LIST ? window.PJ_LIST() : [];
-  var pick=document.getElementById('pj-pick');
-  if(pick){
-    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
-      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
-    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
-    var h=a.getAttribute('href')||'';
-    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
-    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
-  });
-  // badge the Project development tab when reference proposals are pending the PM
-  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
-    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
-    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
-    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
-  }catch(e){}
-})();
-</script>
 </main>
 
 <footer>

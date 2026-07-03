@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Risks · Engineering Projects</title>
+<title>Calculations · Engineering</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -1136,121 +1136,225 @@ window.ENGX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Risks</div>
-    <h1>Risks</h1>
-    <p>The <strong>project risk register</strong> (read-only, maintained by the PM on the project side) for <span class="pj-proj-ref"></span>, and the <strong>engineering risk list</strong> for this project. Engineers add risks and <strong>Share to project</strong>; the PM folds shared risks into the register (no approve/decline needed).</p>
+    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / Calculations</div>
+    <h1>Calculations</h1>
+    <p>The engineering <strong>calculations workbench</strong>. Open a calculation, <strong>Generate&nbsp;PDF</strong>, <strong>Edit</strong> to fill in the values, then <strong>Send to project</strong> &mdash; that issues a <strong>revision</strong> and puts it <strong>under review</strong> on the project&rsquo;s <strong>Project development</strong> page. <strong>Load from project</strong> brings an issued calc back to revise.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html" class="on">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="role-bar" id="er-role"></div>
-  <div class="eng-panel"><h2 class="er-h">Project risk register <span class="er-sub">read-only · from the project</span></h2><div id="er-proj"></div></div>
-  <div class="eng-panel"><h2 class="er-h">Engineering risk list <span class="er-sub">this project · share to the project</span></h2><div id="er-eng"></div></div>
+  <div class="role-bar" id="calc-role"></div>
+  <div class="eng-panel"><h2><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add a calculation</h2><div class="eng-form"><div><label class="fl">Title</label><input type="text" id="calc-title" placeholder="e.g. Bow thruster tunnel — flow &amp; thrust"></div><div class="eng-actions" style="margin:0"><div style="flex:1"><label class="fl">Area</label><select id="calc-area"></select></div><div style="flex:1"><label class="fl">Document reference</label><input type="text" id="calc-doc" placeholder="e.g. BY-CALC-…"></div></div><div class="eng-actions"><button type="button" class="eng-btn go" id="calc-add"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create blank sheet</button><button type="button" class="eng-btn" id="calc-load"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Load from project</button><span id="calc-flash" style="color:var(--good);font:600 12px/1 var(--sans)"></span></div></div></div>
+  <div class="eng-panel"><h2><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h2M8 13h2M14 9h2M14 13h2"/></svg>Calculations</h2><p class="eng-hint">Each calculation is a branded sheet you can fill in, generate as a PDF, revise and send to a project. The engine-room ventilation calc is real; the others are templates to complete.</p><div class="eng-actions" style="margin:0 0 12px"><select id="calc-filter" class="eng-btn"></select></div><div id="calc-list"></div></div>
 
-
-<script>
-/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
-   links, and reflects the project name in headers. */
-(function(){
-  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
-  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
-  var list = window.PJ_LIST ? window.PJ_LIST() : [];
-  var pick=document.getElementById('pj-pick');
-  if(pick){
-    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
-      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
-    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
-    var h=a.getAttribute('href')||'';
-    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
-    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
-  });
-  // badge the Project development tab when reference proposals are pending the PM
-  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
-    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
-    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
-    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
-  }catch(e){}
-})();
-</script>
 </main>
+  <script>window.ENG_CALC_SEED=[{"id": "CALC-ERV-001", "area": "40", "title": "Engine room ventilation — ISO 8861", "doc": "BY-CALC-ERV-001", "by": "A. Boström", "when": "2026-06-30T08:00:00Z", "rev": "A", "revs": [{"rev": "A", "when": "2026-06-30T08:00:00Z", "by": "A. Boström", "note": "Issued for design"}], "text": "<div><p><b>Engine room ventilation</b> — per ISO 8861:1998. See the calculation sheet PDF.</p></div>", "files": [{"name": "Engine-Room-Ventilation-Calculation.pdf", "kind": "pdf", "data": ""}]}, {"id": "CALC-TPL-BILGE", "area": "50", "title": "Bilge pumping capacity", "doc": "BY-CALC-BILGE", "by": "Mikael Strengell", "when": "2026-06-30T08:00:00Z", "rev": "—", "revs": [], "text": "<div class=\"erv-sheet-embed\"><div class=\"sheet\"><div class=\"top\"><b style=\"color:#0e5a8a;font:700 18px serif\">BALTIC YACHTS</b><div class=\"dh\"><div class=\"k\">Engineering calculation sheet</div>Doc. no. <b>BY-CALC-BILGE</b> &middot; Rev. <b class=\"rev-cur\">&mdash;</b><br>Template</div></div><h1>Bilge Pumping Capacity</h1><p class=\"sub\">Required bilge pump rate and number of pumps.</p><div><span class=\"lab\">Vessel</span><span class=\"val\">[Baltic …]</span></div><div><span class=\"lab\">Hull no.</span><span class=\"val\">[B…]</span></div><div><span class=\"lab\">Compartment</span><span class=\"val\">[bilge zone]</span></div><div><span class=\"lab\">Discipline</span><span class=\"val\">Systems</span></div><div><span class=\"lab\">Prepared by</span><span class=\"val\">[name]</span></div><div><span class=\"lab\">Checked by</span><span class=\"val\">[name]</span></div><div class=\"std\"><svg viewBox=\"0 0 24 24\"><path d=\"M6 2h9l3 3v17H6z\"/><path d=\"M9 9h6M9 13h6M9 17h4\"/></svg><div><b>Template &mdash; fill in the values.</b> Method &mdash; <b>Class rules / ISO 15083</b>. Replace the bracketed placeholders with the project values and attach the calculation working.</div></div><h2>1 &middot; Inputs</h2><table><thead><tr><th>Quantity</th><th class=\"r\">Value</th></tr></thead><tbody><tr><td>Compartments served</td><td class=\"r\">[list]</td></tr><tr><td>Largest compartment volume</td><td class=\"r\">[m³]</td></tr><tr><td>Bilge main bore, d</td><td class=\"r\">[mm]</td></tr><tr><td>Design pumping velocity</td><td class=\"r\">[m/s]</td></tr></tbody></table><h2>2 &middot; Calculation</h2><div class=\"calc\"><div class=\"lbl\">2.1  Required pump rate</div><div class=\"eq\">q = f(d) = … = <span class=\"res\">[m³/h]</span></div></div><div class=\"calc\"><div class=\"lbl\">2.2  Number of pumps</div><div class=\"eq\">n = ⌈q / q<sub>pump</sub>⌉ = <span class=\"res\">[n]</span></div></div><div class=\"result\"><div><div class=\"lab2\">Installed bilge capacity</div><div class=\"big\">[m³/h]</div></div><div class=\"sel\"><div class=\"lab2\">Selection</div><b>[to be selected]</b></div></div><h2>3 &middot; Notes</h2><ul class=\"notes\"><li>Confirm number and capacity of bilge pumps against the applicable class rules (e.g. DNV).</li><li>Cross-check the bilge main diameter and the emergency bilge suction.</li></ul><h2>Revisions</h2><table><thead><tr><th>Rev</th><th>Date</th><th>By</th><th>Description</th></tr></thead><tbody class=\"revrows\"><tr><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Draft &mdash; not yet issued</td></tr></tbody></table><div class=\"sign\"><div class=\"b\"><div class=\"role\">Prepared</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Checked</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Approved</div><div class=\"nm\">____________ &middot; ____-__-__</div></div></div><div class=\"foot\"><span><b>Baltic Yachts</b> &middot; Bilge Pumping Capacity</span><span>Template &mdash; fill in.</span></div></div></div>", "files": []}, {"id": "CALC-TPL-BATT", "area": "60", "title": "House battery bank sizing", "doc": "BY-CALC-EL-BATT", "by": "Mikael Strengell", "when": "2026-06-30T08:00:00Z", "rev": "—", "revs": [], "text": "<div class=\"erv-sheet-embed\"><div class=\"sheet\"><div class=\"top\"><b style=\"color:#0e5a8a;font:700 18px serif\">BALTIC YACHTS</b><div class=\"dh\"><div class=\"k\">Engineering calculation sheet</div>Doc. no. <b>BY-CALC-EL-BATT</b> &middot; Rev. <b class=\"rev-cur\">&mdash;</b><br>Template</div></div><h1>House Battery Bank Sizing</h1><p class=\"sub\">Usable energy and bank capacity from the daily load profile.</p><div><span class=\"lab\">Vessel</span><span class=\"val\">[Baltic …]</span></div><div><span class=\"lab\">Hull no.</span><span class=\"val\">[B…]</span></div><div><span class=\"lab\">Consumer group</span><span class=\"val\">House DC</span></div><div><span class=\"lab\">Discipline</span><span class=\"val\">Electrical</span></div><div><span class=\"lab\">Prepared by</span><span class=\"val\">[name]</span></div><div><span class=\"lab\">Checked by</span><span class=\"val\">[name]</span></div><div class=\"std\"><svg viewBox=\"0 0 24 24\"><path d=\"M6 2h9l3 3v17H6z\"/><path d=\"M9 9h6M9 13h6M9 17h4\"/></svg><div><b>Template &mdash; fill in the values.</b> Method &mdash; <b>Daily load profile / IEC 62619</b>. Replace the bracketed placeholders with the project values and attach the calculation working.</div></div><h2>1 &middot; Inputs</h2><table><thead><tr><th>Quantity</th><th class=\"r\">Value</th></tr></thead><tbody><tr><td>Daily energy demand</td><td class=\"r\">[kWh/day]</td></tr><tr><td>Required autonomy</td><td class=\"r\">[h]</td></tr><tr><td>Depth of discharge</td><td class=\"r\">[%]</td></tr><tr><td>System voltage</td><td class=\"r\">[V]</td></tr></tbody></table><h2>2 &middot; Calculation</h2><div class=\"calc\"><div class=\"lbl\">2.1  Usable energy</div><div class=\"eq\">E = demand × autonomy / 24 = <span class=\"res\">[kWh]</span></div></div><div class=\"calc\"><div class=\"lbl\">2.2  Nominal bank</div><div class=\"eq\">Ah = E × 1000 / (V × DoD) = <span class=\"res\">[Ah]</span></div></div><div class=\"result\"><div><div class=\"lab2\">House bank capacity</div><div class=\"big\">[kWh] / [Ah]</div></div><div class=\"sel\"><div class=\"lab2\">Selection</div><b>[to be selected]</b></div></div><h2>3 &middot; Notes</h2><ul class=\"notes\"><li>Add the charge-source balance (alternator / shore / solar) and BMS limits.</li><li>Apply cell-chemistry and temperature derating at the installed location.</li></ul><h2>Revisions</h2><table><thead><tr><th>Rev</th><th>Date</th><th>By</th><th>Description</th></tr></thead><tbody class=\"revrows\"><tr><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Draft &mdash; not yet issued</td></tr></tbody></table><div class=\"sign\"><div class=\"b\"><div class=\"role\">Prepared</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Checked</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Approved</div><div class=\"nm\">____________ &middot; ____-__-__</div></div></div><div class=\"foot\"><span><b>Baltic Yachts</b> &middot; House Battery Bank Sizing</span><span>Template &mdash; fill in.</span></div></div></div>", "files": []}, {"id": "CALC-TPL-FWAT", "area": "50", "title": "Fresh-water demand & tankage", "doc": "BY-CALC-FW", "by": "Mikael Strengell", "when": "2026-06-30T08:00:00Z", "rev": "—", "revs": [], "text": "<div class=\"erv-sheet-embed\"><div class=\"sheet\"><div class=\"top\"><b style=\"color:#0e5a8a;font:700 18px serif\">BALTIC YACHTS</b><div class=\"dh\"><div class=\"k\">Engineering calculation sheet</div>Doc. no. <b>BY-CALC-FW</b> &middot; Rev. <b class=\"rev-cur\">&mdash;</b><br>Template</div></div><h1>Fresh-Water Demand &amp; Tankage</h1><p class=\"sub\">Daily fresh-water demand and required tank volume.</p><div><span class=\"lab\">Vessel</span><span class=\"val\">[Baltic …]</span></div><div><span class=\"lab\">Hull no.</span><span class=\"val\">[B…]</span></div><div><span class=\"lab\">System</span><span class=\"val\">Fresh water</span></div><div><span class=\"lab\">Discipline</span><span class=\"val\">Systems</span></div><div><span class=\"lab\">Prepared by</span><span class=\"val\">[name]</span></div><div><span class=\"lab\">Checked by</span><span class=\"val\">[name]</span></div><div class=\"std\"><svg viewBox=\"0 0 24 24\"><path d=\"M6 2h9l3 3v17H6z\"/><path d=\"M9 9h6M9 13h6M9 17h4\"/></svg><div><b>Template &mdash; fill in the values.</b> Method &mdash; <b>Persons × daily demand</b>. Replace the bracketed placeholders with the project values and attach the calculation working.</div></div><h2>1 &middot; Inputs</h2><table><thead><tr><th>Quantity</th><th class=\"r\">Value</th></tr></thead><tbody><tr><td>Persons on board</td><td class=\"r\">[n]</td></tr><tr><td>Demand per person</td><td class=\"r\">[L/day]</td></tr><tr><td>Endurance</td><td class=\"r\">[days]</td></tr><tr><td>Watermaker output</td><td class=\"r\">[L/h]</td></tr></tbody></table><h2>2 &middot; Calculation</h2><div class=\"calc\"><div class=\"lbl\">2.1  Daily demand</div><div class=\"eq\">Q = persons × per-person = <span class=\"res\">[L/day]</span></div></div><div class=\"calc\"><div class=\"lbl\">2.2  Required tankage</div><div class=\"eq\">V = Q × endurance − watermaker contribution = <span class=\"res\">[L]</span></div></div><div class=\"result\"><div><div class=\"lab2\">Required tankage</div><div class=\"big\">[L]</div></div><div class=\"sel\"><div class=\"lab2\">Selection</div><b>[to be selected]</b></div></div><h2>3 &middot; Notes</h2><ul class=\"notes\"><li>Include the hot-water calorifier draw and a reserve margin.</li><li>Cross-check tank arrangement, baffling and soundings against the GA.</li></ul><h2>Revisions</h2><table><thead><tr><th>Rev</th><th>Date</th><th>By</th><th>Description</th></tr></thead><tbody class=\"revrows\"><tr><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>Draft &mdash; not yet issued</td></tr></tbody></table><div class=\"sign\"><div class=\"b\"><div class=\"role\">Prepared</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Checked</div><div class=\"nm\">____________ &middot; ____-__-__</div></div><div class=\"b\"><div class=\"role\">Approved</div><div class=\"nm\">____________ &middot; ____-__-__</div></div></div><div class=\"foot\"><span><b>Baltic Yachts</b> &middot; Fresh-Water Demand &amp; Tankage</span><span>Template &mdash; fill in.</span></div></div></div>", "files": []}];window.ENG_CALC_SEEDVER="2026-06-30-r4";window.ENG_SHEET_CSS="";window.ENG_SHEET_LOGO="";</script>
 
-<style>
-.er-h{font:700 14px/1.3 var(--sans);margin:0 0 4px;color:var(--ink)}
-.er-sub{font:500 11px/1 var(--sans);color:var(--faint);text-transform:none;margin-left:8px}
-.er-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:9px}
-table.er{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:880px}
-table.er th,table.er td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;color:var(--ink)}
-table.er th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.er td.r,table.er th.r{text-align:right}
-.er-sc{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.er-lo{background:rgba(91,214,163,.14);color:#5bd6a3}.er-md{background:rgba(255,209,102,.14);color:#ffd166}.er-hi{background:rgba(255,123,123,.16);color:#ff8b8b}
-.er-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.er-tx{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.er-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.er-shared{color:#5bd6a3;font-weight:700}
-</style>
 <script>
 (function(){
-  var X=window.PJX; if(!X) return;
+  var X=window.PJX, E=window.ENGX;
   var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
-  var EKEY='pw_eng_risks_'+H, PKEY='pw_proj_risks_'+H;
-  var ENG=window.PJ_ENG||[], DEF=window.PW_USER_DEFAULT||'';
-  var roleEl=document.getElementById('er-role');
-  function canEdit(){ var u=X.curUser(); return ENG.indexOf(u)>=0 || u===DEF; }
-  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
-  function band(n){ return n<=5?'er-lo':n<=10?'er-md':'er-hi'; }
-  function loadE(){ return X.load(EKEY,[])||[]; }  function saveE(a){ X.save(EKEY,a); }
-  function role(){
-    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ renderAll(); });
-    var note=document.createElement('span');
-    if(canEdit()){ note.className='role-note edit'; note.innerHTML='Editing as <b>'+X.esc(X.curUser())+'</b> — add engineering risks and share them to the project.'; }
-    else { note.className='role-note view'; note.innerHTML='Viewer — switch to an engineer to author risks.'; }
-    roleEl.appendChild(note);
-  }
-  function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="er-in" data-ei="'+i+'" data-ef="'+f+'">'+o+'</select>'; }
-  function stat(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="er-in" style="width:auto" data-ei="'+i+'" data-ef="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
+  var AREAS=window.ENG_AREAS||[];
+  var KEY='pw_eng_calcs', SEEDVER=window.ENG_CALC_SEEDVER||'1';
+  var SHEET_CSS=window.ENG_SHEET_CSS||'', LOGO=window.ENG_SHEET_LOGO||'';
+  var DASH='—';
+  function esc(s){ return X.esc(s); }
 
-  function renderProj(){
-    var host=document.getElementById('er-proj'); var a=X.load(PKEY,[])||[];
-    if(!a.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No project risks recorded yet for '+X.esc(H)+'.</div>'; return; }
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead><tr><th>Identified risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">Initial</th><th class="r">Residual</th><th>Status</th></tr></thead><tbody>'+
-      a.map(function(r){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td><td>'+X.esc(r.status||'')+'</td></tr>'; }).join('')+'</tbody></table></div>';
+  function ensureSeed(){ try{
+    var seed=window.ENG_CALC_SEED||[];
+    var cur=X.load(KEY, null);
+    var sv=null; try{ sv=localStorage.getItem('pw_eng_calcs_sv'); }catch(e){}
+    if(cur===null){ X.save(KEY, seed); }
+    else if(sv!==SEEDVER){
+      var byId={}; seed.forEach(function(s){ byId[s.id]=s; });
+      var out=cur.map(function(c){ if(byId[c.id]){ var u=byId[c.id]; delete byId[c.id]; return u; } return c; });
+      seed.forEach(function(s){ if(byId[s.id]){ out.unshift(s); } });
+      X.save(KEY, out);
+    }
+    try{ localStorage.setItem('pw_eng_calcs_sv', SEEDVER); }catch(e){}
+  }catch(e){} }
+  function calcs(){ ensureSeed(); return X.load(KEY, []); }
+  function saveCalcs(a){ X.save(KEY, a); }
+  function getCalc(id){ var a=calcs(); for(var i=0;i<a.length;i++){ if(a[i].id===id) return a[i]; } return null; }
+  function putCalc(c){ var a=calcs(), f=false; for(var i=0;i<a.length;i++){ if(a[i].id===c.id){ a[i]=c; f=true; } } if(!f) a.unshift(c); saveCalcs(a); }
+  function uid(){ return 'CALC-'+Math.abs((Date.now?Date.now():(+new Date()))%1000000)+'-'+Math.floor((''+Math.random()).slice(2,5)); }
+  function flash(m){ var f=document.getElementById('calc-flash'); if(f){ f.textContent=m; setTimeout(function(){ f.textContent=''; },2200); } }
+  function areaOpts(sel, withAll){ sel.innerHTML=(withAll?'<option value="">All areas</option>':'')+AREAS.map(function(a){ return '<option value="'+esc(a.code)+'">'+esc(a.code)+' · '+esc(a.title)+'</option>'; }).join(''); }
+  areaOpts(document.getElementById('calc-area'), false);
+  areaOpts(document.getElementById('calc-filter'), true);
+
+  var roleEl=document.getElementById('calc-role');
+  X.identityBar(roleEl, function(){ paint(); });
+  var hint=document.createElement('span'); hint.className='role-note edit';
+  hint.innerHTML='Working as <b>'+esc(X.curUser())+'</b> — edit a calculation, then send it to a project for review.';
+  roleEl.appendChild(hint);
+
+  function nextRev(r){
+    if(!r || r===DASH || r==='-') return 'A';
+    var a=(''+r).toUpperCase().split(''), i=a.length-1, carry=true;
+    while(i>=0 && carry){ if(a[i]==='Z'){ a[i]='A'; i--; } else { a[i]=String.fromCharCode(a[i].charCodeAt(0)+1); carry=false; } }
+    if(carry) a.unshift('A');
+    return a.join('');
   }
-  function renderEng(){
-    var host=document.getElementById('er-eng'); var ed=canEdit(); var a=loadE();
-    if(!a.length && !ed){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks yet. Switch to an engineer to add them.</div>'; return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-      if(ed){ return '<tr>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="risk">'+X.esc(r.risk||'')+'</textarea></td>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="action">'+X.esc(r.action||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+stat(i,r.status)+'</td>'+
-        '<td>'+(r.added?'<span class="er-shared">in register</span>':'<button class="eng-btn" data-share="'+i+'">'+(r.shared?'Shared ✓':'Share to project')+'</button>')+
-        ' <button class="eng-btn" data-del="'+i+'">✕</button></td></tr>';
+  function revRowsHTML(revs){
+    if(!revs || !revs.length) return '<tr><td>'+DASH+'</td><td>'+DASH+'</td><td>'+DASH+'</td><td>Draft '+DASH+' not yet issued</td></tr>';
+    return revs.map(function(r){ return '<tr><td>'+esc(r.rev)+'</td><td>'+esc((r.when||'').slice(0,10))+'</td><td>'+esc(r.by||'')+'</td><td>'+esc(r.note||'')+'</td></tr>'; }).join('');
+  }
+  function applyRev(text, c){
+    var t=document.createElement('div'); t.innerHTML=text||'';
+    var rows=t.querySelector('.revrows'); if(rows) rows.innerHTML=revRowsHTML(c.revs);
+    var cur=t.querySelector('.rev-cur'); if(cur) cur.textContent=(c.rev||DASH);
+    return t.innerHTML;
+  }
+  function blankSheet(title, area, doc){
+    var logo = LOGO ? ('<img src="'+LOGO+'" alt="Baltic Yachts">') : '<b style="color:#0e5a8a;font:700 18px serif">BALTIC YACHTS</b>';
+    function irow(q){ return '<tr><td>'+esc(q)+'</td><td class="r">[ ]</td></tr>'; }
+    var meta=[['Vessel','[ ]'],['Hull no.','[ ]'],['Compartment','[ ]'],['Discipline','[ ]'],['Prepared by','[name]'],['Checked by','[name]']]
+      .map(function(m){ return '<div><span class="lab">'+m[0]+'</span><span class="val">'+m[1]+'</span></div>'; }).join('');
+    return SHEET_CSS+'<div class="erv-sheet-embed"><div class="sheet">'+
+      '<div class="top">'+logo+'<div class="dh"><div class="k">Engineering calculation sheet</div>Doc. no. <b>'+esc(doc||'BY-CALC-…')+'</b> · Rev. <b class="rev-cur">'+DASH+'</b><br>Draft</div></div>'+
+      '<h1>'+esc(title)+'</h1><p class="sub">[short description]</p>'+
+      '<div class="meta">'+meta+'</div>'+
+      '<div class="std"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg><div><b>Fill in the values.</b> Method / standard — [reference]. Replace the bracketed placeholders, then Send to project.</div></div>'+
+      '<h2>1 · Inputs</h2><table><thead><tr><th>Quantity</th><th class="r">Value</th></tr></thead><tbody>'+irow('[input]')+irow('[input]')+irow('[input]')+'</tbody></table>'+
+      '<h2>2 · Calculation</h2><div class="calc"><div class="lbl">2.1 &nbsp;[step]</div><div class="eq">[equation] = <span class="res">[result]</span></div></div>'+
+      '<div class="result"><div><div class="lab2">Result</div><div class="big">[ ]</div></div><div class="sel"><div class="lab2">Selection</div><b>[to be selected]</b></div></div>'+
+      '<h2>3 · Notes</h2><ul class="notes"><li>[note]</li></ul>'+
+      '<h2>Revisions</h2><table><thead><tr><th>Rev</th><th>Date</th><th>By</th><th>Description</th></tr></thead><tbody class="revrows"><tr><td>'+DASH+'</td><td>'+DASH+'</td><td>'+DASH+'</td><td>Draft '+DASH+' not yet issued</td></tr></tbody></table>'+
+      '<div class="sign"><div class="b"><div class="role">Prepared</div><div class="nm">____________ · ____-__-__</div></div><div class="b"><div class="role">Checked</div><div class="nm">____________ · ____-__-__</div></div><div class="b"><div class="role">Approved</div><div class="nm">____________ · ____-__-__</div></div></div>'+
+      '<div class="foot"><span><b>Baltic Yachts</b> · '+esc(title)+'</span><span>Draft — fill in.</span></div>'+
+      '</div></div>';
+  }
+
+  // ---- Generate PDF: open the sheet full-width in a print window -> browser Save-as-PDF ----
+  function generatePDF(c){
+    var w=window.open('', '_blank'); if(!w){ X.notify('Allow pop-ups for this site to generate the PDF.','warn'); return; }
+    var ov='@page{margin:14mm} html,body{margin:0;background:#fff} '+
+      '.erv-sheet-embed{max-height:none!important;overflow:visible!important;border:0!important;border-radius:0!important;padding:0!important;background:#fff!important} '+
+      '.erv-sheet-embed .sheet{max-width:none!important;margin:0 auto!important}';
+    var html='<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>'+esc(c.title||'Calculation')+
+      '</title><style>'+ov+'</style></head><body>'+(c.text||'')+'</body></html>';
+    w.document.open(); w.document.write(html); w.document.close(); w.focus();
+    setTimeout(function(){ try{ w.print(); }catch(e){} }, 450);
+  }
+
+  document.getElementById('calc-add').addEventListener('click', function(){
+    var t=document.getElementById('calc-title').value.trim(); if(!t){ X.notify('Give the calculation a title first.','warn'); return; }
+    var area=document.getElementById('calc-area').value, doc=document.getElementById('calc-doc').value.trim();
+    putCalc({id:uid(), area:area, title:t, doc:doc, by:X.curUser(), when:X.nowISO(), text:blankSheet(t,area,doc), files:[], rev:DASH, revs:[]});
+    document.getElementById('calc-title').value=''; document.getElementById('calc-doc').value='';
+    flash('Blank sheet added — click Edit to fill it in'); paint();
+  });
+
+  // ---- load from project (reads pw_proj_calcs_<HULL>) ----
+  document.getElementById('calc-load').addEventListener('click', function(){
+    var list=window.PJ_LIST?window.PJ_LIST():[]; var found=[];
+    list.forEach(function(p){ (X.load('pw_proj_calcs_'+p.hull, [])||[]).forEach(function(s){ if(s.calcId){ found.push({hull:p.hull, name:p.name, s:s}); } }); });
+    var ov=document.createElement('div'); ov.className='co-overlay';
+    var inner = found.length
+      ? ('<div class="co-field"><label>Calculation in a project</label><select id="calc-loadsel">'+found.map(function(f,i){ return '<option value="'+i+'">'+esc(f.hull)+' · '+esc(f.s.title)+' (Rev '+esc(f.s.rev||DASH)+')</option>'; }).join('')+'</select></div>'
+         +'<p class="eng-hint">Loads it into the workbench so you can revise it and re-issue.</p>')
+      : '<p class="eng-hint">No calculations have been sent to a project yet.</p>';
+    ov.innerHTML='<div class="co-sheet"><h3>Load from project</h3>'+inner+
+      '<div class="co-sheet-foot"><button type="button" data-close>Cancel</button>'+(found.length?'<button type="button" class="go" data-go>Load into workbench</button>':'')+'</div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function(e){
+      if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
+      if(e.target.closest('[data-go]')){
+        var f=found[+document.getElementById('calc-loadsel').value]; var s=f.s;
+        putCalc({id:s.calcId, area:s.area, title:s.title, doc:s.doc||'', by:s.by||X.curUser(), when:s.when||X.nowISO(),
+          text:s.text||'', files:(s.files||[]).slice(), rev:s.rev||DASH, revs:(s.revs||[]).slice()});
+        ov.remove(); X.notify('Loaded <b>'+esc(s.title)+'</b> from <b>'+esc(f.hull)+'</b> — Edit, then Send to re-issue.'); paint();
       }
-      return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+X.esc(r.status||'')+'</td><td>'+(r.shared?'<span class="er-shared">shared</span>':'')+'</td></tr>';
-    }).join('');
-    var head = ed
-      ? '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th class="r">P′</th><th class="r">C′</th><th class="r">Resid.</th><th>Status</th><th>Share</th></tr>'
-      : '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">Risk</th><th class="r">Resid.</th><th>Status</th><th></th></tr>';
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
-      (ed?'<button type="button" class="er-add" id="er-add">+ Add engineering risk</button>':'');
-    if(ed) wire();
+    });
+  });
+
+  // ---- send: issue a revision, upsert into pw_proj_calcs_<HULL> (under review) ----
+  function sendDialog(c){
+    if(!c) return;
+    var list=window.PJ_LIST?window.PJ_LIST():[]; var nr=nextRev(c.rev);
+    var ov=document.createElement('div'); ov.className='co-overlay';
+    ov.innerHTML='<div class="co-sheet"><h3>Send to project — '+esc(c.title)+'</h3>'+
+      '<div class="co-field"><label>Project</label><select id="cs-proj">'+list.map(function(p){ return '<option value="'+esc(p.hull)+'"'+(p.hull===H?' selected':'')+'>'+esc(p.hull)+(p.name&&p.name!==p.hull?(' · '+esc(p.name)):'')+'</option>'; }).join('')+'</select></div>'+
+      '<div class="co-field"><label>Area</label><select id="cs-area">'+AREAS.map(function(a){ return '<option value="'+esc(a.code)+'"'+(a.code===c.area?' selected':'')+'>'+esc(a.code)+' · '+esc(a.title)+'</option>'; }).join('')+'</select></div>'+
+      '<div class="co-field"><label>Revision note</label><input type="text" id="cs-note" placeholder="e.g. Inputs confirmed; issued for review"></div>'+
+      '<p class="eng-hint">Issues <b>Rev '+esc(nr)+'</b> and sends it for <b>review</b> on Project development (Engineering / Production / PM agree). It also appears under <b>Engineering Projects → Calc versions</b>.</p>'+
+      '<div class="co-sheet-foot"><button type="button" data-close>Cancel</button><button type="button" class="go" data-go>Send Rev '+esc(nr)+'</button></div></div>';
+    document.body.appendChild(ov);
+    ov.addEventListener('click', function(e){
+      if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
+      if(e.target.closest('[data-go]')){
+        var hull=document.getElementById('cs-proj').value||H;
+        var area=document.getElementById('cs-area').value||c.area;
+        var note=(document.getElementById('cs-note').value||'').trim()||'Issued for review';
+        c.rev=nextRev(c.rev); c.area=area;
+        c.revs=(c.revs||[]).concat([{rev:c.rev, when:X.nowISO(), by:X.curUser(), note:note}]);
+        c.text=applyRev(c.text, c);
+        putCalc(c);
+        var ks='pw_proj_calcs_'+hull, ps=X.load(ks,[])||[], done=false;
+        for(var i=0;i<ps.length;i++){ if(ps[i].calcId===c.id){ ps[i].area=area; ps[i].title=c.title; ps[i].doc=c.doc||''; ps[i].text=c.text; ps[i].files=(c.files||[]).slice(); ps[i].rev=c.rev; ps[i].revs=c.revs.slice(); ps[i].by=X.curUser(); ps[i].when=X.nowISO(); ps[i].agree={}; ps[i].status='Under review'; done=true; } }
+        if(!done){ ps.unshift({id:'PC-'+((+new Date())%1000000), calcId:c.id, area:area, title:c.title, doc:c.doc||'', text:c.text, files:(c.files||[]).slice(), rev:c.rev, revs:c.revs.slice(), by:X.curUser(), when:X.nowISO(), agree:{}, status:'Under review'}); }
+        X.save(ks, ps);
+        ov.remove();
+        X.notify('Sent <b>'+esc(c.title)+'</b> (Rev '+esc(c.rev)+') to <b>'+esc(hull)+'</b> — under review on Project development.');
+        paint();
+      }
+    });
   }
-  function wire(){
-    var host=document.getElementById('er-eng');
-    host.querySelectorAll('[data-ei]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadE(); a[+el.dataset.ei][el.dataset.ef]=el.value; saveE(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.ef)>=0) renderEng(); }); });
-    host.querySelectorAll('[data-share]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); var r=a[+b.dataset.share]; r.shared=!r.shared; saveE(a); X.notify(r.shared?'Shared to project — the PM can add it to the register.':'Unshared.'); renderEng(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); a.splice(+b.dataset.del,1); saveE(a); renderEng(); }); });
-    var add=document.getElementById('er-add'); if(add) add.addEventListener('click', function(){ var a=loadE(); a.push({id:'ER-'+(a.length+1)+'-'+H,risk:'',desc:'',p0:3,c0:3,action:'',resp:'Engineering',p1:2,c1:2,status:'Not started',shared:false,by:X.curUser()}); saveE(a); renderEng(); }); }
-  function renderAll(){ role(); renderProj(); renderEng(); }
-  renderAll();
+
+  function paint(){
+    var code=document.getElementById('calc-filter').value;
+    var list=calcs().filter(function(c){ return !code || c.area===code; });
+    var host=document.getElementById('calc-list'); host.innerHTML='';
+    if(!list.length){ host.innerHTML='<div class="pj-empty">No calculations yet. Create one above.</div>'; return; }
+    list.forEach(function(c){
+      var card=document.createElement('div'); card.className='co-card';
+      var fc=(c.files||[]).map(function(f){ return X.chipHTML(f); }).join('');
+      var issued=(c.rev && c.rev!==DASH);
+      card.innerHTML='<div class="co-top"><span class="co-ref">'+esc(c.area)+' · '+esc(E.areaTitle(c.area))+'</span>'+
+        '<span class="co-ttl">'+esc(c.title)+'</span><span style="flex:1"></span>'+
+        '<span class="pj-status '+(issued?'st-ready':'st-proposed')+'">Rev '+esc(c.rev||DASH)+'</span></div>'+
+        '<div class="eng-owner">'+esc(c.doc||'')+(c.doc?' · ':'')+'by <b>'+esc(c.by||DASH)+'</b> · '+esc(X.fmt(c.when))+'</div>'+
+        '<div class="eng-doc-view" data-sheet style="margin-top:8px">'+(c.text||'')+'</div>'+
+        (fc?('<div style="margin-top:8px">'+fc+'</div>'):'')+
+        '<div class="eng-actions" data-actions></div>';
+      var dv=card.querySelector('[data-sheet]');
+      var actions=card.querySelector('[data-actions]');
+      var sheetEl=null;
+      function captureEdits(){
+        var st=dv.querySelector('style'); var wrap=dv.querySelector('.erv-sheet-embed');
+        c.text=(st?st.outerHTML:'')+(wrap?wrap.outerHTML:dv.innerHTML); putCalc(c);
+      }
+      function viewActions(){
+        actions.innerHTML='<button type="button" class="eng-btn" data-edit><svg viewBox="0 0 24 24"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg>Edit</button>'+
+          '<button type="button" class="eng-btn" data-pdf><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>Generate PDF</button>'+
+          '<button type="button" class="eng-btn go" data-send><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Send to project</button>'+
+          '<button type="button" class="eng-btn" data-del style="margin-left:auto"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>Remove</button>';
+        actions.querySelector('[data-edit]').addEventListener('click', startEdit);
+        actions.querySelector('[data-pdf]').addEventListener('click', function(){ generatePDF(getCalc(c.id)||c); });
+        actions.querySelector('[data-send]').addEventListener('click', function(){ sendDialog(getCalc(c.id)); });
+        actions.querySelector('[data-del]').addEventListener('click', function(){ if(!confirm('Remove “'+(c.title||'')+'” from the workbench?')) return; saveCalcs(calcs().filter(function(x){ return x.id!==c.id; })); paint(); });
+      }
+      function startEdit(){
+        sheetEl=dv.querySelector('.sheet');
+        if(sheetEl){
+          sheetEl.setAttribute('contenteditable','true');
+          sheetEl.style.outline='2px dashed var(--brand-2)'; sheetEl.style.outlineOffset='3px';
+          var top=sheetEl.querySelector('.top'); if(top) top.setAttribute('contenteditable','false');
+          var rr=sheetEl.querySelector('.revrows'); if(rr && rr.parentNode){ rr.parentNode.setAttribute('contenteditable','false'); }
+          sheetEl.focus();
+        }
+        actions.innerHTML='<span class="eng-owner" style="align-self:center">Editing — fill in the values, then Save or Send.</span><span style="flex:1"></span>'+
+          '<button type="button" class="eng-btn go" data-save><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Save</button>'+
+          '<button type="button" class="eng-btn go" data-send2><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Send to project</button>'+
+          '<button type="button" class="eng-btn" data-cancel>Cancel</button>';
+        actions.querySelector('[data-save]').addEventListener('click', function(){ captureEdits(); flash('Saved ✓'); paint(); });
+        actions.querySelector('[data-send2]').addEventListener('click', function(){ captureEdits(); sendDialog(getCalc(c.id)); });
+        actions.querySelector('[data-cancel]').addEventListener('click', function(){ paint(); });
+      }
+      viewActions();
+      host.appendChild(card);
+    });
+  }
+  document.getElementById('calc-filter').addEventListener('change', paint);
+  paint();
 })();
 </script>
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Projects · Baltic Yachts</title>
+<title>Specification · Engineering Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -770,9 +770,97 @@ table.rk td.r,table.rk th.r{text-align:right}
 .rk-role{font:500 12.5px/1.5 var(--sans);margin:6px 0 0}
 .rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
 .rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
+
+/* --- v27: Engineering Projects — force the app's dark palette on these pages --- */
+body.eng-dark{
+  --bg:#0d1318; --surface:#161f29; --surface-2:#131c25;
+  --ink:#e9eef3; --muted:#9fb0bd; --faint:#71828f; --line:#243240;
+  --brand:#2b7bb0; --brand-2:#3f9bd6; --brand-soft:#15293a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.30);
+}
+body.eng-dark .home-block.soon{opacity:.7}
+/* engineering area / tools */
+.eng-areas{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 18px}
+.eng-area-btn{font:600 12.5px/1 var(--sans);color:var(--muted);background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.eng-area-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
+.eng-area-btn.on{color:#fff;background:var(--brand);border-color:var(--brand)}
+.eng-area-btn .ea-code{font:700 11px/1 var(--mono);opacity:.85}
+.eng-panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:18px 20px;margin:0 0 18px}
+.eng-panel h2{font:600 16px/1.2 var(--serif);margin:0 0 4px;display:flex;align-items:center;gap:9px}
+.eng-panel h2 svg{width:18px;height:18px;fill:none;stroke:var(--brand-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.eng-hint{font:500 12.5px/1.5 var(--muted);margin:0 0 12px}
+.eng-tbl{width:100%;border-collapse:collapse;font:500 13px/1.4 var(--sans)}
+.eng-tbl th{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.03em;color:var(--faint);text-align:left;padding:8px 9px;border-bottom:1px solid var(--line)}
+.eng-tbl td{padding:8px 9px;border-bottom:1px dashed var(--line);vertical-align:middle;color:var(--ink)}
+.eng-tbl tr:last-child td{border-bottom:0}
+.eng-tbl input[type=text],.eng-tbl input[type=number],.eng-tbl select{font:500 12.5px/1 var(--sans);padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:100%;box-sizing:border-box}
+.eng-tbl .qty{width:64px}
+.eng-comp{font:600 13px/1.3 var(--sans);color:var(--ink)}
+.eng-comp .eng-src{display:block;font:500 11px/1.3 var(--sans);color:var(--faint)}
+.st-pill{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.st-prog{color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600}
+.st-ready{color:var(--good);background:rgba(47,125,87,.12);border:1px solid var(--good)}
+.eng-del{border:0;background:none;color:var(--faint);cursor:pointer;font-size:16px;line-height:1}
+.eng-del:hover{color:#e0663f}
+.eng-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 0;align-items:center}
+.eng-btn{font:600 12.5px/1 var(--sans);padding:9px 13px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.eng-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
+.eng-btn.go{background:var(--brand);border-color:var(--brand);color:#fff}
+.eng-btn.go:hover{background:var(--brand-2);color:#fff}
+.eng-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.eng-chip{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);
+  border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
+.eng-chip svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
+.eng-chip .x{color:var(--faint);cursor:pointer;font-weight:700}
+.eng-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:760px){.eng-cols{grid-template-columns:1fr}}
+.eng-sol{border:1px solid var(--line);border-radius:11px;background:var(--surface-2);padding:12px 14px;margin:0 0 10px;cursor:pointer}
+.eng-sol:hover{border-color:var(--brand-2)}
+.eng-sol.on{border-color:var(--brand-2);box-shadow:inset 0 0 0 1px var(--brand-2)}
+.eng-sol h4{margin:0 0 3px;font:700 13.5px/1.3 var(--sans);color:var(--ink)}
+.eng-sol .eng-sol-meta{font:500 11.5px/1.4 var(--faint)}
+.eng-readonly-bar{display:flex;align-items:center;gap:11px;margin:0 0 16px;padding:11px 15px;border-radius:12px;
+  border:1px solid var(--brand-2);border-left:4px solid var(--brand-2);background:var(--brand-soft);font:600 12.5px/1.45 var(--ink)}
+.eng-readonly-bar svg{width:19px;height:19px;stroke:var(--brand-2);fill:none;stroke-width:2;flex:0 0 auto}
+.eng-co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:16px 0 8px}
+.eng-pick-list{max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--surface-2)}
+.eng-pick-list .grp{font:700 10.5px/1 var(--sans);color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:9px 0 6px}
+.eng-pick-list .grp:first-child{margin-top:0}
+.eng-pick-list label{display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1.4 var(--ink);margin:0 12px 6px 0}
+.eng-form{display:grid;gap:11px}
+.eng-form label.fl{font:600 11px/1.2 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.03em;display:block;margin:0 0 5px}
+.eng-form input[type=text],.eng-form select{font:400 13.5px/1.4 var(--sans);color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;box-sizing:border-box}
+/* --- v28: file-kind chips (2D / 3D / datasheet / doc) --- */
+.eng-chip.k-2d{color:#9a6fc9;background:#241a33;border-color:#7a4dab}
+.eng-chip.k-3d{color:var(--brand-2);background:var(--brand-soft);border-color:var(--brand-2)}
+.eng-chip.k-docx{color:#54b98a;background:#11261c;border-color:var(--good)}
+/* --- v28: Baltic Solutions workflow --- */
+.st-proposed{color:#d69600;background:rgba(214,150,0,.14);border:1px solid #d69600}
+.st-approved2{color:var(--good);background:rgba(47,125,87,.14);border:1px solid var(--good)}
+.eng-owner{font:500 11.5px/1.4 var(--faint)}
+.eng-owner b{color:var(--ink)}
+/* --- v28: per-area documentation suite --- */
+.eng-doc-tabs{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:9px;padding:3px;background:var(--surface-2);margin:0 0 12px}
+.eng-doc-tabs button{font:600 12.5px/1 var(--sans);padding:8px 14px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer}
+.eng-doc-tabs button.on{background:var(--brand);color:#fff}
+.eng-doc-view{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:14px 16px;max-height:560px;overflow:auto}
+.eng-doc-view .sp-area{margin:0}
+/* --- v28: project solutions agreement / steering --- */
+.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
+.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
+.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
+.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.co-card.steering{border-left:4px solid var(--good)}
+.steering-badge{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--good);background:rgba(47,125,87,.12);border:1px solid var(--good);border-radius:999px;padding:5px 10px}
+/* --- v30: Interior documents hub --- */
+.int-stack{display:flex;flex-direction:column;gap:12px}
+.int-doc .co-rt-area{max-height:440px;overflow:auto}
+.int-doc .co-ttl{font-size:15px}
+.int-doc .sp-table{font-size:12px}
 </style>
 </head>
-<body>
+<body class="eng-dark">
 <header class="bar">
   <div class="wrap bar-inner">
     <a class="logo" href="index.html">
@@ -784,7 +872,7 @@ table.rk td.r,table.rk th.r{text-align:right}
   </div>
 </header>
 
-<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script>
+<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script><script>window.ENG_PURCHASERS=["Anna Lindqvist", "Markus Holm", "Sofia Berg", "Daniel Ek"];window.ENG_SALES=["Kenneth Nyfelt", "Henry Hawkins", "Joakim Kasslin", "Daniel Wahlroos"];window.ENG_HEAD="Mikael Strengell";window.ENG_SOL_SEED=[{"id": "BS-010-1", "area": "10", "name": "Through-hull valve set — DZR bronze", "supplier": "TruDesign / Forespar", "desc": "<p>Approved through-hull and seacock set in DZR bronze for hulls below the waterline. Sizes per the systems diagram.</p>", "files": [{"name": "TH-valve-set-DZR.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-010-2", "area": "10", "name": "Hull anode kit — aluminium", "supplier": "MG Duff", "desc": "<p>Sacrificial aluminium anode kit sized to the wetted surface; brackets bonded to the grounding plate.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-020-1", "area": "20", "name": "Electric primary winch — 1100ST", "supplier": "Harken", "desc": "<p>Self-tailing electric primary winch, 24&nbsp;V. Mounted on the cockpit coaming pads per the deck plan.</p>", "files": [{"name": "Winch-1100ST-datasheet.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-020-2", "area": "20", "name": "Hydraulic furler — Code 0", "supplier": "Reckmann", "desc": "<p>Below-deck hydraulic furler for the Code&nbsp;0, integrated with the central hydraulic ring main.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-040-1", "area": "40", "name": "Main engine flexible mounts (set)", "supplier": "Vetus / R&D", "desc": "<p>Vibration-isolating flexible engine mounts matched to the main engine mass and torque.</p>", "files": [{"name": "Engine-mounts.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-050-1", "area": "50", "name": "Freshwater pressure pump — 24V", "supplier": "Jabsco", "desc": "<p>Variable-speed freshwater pressure set with accumulator; feeds the manifold per the plumbing schematic.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-060-1", "area": "60", "name": "Lithium battery module — 5&nbsp;kWh", "supplier": "Mastervolt", "desc": "<p>LiFePO4 house-bank module, 24&nbsp;V 5&nbsp;kWh, with integrated BMS and CAN monitoring.</p>", "files": [{"name": "Li-module-5kWh.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-060-2", "area": "60", "name": "Navigation light set — LED", "supplier": "Lopolight", "desc": "<p>Certified LED navigation light set for vessels &gt;20&nbsp;m, with dual-source masthead.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-070-1", "area": "70", "name": "Carbon boom gooseneck fitting", "supplier": "Baltic / Hall", "desc": "<p>Titanium gooseneck fitting bonded to the carbon boom; engineered to the rig load case.</p>", "files": [{"name": "Gooseneck-load-case.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}];window.ENG_AREAS=[{"code": "GP", "title": "General Particulars", "sections": [{"name": "Principal dimensions", "rows": ["L.O.A.", "D.W.L.", "Beam", "Draft", "Displacement (light)", "I / I’ / I’’", "J / J / J code", "P", "E"]}, {"name": "Construction", "rows": ["Hull", "Keel", "Deck", "Interior"]}, {"name": "Equipment", "rows": ["Winches", "Anchoring system", "Fuel tanks", "Fresh water", "Holding tank", "Watermaker", "Heating / AC", "Main engine", "Generators", "Propeller", "Bow &amp; stern thruster", "Mast &amp; rigging", "Batteries", "AC system", "Electronics"]}, {"name": "Design", "rows": ["Naval architect", "Exterior &amp; interior design", "Project management", "Classification", "Flag state", "Cabins", "Delivery"]}]}, {"code": "00", "title": "General Conditions", "sections": [{"name": "Specification", "rows": ["The purpose of the Technical Specification is to define the …", "The Technical Specification will be accompanied by the Gener…", "The intent is to produce a lightweight, comfortable, perform…", "In case of either gaps, or conflict, between the drawings an…", "Work shown in the drawings and not in the specs, or vice ver…", "The Builder undertakes to ensure that the boat is built in a…"]}, {"name": "Articles supplied by shipyard and owner", "rows": ["The yard to receive and take responsibility for all articles…"]}, {"name": "Access", "rows": ["The owner, the naval architect, his representatives and or a…"]}, {"name": "Materials and workmanship", "rows": ["All materials and manufactured articles furnished by the yar…", "If the yard proposes an equivalent substitution that differs…", "The Builder shall use skilled workmanship, in keeping with t…", "Materials and workmanship can be regularly inspected by the …", "Particular care is to be taken to avoid bimetallic corrosion…", "All materials to be in accordance with class regulations."]}, {"name": "Insurance", "rows": ["See Yacht Construction Agreement."]}, {"name": "Warranty", "rows": ["See Yacht Construction Agreement."]}, {"name": "Drawings and Definitions", "rows": ["All drawings, specification and further information supplied…", "The drawings will be interpreted and completed with referenc…", "All the drawings will be drawn to scale but not all will con…", "The Builder will correct any defects or errors, which may oc…", "The Builder shall follow all details and dimensions shown on…", "The Builder is to review all plans, drawings, subcontractor …", "The Builder’s drawings", "The Builder is responsible for making and submitting all oth…"]}, {"name": "Classification and Compliance", "rows": ["The Yacht will be constructed in accordance with the class r…", "Certification of Class, Hull and Machinery DNV GL.", "Mast and rig class certification. To be decided if any."]}, {"name": "Flag state requirements", "rows": ["The flag state will be Malta.", "A change of flag state during the build may cause additional…"]}, {"name": "Weight control", "rows": ["The builder shall supply a detailed weight study which also …"]}, {"name": "Commissioning and Testing", "rows": ["The builder has developed an extensive commissioning process…", "The builders project team hands over the testing of the boat…", "All commissioning and test protocols to be accepted by the c…", "Following Hand over documents are prepared.", "Owner’s manual", "Warranty cards", "Warranty registration cards", "Warranty certificate"]}, {"name": "Delivery of yacht", "rows": ["If on delivery of the yacht to the owner any item of work sh…", "At delivery of the yacht Baltic Yachts will provide two pers…"]}]}, {"code": "10", "title": "Hull", "sections": [{"name": "General Concept", "rows": ["Hull lines will be in accordance with Naval Architect design…", "Details of engineering and construction according to the Str…", "The hulls and wetdeck (bridge between the hulls) will be bui…", "Hulls and wetdeck are built in advanced composite sandwich c…", "Inner skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "Core: Corecell core bonded under vacuum to obtain best bondi…", "Outer skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "For the lamination, an oven will be assembled around the mou…"]}, {"name": "101  Hull structures", "rows": ["The hull shell will be supported by transverse and longitudi…", "The high-stress areas, such as the ones surrounding the pivo…", "Hull internal structures and bulkheads will be provided with…", "Structural engineering to be done by Rivoyre Ingenierie.", "Hull will be NDT checked and report to be shared with owner’…", "Structural bulkheads", "All bulkheads have a sandwich construction with skins made o…", "The bulkheads are manufactured on a vacuum table, to be flat…"]}, {"name": "102  Hull finish and fairing", "rows": ["General", "The complete paint system shall be Awlcraft as per yards’ st…", "A complete kit for touch up or small repairs to be supplied …", "The colours will be following the preliminary OWNER’s wishes…", "Metallic Flag Blue colour for the topsides,", "White or Oyster White for the deck and superstructure and fl…", "Black for the under-waterline paint", "Hull sides, transom and superstructure"]}, {"name": "103  Transom, swim and boarding platform", "rows": ["Transom", "Two transom doors shall be included and serve as access door…", "Transom swim platform", "A hydraulic tender lifting platform from TENDERLIFT will be …", "In lowered position, the platform must be deeply submerged t…", "The platform can also be lowered at the same level as the tr…", "The hull shapes will not be symmetrical to their respective …", "Platform to serve as swim platform when open, teak covered a…"]}, {"name": "105  Anchoring system", "rows": ["The ground tackle is to meet class rules. The builder is to …", "The anchor and chain handling systems are to be installed in…", "A mock-up in plywood will be made of the anchor handling arr…", "Windlass", "One Maxwell 8000 VWCLP hydraulically driven windlass to be i…", "The windlass motor shall be dual speed controlled. A chain c…", "Brakes and clutches for manual release shall be fitted to th…", "Anchor"]}, {"name": "106  Hull fittings and hardware", "rows": ["Hull windows", "All hull windows are to be installed according to class rule…", "Bow and stern thruster and Installation.", "Bow thruster foundation to be made according to the specific…", "Thrusters shall be controlled at both helm stations by a sma…", "Bow thruster", "OMS hydraulic swing thruster H-0300-S.", "Stern thruster"]}, {"name": "150  Pivoting daggerboard and skeg system", "rows": ["The boat is fitted with 2 fixed skegs and pivoting daggerboa…", "The daggerboard is a composite structure made of carbon lami…", "The skeg is incorporated to the hulls and will house the piv…", "Skegs:", "Lateral area: 1.7 m2 each", "Span: 0.4 m", "Carbon pivoting boards:", "Lateral area: 5.0 m2 each"]}]}, {"code": "20", "title": "Deck", "sections": [{"name": "General concept", "rows": ["The deck will have a superstructure including a flybridge.", "The deck will incorporate a toe rail in composite, details s…", "The flybridge will have twin helm stations one (1) port side…", "The area forward incorporates a comfortable relaxing cockpit…", "The main tender is stored on a tenderlift most aft. The crew…"]}, {"name": "201  Deck structure", "rows": ["General", "Deck is built in female moulds which are strong and airtight…", "The deck will be built using composite construction with epo…", "For the lamination, an oven will be assembled around the mou…", "The deck shell will be supported by transversal and longitud…"]}, {"name": "202  Finish", "rows": ["See hull finish 102"]}, {"name": "204  Decking", "rows": ["Standard deck", "Teak will be of the best available quality, quarter sawn Ind…", "A teak deck will be provided for the side decks and cockpits…", "Margin planks around hatches and fittings;", "1. 35 – 50 mm margin plank around hatch cut out. Corners to …", "Detail 1. 35mm margin plank w/ caulking", "In the corners", "15367073025"]}, {"name": "210  Deck fittings and hardware", "rows": ["General", "All deck equipment will be installed by means of through bol…", "When non-ferrous metal is used, titanium should be preferred…", "Deck fillers", "Deck fillers, one each filling point for fresh water and one…", "Pulpit, pushpit and stanchions", "Pulpit, pushpit and stanchions will be built according to de…", "Pulpit, pushpit and stanchions will be made from carbon usin…"]}, {"name": "211  Deck sail handling gear", "rows": ["General", "The sail handling gear will be supplied by Harken or equival…", "The maximum working load for standing and running rigging is…", "All hydraulic cylinders to be in anodized aluminum body and …", "Bobstay", "N/A", "Main sail system", "Main sheet xx kg"]}]}, {"code": "30", "title": "Interior", "sections": [{"name": "General", "rows": ["General", "The interior styling is done by Jamie Bush and the following…", "240425_ZETEO_DESIGN DEVELOPMENT PRESENTATION compressed-Mock…", "240531_APPLIANCES SCHEDULE", "240531_PLUMBING SCHEDULE", "240531_WOOD SCHEDULE", "BALTIC PERFORMANCE LIGHT (BENCHMARK LIARA AND HER DUAL ROLES…", "GENERAL The BALTIC PERFORMANCE LIGHT class uses specialist t…"]}, {"name": "301  Cabins, heads and showers", "rows": ["Bulkheads", "Advanced lightweight construction techniques are used in the…", "Main bulkheads are made on a vacuum table and the core is ma…", "BHDs will be built in by additional interior panels. Painted…", "Interior walls build-up specified in Noise and vibration stu…", "Floors", "Cabin soles throughout the entire Yacht will be a composite/…", "Main Deck: -Teak."]}]}, {"code": "40", "title": "Engine", "sections": [{"name": "401  Engine room", "rows": ["General", "The engine rooms are internally insulated for both fire safe…", "Access to the engine rooms will be through watertight deck h…", "The walls and ceilings of the engine room will be clad with …", "The engine room insulation will consist of two layers of hig…", "The engine room floor will be made of GRP or Aluminum plates…", "If space permits A workbench with a vice will be installed i…", "Pipes in the engine room, machinery spaces, and other areas …"]}, {"name": "402  Engine and propulsion system", "rows": ["Main engines", "There will be similar setups on each side. The propulsion sy…", "The electrical propulsion engine is a Danfoss Editron EM-PMI…", "Propeller &amp; Shaft setup", "Brunton's Varifold 4-bladed folding propeller to be provided…", "2 Stainless Steel 1.4460 Propeller shaft (front-side propell…", "2 stern tubes, length and diameter to be defined, flange on …", "2 Stand-by Seal, inflatable, for shaft with Stainless Steel …"]}, {"name": "403  Diesel Generator", "rows": ["General", "Monitoring and controlling the generators is done from the v…", "The diesel generators will have an HMI page that tracks vari…", "Oil pressure", "Oil temperature", "Wet exhaust temperature", "Dry exhaust temperatures", "High-level water sensor for silencer"]}, {"name": "404  Fuel and oil system", "rows": ["Schematic drawing: 1221-404001(P1) Fuel system.", "General", "The fuel system is to comply with class requirements. All va…", "The fuel system serves the two generators onboard and the di…", "Fuel polishing", "Two fuel polishing systems are installed, one per side, mode…", "Fuel tanks", "The fuel tanks are made in stainless steel. There are four 1…"]}, {"name": "405  Exhaust system", "rows": ["Schematic drawing: 1221-405001(P1) Exhaust System.", "The generators have exhaust systems where exhaust gases are …", "The exhaust equipment, piping, lift silencer and water separ…"]}, {"name": "406  Engine room ventilation system", "rows": ["Schematic drawing: 1221-406001(P1) Engine room ventilation.", "Engine room ventilation is based on the requirements of the …", "The requirements of the installed equipment are manufacturer…", "Control of engine room ventilation", "The system is based on temperature control; this will try to…", "Engine room ventilation system Main components", "A60 Fire dampers installed in Engine room", "Engine room air inlet via water trap"]}]}, {"code": "50", "title": "Plumbing", "sections": [{"name": "General", "rows": ["All piping systems are designed and optimized for their purp…", "For freshwater, wastewater +GF+ ABS plastic piping and Hep2O…", "501 Fresh water system"]}, {"name": "General", "rows": ["Schematic drawing: 1221-501001(P2) Fresh water system.", "The freshwater system is optimized for the yacht considering…", "The supply of pressurized water is achieved by two pressure …", "Shore water supply is connected in the lazarette via a filte…", "The freshwater system will supply water to the following are…"]}, {"name": "Fresh water tanks", "rows": ["Two 2000 litre HDPE freshwater tanks are installed, one in e…"]}, {"name": "Hot water boilers", "rows": ["One 200L hot water boiler per hull with electric heating ele…", "Main components of the Fresh water system:", "Component", "Pcs", "Type", "Fresh water tanks", "2", "4000 liters (divided into port &amp; Stb) *"]}, {"name": "502  Waste water system", "rows": ["General", "Schematic drawing: 1221-502001(P1) Waste water system.", "All grey water collected from showers, wash basins and galle…", "Tanks", "The waste tanks are made of HDPE plastic. There is one holdi…", "All tanks are equipped with service valves and service hatch…", "Waste system main components", "Component"]}]}, {"code": "60", "title": "Electrical", "sections": [{"name": "General", "rows": ["General", "This specification outlines the installation of a hybrid pro…", "The power sources for this system include shore power and ge…", "Given that the HVDC battery bank continuously provides power…"]}, {"name": "One line diagram", "rows": ["The electrical system is divided into two sides for redundan…"]}, {"name": "Cables and Supports", "rows": ["All wiring will be installed within conduits or stainless-st…", "The Builder will ensure the use of lightweight marine-grade …", "Cables passing through structures and exposed to potential m…"]}, {"name": "Switchgear and Panels", "rows": ["General", "All switchboards and distribution boards shall be housed in …", "Switchboards with removable fuses shall be equipped with a f…"]}, {"name": "Grounding system and Corrosion prevention", "rows": ["A lightning conductor is installed in the mast, with an elec…", "Corrosion prevention anodes will be recessed in the hull, an…"]}, {"name": "601  AC system", "rows": ["General", "The two three-phase main inverters are supplying 230/400VAC …", "The types of consumers on the AC bus include:", "• Galley equipment", "• Water heater", "• Water maker", "• Air conditioning compressors", "• Battery chargers for 24V systems"]}, {"name": "602  DC systems", "rows": ["All critical data from DC systems will be monitored through …", "All DC equipment will be isolated from the hull.", "In addition to the electronic cathodic protection system, th…", "HVDC battery system", "The high voltage battery bank shall consist of 2 (two) separ…", "Aiming for a minimum of 8 hours silent night period in accor…", "HVDC system main components:", "2x Permanent magnet generators."]}, {"name": "603  Control and Monitoring system", "rows": ["The monitoring and control system utilizes a decentralized I…", "HMI is based in a webserver, any device or computer connecte…", "Each monitoring screen will have a small fan less computer d…", "Service", "Pcs", "Type", "Master PLC", "2"]}, {"name": "605  Navigation system", "rows": ["General", "Assuming built as pleasure yacht i.e. Malta CYC2020 does not…", "Sailing instruments (preliminary allowance list)", "Processors", "One (1) B&amp;G Hercules WTP sailing processor with interfac…", "Sensors", "One (1) B&amp;G WS730 VMHU in mast top, connected to NMEA 20…", "One (1) B&amp;G DST800 Depth, speed and temp sensor (235kHz)…"]}, {"name": "606  Audio / Video", "rows": ["N/A. For details see Preliminary allowance list P1.", "Central system", "Sonance DSP 8-130 Amplifier 5", "WiiM Pro music streamer 11", "Flybridge", "Sonance VPXT6R 4", "Bathing platform", "Sonance VPXT6R 2"]}]}, {"code": "70", "title": "Rigging", "sections": [{"name": "701  Mast and rig (owner supplied)", "rows": ["General", "Mast, rigging and boom are to be owner supplied. A prelimina…", "Stability has been performed at MLDC in the figure below to …", "Dimensions:", "I 38.0 m", "J 13.0 m", "P 38.7 m", "E 11.4 m"]}, {"name": "702  Sails", "rows": ["Sails will be supplied by the Owner. The yard will support t…", "The inventory and dimensions are provisional pending final d…", "Mainsail", "Area: 296 m²", "P: 38.7 m", "E: 11.4 m", "Genoa", "Area: 276 m²"]}]}, {"code": "90", "title": "Miscellaneous", "sections": []}];</script>
 <script>
 /* Runs FIRST (before any per-page app): resolves the active project from ?p and
    exposes window.PJ_HULL / PJ_PROJ / PJ_LIST / PJ_CARRY. No DOM access here so it
@@ -946,30 +1034,529 @@ window.PJX = (function(){
 })();
 </script>
 
+<script>
+window.ENGX = (function(){
+  var X = window.PJX;
+  function hull(){ return (new URLSearchParams(location.search).get('p')||window.PJ_DEFAULT||'B107C').trim().toUpperCase(); }
+  // ---- rich-text editor: B/I/U, bullet + numbered lists, and a table ----
+  function editor(initialHTML, readOnly){
+    var box=document.createElement('div'); box.className='co-rt';
+    var bar=document.createElement('div'); bar.className='co-rt-bar';
+    var area=document.createElement('div'); area.className='co-rt-area';
+    area.setAttribute('contenteditable', readOnly?'false':'true');
+    area.innerHTML=initialHTML||'';
+    function ex(c){ return function(){ document.execCommand(c,false,null); }; }
+    function insTable(){
+      var h='<table class="sp-table"><thead><tr><th>Heading 1</th><th>Heading 2</th><th>Heading 3</th></tr></thead>'+
+        '<tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>';
+      document.execCommand('insertHTML',false,h);
+    }
+    var defs=[['B','Bold',ex('bold'),'font-weight:700'],['I','Italic',ex('italic'),'font-style:italic'],
+      ['U','Underline',ex('underline'),'text-decoration:underline'],['•','Bulleted list',ex('insertUnorderedList'),''],
+      ['1.','Numbered list',ex('insertOrderedList'),''],['▦','Insert table',insTable,''],
+      ['↺','Clear formatting',ex('removeFormat'),'']];
+    defs.forEach(function(d){ var b=document.createElement('button'); b.type='button'; b.textContent=d[0]; b.title=d[1];
+      if(d[3]) b.setAttribute('style',d[3]);
+      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly) return; d[2](); area.focus(); });
+      bar.appendChild(b); });
+    if(readOnly){ bar.style.display='none'; }
+    box.appendChild(bar); box.appendChild(area);
+    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
+  }
+  // ---- Baltic Solutions library (seeded once into localStorage, then editable) ----
+  function ensureSeed(){ try{ if(!localStorage.getItem('pw_baltic_solutions')){ X.save('pw_baltic_solutions', window.ENG_SOL_SEED||[]); } }catch(e){} }
+  function solutions(){ ensureSeed(); return X.load('pw_baltic_solutions', []); }
+  function saveSolutions(arr){ X.save('pw_baltic_solutions', arr); }
+  function areaTitle(code){ var a=(window.ENG_AREAS||[]).filter(function(x){return x.code===code;})[0]; return a?a.title:code; }
+  // file kind from extension: pdf datasheet / 2d drawing / 3d model / doc
+  function kindFromName(name){
+    var n=(name||'').toLowerCase();
+    if(/\.(step|stp|igs|iges|3dm|sldprt|x_t)$/.test(n)) return '3d';
+    if(/\.(dwg|dxf)$/.test(n)) return '2d';
+    if(/\.(docx?|rtf)$/.test(n)) return 'docx';
+    return 'pdf';
+  }
+  var KIND_ICON={
+    pdf:'<path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/>',
+    '2d':'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M9 4v16"/>',
+    '3d':'<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/>',
+    docx:'<path d="M6 2h9l3 3v17H6z"/><path d="M9 13l1.2 4 1.3-4 1.3 4 1.2-4"/>'
+  };
+  function fileChip(f, onRemove){
+    var kind=f.kind||kindFromName(f.name);
+    var ic='<svg viewBox="0 0 24 24">'+(KIND_ICON[kind]||KIND_ICON.pdf)+'</svg>';
+    var node=document.createElement(onRemove?'span':'a'); node.className='eng-chip k-'+kind;
+    if(!onRemove){ var src=f.data||f.url||''; node.setAttribute('href', src||'#'); if(src){ node.setAttribute('target','_blank'); node.setAttribute('rel','noopener'); } }
+    node.innerHTML=ic+'<span>'+X.esc(kind.toUpperCase())+' · '+X.esc(f.name)+'</span>';
+    if(onRemove){ var x=document.createElement('span'); x.className='x'; x.textContent='×'; x.title='Remove';
+      x.addEventListener('click', function(e){ e.preventDefault(); onRemove(); }); node.appendChild(x); }
+    return node;
+  }
+  // multi-file picker that reads each as a data-URI (mind the localStorage budget)
+  function pickFiles(accept, cb){
+    var inp=document.createElement('input'); inp.type='file'; if(accept) inp.accept=accept; inp.multiple=true;
+    inp.style.display='none'; document.body.appendChild(inp);
+    inp.addEventListener('change', function(){
+      var fs=inp.files?[].slice.call(inp.files):[]; var pending=fs.length; var out=[];
+      if(!pending){ inp.remove(); return; }
+      function done(){ if(--pending===0){ cb(out); inp.remove(); } }
+      fs.forEach(function(f){ var fr=new FileReader();
+        fr.onload=function(){ out.push({name:f.name,kind:kindFromName(f.name),data:fr.result}); done(); };
+        fr.onerror=function(){ out.push({name:f.name,kind:kindFromName(f.name),data:''}); done(); };
+        try{ fr.readAsDataURL(f); }catch(e){ out.push({name:f.name,kind:kindFromName(f.name),data:''}); done(); } });
+    });
+    inp.click();
+  }
+  // attach a toolbar to an EXISTING contenteditable element. The content is baked
+  // statically into the page HTML (so it renders in the no-JS preview); JS only adds
+  // the toolbar + editing on top.
+  function attachEditor(boxEl, areaEl, readOnly){
+    if(readOnly){ return { getHTML:function(){ return areaEl.innerHTML; }, setHTML:function(h){ areaEl.innerHTML=h; }, area:areaEl }; }
+    areaEl.setAttribute('contenteditable','true');
+    var bar=document.createElement('div'); bar.className='co-rt-bar';
+    function ex(c){ return function(){ document.execCommand(c,false,null); }; }
+    function insTable(){ var h='<table class="sp-table"><thead><tr><th>Heading 1</th><th>Heading 2</th><th>Heading 3</th></tr></thead>'+
+      '<tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>';
+      document.execCommand('insertHTML',false,h); }
+    var defs=[['B','Bold',ex('bold'),'font-weight:700'],['I','Italic',ex('italic'),'font-style:italic'],
+      ['U','Underline',ex('underline'),'text-decoration:underline'],['•','Bulleted list',ex('insertUnorderedList'),''],
+      ['1.','Numbered list',ex('insertOrderedList'),''],['▦','Insert table',insTable,''],['↺','Clear formatting',ex('removeFormat'),'']];
+    defs.forEach(function(d){ var b=document.createElement('button'); b.type='button'; b.textContent=d[0]; b.title=d[1]; if(d[3]) b.setAttribute('style',d[3]);
+      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      b.addEventListener('click', function(e){ e.preventDefault(); d[2](); areaEl.focus(); }); bar.appendChild(b); });
+    boxEl.insertBefore(bar, boxEl.firstChild);
+    return { getHTML:function(){ return areaEl.innerHTML; }, setHTML:function(h){ areaEl.innerHTML=h; }, area:areaEl };
+  }
+  return { hull:hull, editor:editor, attachEditor:attachEditor, solutions:solutions, saveSolutions:saveSolutions,
+           areaTitle:areaTitle, fileChip:fileChip, kindFromName:kindFromName, pickFiles:pickFiles };
+})();
+</script>
+
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Projects</div>
-    <h1>Projects</h1>
-    <p>Boats that have been <strong>sold and realized</strong> &mdash; transferred from Sales into the live build. Open a project to reach its approved specification, change orders and planning.</p>
+    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Specification</div>
+    <h1>Specification</h1>
+    <p>The project specification, from engineering. <strong>Read-only</strong> &mdash; the live, editable spec lives in the Projects area.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card">
-    <table class="pj-port">
-      <thead><tr><th>Project</th><th>Type</th><th>Project manager</th><th>Stage</th><th>In build since</th><th></th></tr></thead>
-      <tbody id="pj-portfolio"><tr><td colspan="6"><div class="pj-empty">Loading projects&hellip;</div></td></tr></tbody>
-    </table>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html" class="on">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="eng-readonly-bar"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Read-only engineering view of <span class="pj-proj-ref"></span>. Reflects the shared project specification.</span></div>
+  <div class="sp-doc card" id="sp-doc">
+<nav class="sp-toc" id="sp-toc" aria-label="Table of contents"><h2>Contents</h2><ol><li><a href="#area-GP"><span class="toc-code">GP</span><span>General Particulars</span></a><ol><li class="toc-sub"><a href="#h-GP-1"><span>Principal dimensions</span></a></li><li class="toc-sub"><a href="#h-GP-2"><span>Construction</span></a></li><li class="toc-sub"><a href="#h-GP-3"><span>Equipment</span></a></li><li class="toc-sub"><a href="#h-GP-4"><span>Design</span></a></li></ol></li><li><a href="#area-00"><span class="toc-code">00</span><span>General Conditions</span></a><ol><li class="toc-sub"><a href="#h-00-1"><span>Specification</span></a></li><li class="toc-sub"><a href="#h-00-2"><span>Articles supplied by shipyard and owner</span></a></li><li class="toc-sub"><a href="#h-00-3"><span>Access</span></a></li><li class="toc-sub"><a href="#h-00-4"><span>Materials and workmanship</span></a></li><li class="toc-sub"><a href="#h-00-5"><span>Insurance</span></a></li><li class="toc-sub"><a href="#h-00-6"><span>Warranty</span></a></li><li class="toc-sub"><a href="#h-00-7"><span>Drawings and Definitions</span></a></li><li class="toc-sub"><a href="#h-00-8"><span>Classification and Compliance</span></a></li><li class="toc-sub"><a href="#h-00-9"><span>Flag state requirements</span></a></li><li class="toc-sub"><a href="#h-00-10"><span>Weight control</span></a></li><li class="toc-sub"><a href="#h-00-11"><span>Commissioning and Testing</span></a></li><li class="toc-sub"><a href="#h-00-12"><span>Delivery of yacht</span></a></li></ol></li><li><a href="#area-10"><span class="toc-code">10</span><span>Hull</span></a><ol><li class="toc-sub"><a href="#h-10-1"><span>General Concept</span></a></li><li class="toc-sub"><a href="#h-10-2"><span>101  Hull structures</span></a></li><li class="toc-sub"><a href="#h-10-3"><span>102  Hull finish and fairing</span></a></li><li class="toc-sub"><a href="#h-10-4"><span>103  Transom, swim and boarding platform</span></a></li><li class="toc-sub"><a href="#h-10-5"><span>105  Anchoring system</span></a></li><li class="toc-sub"><a href="#h-10-6"><span>106  Hull fittings and hardware</span></a></li><li class="toc-sub"><a href="#h-10-7"><span>150  Pivoting daggerboard and skeg system</span></a></li></ol></li><li><a href="#area-20"><span class="toc-code">20</span><span>Deck</span></a><ol><li class="toc-sub"><a href="#h-20-1"><span>General concept</span></a></li><li class="toc-sub"><a href="#h-20-2"><span>201  Deck structure</span></a></li><li class="toc-sub"><a href="#h-20-3"><span>202  Finish</span></a></li><li class="toc-sub"><a href="#h-20-4"><span>204  Decking</span></a></li><li class="toc-sub"><a href="#h-20-5"><span>210  Deck fittings and hardware</span></a></li><li class="toc-sub"><a href="#h-20-6"><span>211  Deck sail handling gear</span></a></li></ol></li><li><a href="#area-30"><span class="toc-code">30</span><span>Interior</span></a><ol><li class="toc-sub"><a href="#h-30-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-30-2"><span>301  Cabins, heads and showers</span></a></li></ol></li><li><a href="#area-40"><span class="toc-code">40</span><span>Engine</span></a><ol><li class="toc-sub"><a href="#h-40-1"><span>401  Engine room</span></a></li><li class="toc-sub"><a href="#h-40-2"><span>402  Engine and propulsion system</span></a></li><li class="toc-sub"><a href="#h-40-3"><span>403  Diesel Generator</span></a></li><li class="toc-sub"><a href="#h-40-4"><span>404  Fuel and oil system</span></a></li><li class="toc-sub"><a href="#h-40-5"><span>405  Exhaust system</span></a></li><li class="toc-sub"><a href="#h-40-6"><span>406  Engine room ventilation system</span></a></li></ol></li><li><a href="#area-50"><span class="toc-code">50</span><span>Plumbing</span></a><ol><li class="toc-sub"><a href="#h-50-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-50-2"><span>General</span></a></li><li class="toc-sub"><a href="#h-50-3"><span>Fresh water tanks</span></a></li><li class="toc-sub"><a href="#h-50-4"><span>Hot water boilers</span></a></li><li class="toc-sub"><a href="#h-50-5"><span>502  Waste water system</span></a></li></ol></li><li><a href="#area-60"><span class="toc-code">60</span><span>Electrical</span></a><ol><li class="toc-sub"><a href="#h-60-1"><span>General</span></a></li><li class="toc-sub"><a href="#h-60-2"><span>One line diagram</span></a></li><li class="toc-sub"><a href="#h-60-3"><span>Cables and Supports</span></a></li><li class="toc-sub"><a href="#h-60-4"><span>Switchgear and Panels</span></a></li><li class="toc-sub"><a href="#h-60-5"><span>Grounding system and Corrosion prevention</span></a></li><li class="toc-sub"><a href="#h-60-6"><span>601  AC system</span></a></li><li class="toc-sub"><a href="#h-60-7"><span>602  DC systems</span></a></li><li class="toc-sub"><a href="#h-60-8"><span>603  Control and Monitoring system</span></a></li><li class="toc-sub"><a href="#h-60-9"><span>605  Navigation system</span></a></li><li class="toc-sub"><a href="#h-60-10"><span>606  Audio / Video</span></a></li></ol></li><li><a href="#area-70"><span class="toc-code">70</span><span>Rigging</span></a><ol><li class="toc-sub"><a href="#h-70-1"><span>701  Mast and rig (owner supplied)</span></a></li><li class="toc-sub"><a href="#h-70-2"><span>702  Sails</span></a></li></ol></li><li><a href="#area-90"><span class="toc-code">90</span><span>Miscellaneous</span></a></li></ol></nav><div id="sp-sections"><section class="sp-area" id="area-GP">
+<div class="sp-bc">GP › General Particulars</div>
+<h2 class="doc-h2">GP  General Particulars</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Project management</span></div>
+<h3 class="doc-h3" id="h-GP-1">Principal dimensions</h3>
+<div class="doc-kv"><span class="doc-k">L.O.A.</span><span>32.880 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">D.W.L.</span><span>31.500 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Beam</span><span>12.885 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Draft</span><span>1.70 / 5.20 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Displacement (light)</span><span>~85 000 kg <span class="tag t-tbc">TBC</span></span></div>
+<div class="doc-kv"><span class="doc-k">I / I’ / I’’</span><span>31.90 / 38.00 / 43.29 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">J / J / J code</span><span>11.70 / 13.00 / 14.40 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">P</span><span>38.70 m <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">E</span><span>11.40 m <span class="tag t-std">Standard</span></span></div>
+<h3 class="doc-h3" id="h-GP-2">Construction</h3>
+<div class="doc-kv"><span class="doc-k">Hull</span><span>Composite construction — epoxy SPRINT / prepreg / infusion, carbon fibre. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Keel</span><span>Pivoting daggerboards. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Deck</span><span>Composite construction — epoxy SPRINT / prepreg / infusion, carbon fibre. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Interior</span><span>Structural bulkheads and constructional panels in carbon-epoxy composite laminate. <span class="tag t-std">Standard</span></span></div>
+<h3 class="doc-h3" id="h-GP-3">Equipment</h3>
+<div class="doc-kv"><span class="doc-k">Winches</span><span>Harken hydraulic deck winches. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Anchoring system</span><span>Primary 270 kg high-holding-power anchor (Ultramarin or equivalent) and stern anchor. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Fuel tanks</span><span>~6 000 L stainless-steel container tanks + 2 × 300 L day tanks. <span class="tag t-tbc">TBC</span></span></div>
+<div class="doc-kv"><span class="doc-k">Fresh water</span><span>2 × 1 000 L HDPE tanks. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Holding tank</span><span>2 × 1 000 L HDPE tanks; black-water tank 1 × 400 L. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Watermaker</span><span>HEM Model 30/4000 (15 000 L/day). <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Heating / AC</span><span>Dometic, Frigomar or Heinen &amp; Hopman; heating by reverse cycle. <span class="tag t-opt">Optional</span></span></div>
+<div class="doc-kv"><span class="doc-k">Main engine</span><span>Danfoss electrical propulsion. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Generators</span><span>2 × Cummins B4.5, 129 kW @ 1800 rpm diesel. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Propeller</span><span>Brunton Varifold folding 4-blade. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Bow &amp; stern thruster</span><span>OMS hydraulic swing bow-thruster H-0300-S. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Mast &amp; rigging</span><span>Owner supply. <span class="tag t-own">Owner's supply</span></span></div>
+<div class="doc-kv"><span class="doc-k">Batteries</span><span>HVDC battery bank, approx. 240 kWh. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">AC system</span><span>230 / 400 V, 50 Hz, 3-phase. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Electronics</span><span>B&amp;G, Starlink. <span class="tag t-tbc">TBC</span></span></div>
+<h3 class="doc-h3" id="h-GP-4">Design</h3>
+<div class="doc-kv"><span class="doc-k">Naval architect</span><span>Berret-Racoupeau Yacht Design SARL. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Exterior &amp; interior design</span><span>Berret-Racoupeau Yacht Design / Jamie Bush &amp; Co. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Project management</span><span>Patrick Sassier. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Classification</span><span>DNV, certification of hull and machinery. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Flag state</span><span>Malta. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Cabins</span><span>3 guest + 1 owner + 3 crew. <span class="tag t-std">Standard</span></span></div>
+<div class="doc-kv"><span class="doc-k">Delivery</span><span>June 2027. <span class="tag t-tbc">TBC</span></span></div>
+</section>
+<section class="sp-area" id="area-00">
+<div class="sp-bc">00 › General Conditions</div>
+<h2 class="doc-h2">00  General Conditions</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: PM / Head of Engineering</span></div>
+<h3 class="doc-h3" id="h-00-1">Specification</h3>
+<p>The purpose of the Technical Specification is to define the technical characteristics of the Vessel in its entirety. </p>
+<p>The Technical Specification will be accompanied by the General Plan Drawings, such as interior, deck, equipment layout and Mast &amp; Sail plan. </p>
+<p>The intent is to produce a lightweight, comfortable, performing yacht for coastal, long distance, offshore cruising. Sailing in high latitude is part of the sailing program. The ship builder, hereinafter referred to as the Builder shall cooperate with the Buyer or the Buyer's representatives togeth… </p>
+<p>In case of either gaps, or conflict, between the drawings and the specifications, the specification is the leading document and should be followed. Some details may be changed per the Builder’s experience. In such an event, compliance with the contractual clauses, which regulate changes and modific… </p>
+<p>Work shown in the drawings and not in the specs, or vice versa, is to be considered as if being on both. </p>
+<p>The Builder undertakes to ensure that the boat is built in accordance with this specification as far as this is possible, and by adhering to the drawings and using the best quality materials. Care will be taken to ensure that every part of the Yacht will be accessible for the purposes of maintenanc… </p>
+<h3 class="doc-h3" id="h-00-2">Articles supplied by shipyard and owner</h3>
+<p>The yard to receive and take responsibility for all articles furnished by the owner and suppliers and will store all such articles in a dedicated warehouse until needed. </p>
+<h3 class="doc-h3" id="h-00-3">Access</h3>
+<p>The owner, the naval architect, his representatives and or an appointed surveyor shall have access to the yacht and everything pertaining to the yacht at all working hours. The buyer shall announce his/ her visit at least one week ahead. This to ensure enough time for the yard to plan the visit. Th… </p>
+<h3 class="doc-h3" id="h-00-4">Materials and workmanship</h3>
+<p>All materials and manufactured articles furnished by the yard shall be suitable for marine installation and are of the best quality for their respective purpose. References to trade names in this preliminary specification and catalogue numbers are generally descriptive rather than restrictive and a… </p>
+<p>If the yard proposes an equivalent substitution that differs from the contractual specification; the yard will require the owner’s approval to any such substitution before placing an order. It shall be the responsibility of the yard to check the purchase orders and check all materials delivered to … </p>
+<p>The Builder shall use skilled workmanship, in keeping with the best yacht practice and in confirmation with its plans and specifications. </p>
+<p>Materials and workmanship can be regularly inspected by the owner or his representatives who shall have the authority to reject any faulty material or workmanship whether completed or not, and to demand the same be replaced in a proper manner at the yard's expense. In the case of articles supplied … </p>
+<p>Particular care is to be taken to avoid bimetallic corrosion: where required the BUILDER shall isolate the materials as far as practical. </p>
+<p>All materials to be in accordance with class regulations. </p>
+<h3 class="doc-h3" id="h-00-5">Insurance</h3>
+<p>See Yacht Construction Agreement. </p>
+<h3 class="doc-h3" id="h-00-6">Warranty</h3>
+<p>See Yacht Construction Agreement. </p>
+<h3 class="doc-h3" id="h-00-7">Drawings and Definitions</h3>
+<p>All drawings, specification and further information supplied concerning the Yacht are copyright of the Designers and the Builder. All supplied material should be in English. They may not be reproduced, copied, or shown to unauthorised third parties without the express permission of the Designer or … </p>
+<p>The drawings will be interpreted and completed with reference to the specification and the suppliers of equipment and material. In cases where notes on the drawings are in a foreign language, they will be translated into English. </p>
+<p>All the drawings will be drawn to scale but not all will contain dimensions. Projections and sketches not drawn to scale will, when required, contain dimensions. Vessel to be designed using the metric system only. As far as not otherwise specified, International Standards to be the basis for standa… </p>
+<p>The Builder will correct any defects or errors, which may occur during the reproduction of drawings, in consultation with the relevant party. </p>
+<p>The Builder shall follow all details and dimensions shown on the plans in so far as practicable and shall check all such dimensions and details to satisfy itself, by full size layout if necessary, that interferences are eliminated, and that matching or fitting parts are properly installed. The Buil… </p>
+<p>The Builder is to review all plans, drawings, subcontractor parts and specifications, to satisfy itself that the intended functions will be achieved with respect to construction and fit-out issues. Performance characteristics, stability etc. is the responsibility of the Naval Architect. </p>
+<p class="doc-lead">The Builder’s drawings</p>
+<p>The Builder is responsible for making and submitting all other necessary drawings for the proper construction and maintenance of the yacht. Drawings shall be supplied in PDF format. </p>
+<h3 class="doc-h3" id="h-00-8">Classification and Compliance</h3>
+<p>The Yacht will be constructed in accordance with the class rules and regulations. </p>
+<p>Certification of Class, Hull and Machinery DNV GL. </p>
+<p>Mast and rig class certification. To be decided if any. </p>
+<h3 class="doc-h3" id="h-00-9">Flag state requirements</h3>
+<p>The flag state will be Malta. </p>
+<p>A change of flag state during the build may cause additional costs and is considered as change order. </p>
+<h3 class="doc-h3" id="h-00-10">Weight control</h3>
+<p>The builder shall supply a detailed weight study which also should be kept updated during the entire project, including LCG and VCG positions. The builder will also weigh the yacht periodically throughout the project and report the numbers to the client and the architect. The boat will be weighed a… </p>
+<h3 class="doc-h3" id="h-00-11">Commissioning and Testing</h3>
+<p>The builder has developed an extensive commissioning process. Every system on board has a functional description which is created before each system is designed. These functional descriptions are also the base for the test protocols created for each project. Before the commissioning starts the buil… </p>
+<p>The builders project team hands over the testing of the boat to an in-house commissioning team. The team consists of representatives from the builders After Sales organisation, Commissioning Captain, members of the builder’s project team and the owner’s representative. </p>
+<p>All commissioning and test protocols to be accepted by the client or the client’s representative before the yacht is ready for hand over. After hand over is done the yacht becomes the responsibility of the After Sales organisation. </p>
+<p class="doc-lead">Following Hand over documents are prepared.</p>
+<ul><li>Owner’s manual </li><li>Warranty cards </li><li>Warranty registration cards </li><li>Warranty certificate </li></ul>
+<h3 class="doc-h3" id="h-00-12">Delivery of yacht</h3>
+<p>If on delivery of the yacht to the owner any item of work shall remain uncompleted, the owner’s representative, owner and classification representative will prepare a list before acceptance, together with a list of all items of work that may be found to be not in compliance and submit such a list t… </p>
+<p>At delivery of the yacht Baltic Yachts will provide two persons with electrical and mechanical skills to attend for a few days at cost to the client. Final destination to be confirmed. </p>
+</section>
+<section class="sp-area" id="area-10">
+<div class="sp-bc">10 › Hull</div>
+<h2 class="doc-h2">10  Hull</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Mechanical / Structural</span></div>
+<h3 class="doc-h3" id="h-10-1">General Concept</h3>
+<p>Hull lines will be in accordance with Naval Architect design. </p>
+<p>Details of engineering and construction according to the Structural Engineer Drawings. </p>
+<p>The hulls and wetdeck (bridge between the hulls) will be built in female moulds using either sprint or infusion process techniques whichever is more suitable. </p>
+<p>Hulls and wetdeck are built in advanced composite sandwich construction using standard modulus carbon fibres and corecell core. </p>
+<p>Inner skin: Woven roving (0°/90°) and biaxial (±45°) standard modulus carbon fabrics. </p>
+<p>Core: Corecell core bonded under vacuum to obtain best bonding reliability. </p>
+<p>Outer skin: Woven roving (0°/90°) and biaxial (±45°) standard modulus carbon fabrics. </p>
+<p>For the lamination, an oven will be assembled around the mould including a number of individually thermostatically controlled heaters. During the curing process, the temperature curves from a number of temperature sensors will be recorded and followed up. Heaters will be continuously adjusted in or… </p>
+<h3 class="doc-h3" id="h-10-2">101  Hull structures</h3>
+<p>The hull shell will be supported by transverse and longitudinal structures. </p>
+<p>The high-stress areas, such as the ones surrounding the pivoting daggerboards, lower rudder bearings, bow thruster, crash bow, chain plates and other stressed areas are reinforced with additional laminate and dedicated structures that conform with high latitude passages. </p>
+<p>Hull internal structures and bulkheads will be provided with limber holes flush to hull, allowing all water to drain to the dedicated sumps. Limber will be arranged where needed in order to provide drainage. The holes will be finished so that the foam core and bulkhead edges are not exposed. </p>
+<p>Structural engineering to be done by Rivoyre Ingenierie. </p>
+<p>Hull will be NDT checked and report to be shared with owner’s representative and structural engineering company and if any repairs needed it has to be agreed between all three parties and any eventually repair considered covered by the yard. </p>
+<p class="doc-lead">Structural bulkheads</p>
+<p>All bulkheads have a sandwich construction with skins made of woven and biaxial standard modulus carbon epoxy sprint fabrics with corecell core. Unidirectional fibres used in local reinforcements where needed. All bulkheads will be according to classification societies rules. </p>
+<p>The bulkheads are manufactured on a vacuum table, to be flat and distortion free. All the laminate layers are accurately cut using our automated and computerized cutting machine. Each laminate layer is precisely placed on the vacuum table with help of a laser projection system. This advanced produc… </p>
+<h3 class="doc-h3" id="h-10-3">102  Hull finish and fairing</h3>
+<p class="doc-lead">General</p>
+<p>The complete paint system shall be Awlcraft as per yards’ standards, all materials used as per AWLGRIP guidelines. The paint work is in accordance with the ICOMIA 2012 Technical Guidelines for Minimum Acceptable Finish and Appearance for Super Yacht Gloss Coatings (in its latest version at the time… </p>
+<p>A complete kit for touch up or small repairs to be supplied to the yacht. Metallic color to be quoted as option. Sample panels to be made, size 1 x 1,5 m. whereupon the final hull and stripe colors will be decided. The standard of fairing (max. permissible deviation over a 4m batten) shall be 1mm o… </p>
+<p>The colours will be following the preliminary OWNER’s wishes: </p>
+<ul><li>Metallic Flag Blue colour for the topsides, </li><li>White or Oyster White for the deck and superstructure and flybridge. </li><li>Black for the under-waterline paint </li></ul>
+<p class="doc-lead">Hull sides, transom and superstructure</p>
+<h3 class="doc-h3" id="h-10-4">103  Transom, swim and boarding platform</h3>
+<p>Transom </p>
+<p>Two transom doors shall be included and serve as access doors to the lazarettes. It will include the four upper steps as shown in the below picture. It should be wide enough to allow for all equipment stored into the lazarette to go through (580mm). They shall be watertight and open manually with t… </p>
+<p class="doc-lead">Transom swim platform</p>
+<p>A hydraulic tender lifting platform from TENDERLIFT will be fitted under the tender garage. The tender lift will be made of aluminium, carbon composite construction as an option and quoted separately if desired. When the platform is lifted, the underside must be higher than the yacht nacelle bottom… </p>
+<p>In lowered position, the platform must be deeply submerged to facilitate the loading and unloading of the tender. </p>
+<p>The platform can also be lowered at the same level as the transom to create a large swimming and sunbathing area. An extension area (0.3m²) as shown below should be included and manually operated and blocked on each side in this configuration to reduce the gap with the transom. </p>
+<p>The hull shapes will not be symmetrical to their respective centrelines to minimize the gap between the transom and the tender lift platform. This asymmetry will be restricted. </p>
+<p>Platform to serve as swim platform when open, teak covered and will be of model for a max. 6,2m (size to be confirmed) owner supplied tender. <span class="tag t-own">Owner's supply</span></p>
+<h3 class="doc-h3" id="h-10-5">105  Anchoring system</h3>
+<p>The ground tackle is to meet class rules. The builder is to confirm size of the equipment with Class or flag regulation. </p>
+<p>The anchor and chain handling systems are to be installed in well decks under the forward deck and fit with a flush hatch. Compression type chain stop will be provided. While at anchor, the vessel will lay on a bridle system attached to the forward beam ends. </p>
+<p>A mock-up in plywood will be made of the anchor handling arrangements to assure function of the system. </p>
+<p class="doc-lead">Windlass</p>
+<p>One Maxwell 8000 VWCLP hydraulically driven windlass to be installed located as indicated on the Deck Plan. </p>
+<p>The windlass motor shall be dual speed controlled. A chain counter shall be integrated into the windlass with data shown on a small display near the windlass Maxwell AA150 or equivalent. Windlass control shall be from a tethered handheld remote control and, as a back-up function, control buttons in… </p>
+<p>Brakes and clutches for manual release shall be fitted to the windlass. </p>
+<p class="doc-lead">Anchor</p>
+<h3 class="doc-h3" id="h-10-6">106  Hull fittings and hardware</h3>
+<p class="doc-lead">Hull windows</p>
+<p>All hull windows are to be installed according to class rules and regulations. Glazing to be laminated and chemically hardened safety glass. The glass band is 19000 mm long total and 500 mm high. All windows to be tinted, color to be decided by owner or his representative. Windows to be of a thickn… </p>
+<p class="doc-lead">Bow and stern thruster and Installation.</p>
+<p>Bow thruster foundation to be made according to the specification of the composite engineer and as per yard standards. </p>
+<p>Thrusters shall be controlled at both helm stations by a small joystick with indicator lights for whether the thrusters are raised or lowered. Monitoring system to give an alarm when thruster is down and boat speed more than 5 knots. </p>
+<p class="doc-lead">Bow thruster</p>
+<p>OMS hydraulic swing thruster H-0300-S. </p>
+<p class="doc-lead">Stern thruster</p>
+<h3 class="doc-h3" id="h-10-7">150  Pivoting daggerboard and skeg system</h3>
+<p>The boat is fitted with 2 fixed skegs and pivoting daggerboards. </p>
+<p>The daggerboard is a composite structure made of carbon laminates. Upon completion the fabricated construction will be tested with NDT, and relevant quality certificates are issued both for materials used and for lamination process. The daggerboard surface will receive a standard epoxy fairing and … </p>
+<p>The skeg is incorporated to the hulls and will house the pivoting daggerboard and its rotating system. The pivoting is done by a hydraulic cylinder. To be further developed. </p>
+<p>Skegs: </p>
+<ul><li>Lateral area: 1.7 m2 each </li><li>Span: 0.4 m </li></ul>
+<p>Carbon pivoting boards: </p>
+<ul><li>Lateral area: 5.0 m2 each </li></ul>
+</section>
+<section class="sp-area" id="area-20">
+<div class="sp-bc">20 › Deck</div>
+<h2 class="doc-h2">20  Deck</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Mechanical / Deck</span></div>
+<h3 class="doc-h3" id="h-20-1">General concept</h3>
+<p>The deck will have a superstructure including a flybridge. </p>
+<p>The deck will incorporate a toe rail in composite, details still to be defined. The toe rail will be reinforced at the location of cleats and other strong points. </p>
+<p>The flybridge will have twin helm stations one (1) port side, one (1) stbd side. Each helm station will have its own steering pedestal with equipment as described in section 80. The pedestals will be mirrored images of each other. </p>
+<p>The area forward incorporates a comfortable relaxing cockpit. There is also an aft cockpit area for a more sheltered relaxing area. The flybridge offers a good view for helmsman and with a sunbed arrangement. </p>
+<p>The main tender is stored on a tenderlift most aft. The crew tender is stored un-asembled and deflated in the port side forepeak. </p>
+<h3 class="doc-h3" id="h-20-2">201  Deck structure</h3>
+<p class="doc-lead">General</p>
+<p>Deck is built in female moulds which are strong and airtight and capable to withstand carbon sprint laminating curing temperatures of 85-90° C. </p>
+<p>The deck will be built using composite construction with epoxy sprint carbon sandwich laminates with corecell core. Main reinforcements in the laminates are multiaxial standard modulus carbon fabrics. Deck construction will be in accordance with structural engineers specification and post-cured acc… </p>
+<p>For the lamination, an oven will be assembled around the mould including a number of individually thermostatically controlled heaters. During the curing process, the temperature curves from a number of temperature sensors will be recorded and followed up. Heaters will be continuously adjusted in or… </p>
+<p>The deck shell will be supported by transversal and longitudinal structure as specified by structural engineers. </p>
+<h3 class="doc-h3" id="h-20-3">202  Finish</h3>
+<p>See hull finish 102 </p>
+<h3 class="doc-h3" id="h-20-4">204  Decking</h3>
+<p class="doc-lead">Standard deck</p>
+<p>Teak will be of the best available quality, quarter sawn Indian grown. </p>
+<p>A teak deck will be provided for the side decks and cockpits. Width of planking 70mm x 12 mm with a 5mm caulking. Margin planks surrounding the teak deck to be 70mm. Traditional king plank 120 mm wide on center line. Thickness to be approximately 12 mm final when sanded. Standard caulking color is … <span class="tag t-opt">Optional</span></p>
+<p>Margin planks around hatches and fittings; </p>
+<p>1. 35 – 50 mm margin plank around hatch cut out. Corners to have caulking, approx. half of the width of regular caulking. See picture below. </p>
+<p>Detail 1. 35mm margin plank w/ caulking </p>
+<p>In the corners </p>
+<p>15367073025 </p>
+<h3 class="doc-h3" id="h-20-5">210  Deck fittings and hardware</h3>
+<p class="doc-lead">General</p>
+<p>All deck equipment will be installed by means of through bolting with stainless steel bolts, washers, lock washers, nuts and using composite backing plates. The bolts will be Allen key head and countersunk where needed. All stainless-steel bolts in touch with carbon parts will be properly insulated… </p>
+<p>When non-ferrous metal is used, titanium should be preferred. </p>
+<p class="doc-lead">Deck fillers</p>
+<p>Deck fillers, one each filling point for fresh water and one filling point for fuel shall be supplied on port and stbd. These are discreetly located and clearly marked. Installation should talk all precautions to prevent the possibility of diesel overflowing to the decks or sea. The filler points t… </p>
+<p class="doc-lead">Pulpit, pushpit and stanchions</p>
+<p>Pulpit, pushpit and stanchions will be built according to designers drawing and owner’s design input following class rules. </p>
+<p>Pulpit, pushpit and stanchions will be made from carbon using components from Tec Wire or equivalent. Pulpit will be equipped with teak bench. 1 fishing rod holder should be planned on each pushpit as well as 2 fishing rod holders on aft rails. Guard lines would be made of dyneema ropes. </p>
+<h3 class="doc-h3" id="h-20-6">211  Deck sail handling gear</h3>
+<p class="doc-lead">General</p>
+<p>The sail handling gear will be supplied by Harken or equivalent. Please note, all the standing and running rigging loads are indicative, just to give a feeling of the size. All the deck gear will be engineered so that safe working load of each item is higher than the maximum working load. </p>
+<p>The maximum working load for standing and running rigging is calculated based on 60% of the maximum righting moment TBC. <span class="tag t-tbc">TBC</span></p>
+<p>All hydraulic cylinders to be in anodized aluminum body and stainless-steel rod. </p>
+<p class="doc-lead">Bobstay</p>
+<p>N/A </p>
+<p class="doc-lead">Main sail system</p>
+<p class="doc-lead">Main sheet xx kg</p>
+</section>
+<section class="sp-area" id="area-30">
+<div class="sp-bc">30 › Interior</div>
+<h2 class="doc-h2">30  Interior</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Interior design</span></div>
+<h3 class="doc-h3" id="h-30-1">General</h3>
+<p>General </p>
+<p>The interior styling is done by Jamie Bush and the following files are referenced: </p>
+<ul><li>240425_ZETEO_DESIGN DEVELOPMENT PRESENTATION compressed-Mock up Proposal 27.5.24 </li><li>240531_APPLIANCES SCHEDULE </li><li>240531_PLUMBING SCHEDULE </li><li>240531_WOOD SCHEDULE </li></ul>
+<p>BALTIC PERFORMANCE LIGHT (BENCHMARK LIARA AND HER DUAL ROLES) </p>
+<p>GENERAL The BALTIC PERFORMANCE LIGHT class uses specialist techniques and materials to achieve a lighter weight interior while still providing a high-level of comfort. The interior will reflect a higher degree of Baltic Yachts’ DNA - Lighter, Stiffer and Faster and will be built as light as possibl… </p>
+<h3 class="doc-h3" id="h-30-2">301  Cabins, heads and showers</h3>
+<p class="doc-lead">Bulkheads</p>
+<p>Advanced lightweight construction techniques are used in the construction of the interior. </p>
+<p>Main bulkheads are made on a vacuum table and the core is machined iwo. of additional reinforcement. The use of these two manufacturing processes results in bulkheads and panels with very high laminate quality and surface smoothness. Systems routing penetrations are re-enforced by unidirectional fi… </p>
+<p>BHDs will be built in by additional interior panels. Painted, veneered or upholstered surface specified. Panels will be mounted with fastmount fittings and are removable for access to systems where needed, upholstered panels are always removable. </p>
+<p>Interior walls build-up specified in Noise and vibration study. </p>
+<p class="doc-lead">Floors</p>
+<p>Cabin soles throughout the entire Yacht will be a composite/foam/sandwich with visible wood veneer or similar. Floors have a fixed margin plank all around. Border width to be minimum of the furniture kicker recess depth for easy floorboard removal without damaging the furniture. </p>
+<ul><li>Main Deck: -Teak. </li></ul>
+</section>
+<section class="sp-area" id="area-40">
+<div class="sp-bc">40 › Engine</div>
+<h2 class="doc-h2">40  Engine</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Systems / Mechanical</span></div>
+<h3 class="doc-h3" id="h-40-1">401  Engine room</h3>
+<p class="doc-lead">General</p>
+<p>The engine rooms are internally insulated for both fire safety and sound reduction. All equipment and insulation will be installed according to the insulation plan and the advice of noise and vibration consultants. </p>
+<p>Access to the engine rooms will be through watertight deck hatches. These hatches will have Baltic custom profiles, ensuring they offer the same level of watertightness, fire resistance, and noise reduction as the engine room panels. </p>
+<p>The walls and ceilings of the engine room will be clad with BONDAL Aluminum plating. Accessibility will be ensured to allow for the servicing of all equipment. </p>
+<p>The engine room insulation will consist of two layers of high-density mineral wool (approved to A60 standard), with damping aluminum sheets and perforated sheets in designated areas. </p>
+<p>The engine room floor will be made of GRP or Aluminum plates painted with non-skid paint and landed on nitrile gaskets glued to the bearers. Individual floor plates will be sized for easy removal and temporary storage to access under-sole equipment and systems. </p>
+<p>If space permits A workbench with a vice will be installed in each engine room. With a fold-up washbasin plumbed with hot and cold water will be installed at the workbench. </p>
+<p>Pipes in the engine room, machinery spaces, and other areas containing valves and shut-offs will be painted according to the relevant space specifications. Plastic pipe fittings that disassemble will not be painted. Valves, cocks, filling caps, etc., will have their handles, levers, or covers paint… </p>
+<h3 class="doc-h3" id="h-40-2">402  Engine and propulsion system</h3>
+<p class="doc-lead">Main engines</p>
+<p>There will be similar setups on each side. The propulsion system must meet IMO Tier III standards and include a straight shaft, thrust bearing, and folding propeller connected to an electric motor. One 130kW generator is installed in each engine room. </p>
+<p>The electrical propulsion engine is a Danfoss Editron EM-PMI375-T1100-1200, liquid-cooled. It has a continuous output of approximately 130kWm at 1200rpm with a coolant temperature of 40°C (the coolant temperature also depends on the seawater temperature). The electric motor is galvanically isolated… </p>
+<p class="doc-lead">Propeller &amp; Shaft setup</p>
+<p>Brunton's Varifold 4-bladed folding propeller to be provided. The propeller diameter will be maximized as per the Designer's and propulsion system manufacturer's specifications. The propeller material used shall be Ni-Al-Bz. </p>
+<p>2 Stainless Steel 1.4460 Propeller shaft (front-side propeller boss to end of reversing mechanism) </p>
+<p>2 stern tubes, length and diameter to be defined, flange on the front-side of the stern tube, 2 pcs. EASYTURN (or equivalent) Rubber bearings with brass shell and AXISEAL (or equivalent) mechanical-propeller shaft seal with Stainless Steel Duplex 1.4462 housing, SiC sealing surfaces, stainless stee… </p>
+<p>2 Stand-by Seal, inflatable, for shaft with Stainless Steel housing mounting between stern tube and AXISEAL, including air pump with manometer. </p>
+<h3 class="doc-h3" id="h-40-3">403  Diesel Generator</h3>
+<p>General </p>
+<p>Monitoring and controlling the generators is done from the vessel's HMI panels. Backup control is done from local operating panels next to the equipment. </p>
+<p>The diesel generators will have an HMI page that tracks various parameters, including but not limited to (if available from the engines CAN bus): </p>
+<p>Oil pressure </p>
+<p>Oil temperature </p>
+<p>Wet exhaust temperature </p>
+<p>Dry exhaust temperatures </p>
+<p>High-level water sensor for silencer </p>
+<h3 class="doc-h3" id="h-40-4">404  Fuel and oil system</h3>
+<p>Schematic drawing: 1221-404001(P1) Fuel system. </p>
+<p class="doc-lead">General</p>
+<p>The fuel system is to comply with class requirements. All valves, fittings and piping are made of marine grade, stainless steel and all flexible connections and hoses are certified and approved accordingly to ISO 7840 standards. </p>
+<p>The fuel system serves the two generators onboard and the diesel dinghy refuelling station. </p>
+<p class="doc-lead">Fuel polishing</p>
+<p>Two fuel polishing systems are installed, one per side, model Parker Racor P510MAM. </p>
+<p class="doc-lead">Fuel tanks</p>
+<p>The fuel tanks are made in stainless steel. There are four 1500 litre storage tanks and two 300 litres day tanks, total capacity of ~6600 litres. One fuel level sensor per tank. Day tanks also have a mechanical gauges. </p>
+<h3 class="doc-h3" id="h-40-5">405  Exhaust system</h3>
+<p>Schematic drawing: 1221-405001(P1) Exhaust System. </p>
+<p>The generators have exhaust systems where exhaust gases are cooled by injecting seawater into a mixing spray nozzle into a lift silencer followed by an exhaust water separator. The dry, cooled exhaust gases are then routed further aft to the hull penetration above the water line to the side of the … </p>
+<p>The exhaust equipment, piping, lift silencer and water separators are all made of composite material according to builder’s standard. Flexible elbows, and hoses are all certified and approved by SAE J 2006:03 R2. High temp resin is to be used when manufacturing components that will be subjected to … </p>
+<h3 class="doc-h3" id="h-40-6">406  Engine room ventilation system</h3>
+<p>Schematic drawing: 1221-406001(P1) Engine room ventilation. </p>
+<p>Engine room ventilation is based on the requirements of the equipment and systems installed in the engine room. The ventilation will be natural intake and powered extraction. The heat loads generated by combustion engines and electrical equipment are all to be considered within the design of the ER… </p>
+<p>The requirements of the installed equipment are manufacturer data and the dimensioning of the air flow is based on manufacturer data sheets. Special classification rules to be considered and design criteria to be follows is ISO/EN 8861 in conjunction with manufacturer data sheets and max. engine ro… </p>
+<p class="doc-lead">Control of engine room ventilation</p>
+<p>The system is based on temperature control; this will try to keep the temperature +12,5°C above outside ambient. This is only done by air change. Control of the fan speed has two options, manual control, or automatic mode. In manual mode the user can adjust the fan speed and automatic mode the syst… </p>
+<p class="doc-lead">Engine room ventilation system Main components</p>
+<ul><li>A60 Fire dampers installed in Engine room </li><li>Engine room air inlet via water trap </li></ul>
+</section>
+<section class="sp-area" id="area-50">
+<div class="sp-bc">50 › Plumbing</div>
+<h2 class="doc-h2">50  Plumbing</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Systems</span></div>
+<h3 class="doc-h3" id="h-50-1">General</h3>
+<p>All piping systems are designed and optimized for their purpose. Materials used for each system are described in the system schematic drawings. Through hull penetrations under DWL are equipped with high quality seacocks. For wastewater such as grey and black water sanitary hoses made for waste appl… </p>
+<p>For freshwater, wastewater +GF+ ABS plastic piping and Hep2O PB plastic materials are used. Bilge and seawater firefighting systems are built of CuNiFe piping where class demands, in other areas ABS piping can be used. Pipes carrying cooled or heated liquids to be insulated as appropriate in such m… </p>
+<p>501 Fresh water system </p>
+<h3 class="doc-h3" id="h-50-2">General</h3>
+<p>Schematic drawing: 1221-501001(P2) Fresh water system. </p>
+<p>The freshwater system is optimized for the yacht considering the number of persons on board and water consumers. </p>
+<p>The supply of pressurized water is achieved by two pressure pumps in parallel in each hull to ensure flow and pressure to consumers. For hot water supply two water heaters are installed. There is a crossover line to supply both hulls with freshwater. For convenience, a hot water circulation pump is… </p>
+<p>Shore water supply is connected in the lazarette via a filter. Tank filling with shore water or watermaker product water activates HEM SIS20 Silver Ioniser’s proportional dosing automatically. </p>
+<p>The freshwater system will supply water to the following areas: </p>
+<h3 class="doc-h3" id="h-50-3">Fresh water tanks</h3>
+<p>Two 2000 litre HDPE freshwater tanks are installed, one in each hull. The tanks have their own filling pipes and vent pipes at deck level. The tanks are equipped with a level sensor and a service hatch. </p>
+<h3 class="doc-h3" id="h-50-4">Hot water boilers</h3>
+<p>One 200L hot water boiler per hull with electric heating element. Excess heat from generators will heat the respective boiler. </p>
+<p>Main components of the Fresh water system: </p>
+<p>Component </p>
+<p>Pcs </p>
+<p>Type </p>
+<p>Fresh water tanks </p>
+<p>2 </p>
+<p>4000 liters (divided into port &amp; Stb) * </p>
+<h3 class="doc-h3" id="h-50-5">502  Waste water system</h3>
+<p class="doc-lead">General</p>
+<p>Schematic drawing: 1221-502001(P1) Waste water system. </p>
+<p>All grey water collected from showers, wash basins and galley is pumped to the holding tanks(2) by gray water pump boxes (10). The electric toilets (7) have inbuilt macerator pumps, that pump the black water to the holding tanks. A waste water transfer system is provided, to pump sewage water from … </p>
+<p class="doc-lead">Tanks</p>
+<p>The waste tanks are made of HDPE plastic. There is one holding tank on 2000 litres per hull and a ~600 liter sludge tank on stbd hull. </p>
+<p>All tanks are equipped with service valves and service hatches, deck suction connection, possibility for flushing of tanks. All tanks are equipped with level sensors with readout on the monitoring screen. Breathers for the tanks are not to be connected in such a way that bad odors can reach cockpit… </p>
+<p>Waste system main components </p>
+<p>Component </p>
+</section>
+<section class="sp-area" id="area-60">
+<div class="sp-bc">60 › Electrical</div>
+<h2 class="doc-h2">60  Electrical</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Electrical</span></div>
+<h3 class="doc-h3" id="h-60-1">General</h3>
+<p class="doc-lead">General</p>
+<p>This specification outlines the installation of a hybrid propulsion system with hydro - regeneration and electrical distribution, as illustrated in the electrical one-line diagram provided below. The Owner Has employed an Electrical Expert who will be consulted regarding the electrical system. His … </p>
+<p>The power sources for this system include shore power and generators, with two battery banks utilized for storage. The main electrical consumers consist of propulsion systems, hotel power, and electro-hydraulic pumps. The hotel power supplies all hotel consumers as well as the 24V service battery s… </p>
+<p>Given that the HVDC battery bank continuously provides power to the primary HVDC bus, transitions between generators and shore power will occur seamlessly. Moreover, the HVDC system is segregated into two subsystems to ensure redundancy. </p>
+<h3 class="doc-h3" id="h-60-2">One line diagram</h3>
+<p>The electrical system is divided into two sides for redundancy reasons. In the unlikely scenario that one component fails, it is possible to continue running the boat, but with less power available. </p>
+<h3 class="doc-h3" id="h-60-3">Cables and Supports</h3>
+<p>All wiring will be installed within conduits or stainless-steel wire trays. The entire electrical installation and craftsmanship will adhere to the highest standards of marine electrical practice and comply with all relevant rules and regulations. It is imperative that all wiring is organized, tidy… </p>
+<p>The Builder will ensure the use of lightweight marine-grade cables suitable for their respective purposes. </p>
+<p>Cables passing through structures and exposed to potential mechanical damage must be adequately protected. No cabling should be directly in contact with water or piping. </p>
+<h3 class="doc-h3" id="h-60-4">Switchgear and Panels</h3>
+<p class="doc-lead">General</p>
+<p>All switchboards and distribution boards shall be housed in Aluminum enclosures with suitably rated bus assemblies and local isolators. </p>
+<p>Switchboards with removable fuses shall be equipped with a fuse puller. </p>
+<h3 class="doc-h3" id="h-60-5">Grounding system and Corrosion prevention</h3>
+<p>A lightning conductor is installed in the mast, with an electrical cable running down, split into two and connected to cupper grounding plates, one in each hull. Additionally, another PE grounding plate for the AC system is situated further aft, near the main electrical panel. One hull anode is con… </p>
+<p>Corrosion prevention anodes will be recessed in the hull, and separate anodes for the metal equipment in the water. An external consultant will be employed to calculate the correct mass of the anodes. As anode material aluminum alloy will be used instead of zinc due to environmental reasons. </p>
+<h3 class="doc-h3" id="h-60-6">601  AC system</h3>
+<p class="doc-lead">General</p>
+<p>The two three-phase main inverters are supplying 230/400VAC at 50Hz. They are connected to AC bus1 and AC bus2 respectively. These AC buses can be linked together via a contactor for backup purposes. </p>
+<p>The types of consumers on the AC bus include: </p>
+<p>• Galley equipment </p>
+<p>• Water heater </p>
+<p>• Water maker </p>
+<p>• Air conditioning compressors </p>
+<p>• Battery chargers for 24V systems </p>
+<h3 class="doc-h3" id="h-60-7">602  DC systems</h3>
+<p>All critical data from DC systems will be monitored through the monitoring system, triggering alarms if values exceed predefined limits to promptly alert the crew and safeguard the components. Please refer to Chapter 603 for further details. </p>
+<p>All DC equipment will be isolated from the hull. </p>
+<p>In addition to the electronic cathodic protection system, the Builder will install earth leakage test meters on the main high voltage DC switchboard, displaying resistance and leak current for both positive and negative poles. Earth leakage will be indicated on the central alarm, monitoring, and co… </p>
+<p class="doc-lead">HVDC battery system</p>
+<p>The high voltage battery bank shall consist of 2 (two) separate and independent banks composed of high quality, water cooled or Air-cooled Lithium-Ion batteries. Each of the banks shall have its own independent charging, monitoring and control equipment, so a complete power failure because of a sin… </p>
+<p>Aiming for a minimum of 8 hours silent night period in accordance with the load balance shall be provided. </p>
+<p>HVDC system main components: </p>
+<p>2x Permanent magnet generators. </p>
+<h3 class="doc-h3" id="h-60-8">603  Control and Monitoring system</h3>
+<p>The monitoring and control system utilizes a decentralized I/O setup centered around two redundant master PLC with I/O slave modules. I/O boxes are strategically placed throughout the boat to reduce cable lengths and save weight. Remote access is achievable through a VPN router. </p>
+<p>HMI is based in a webserver, any device or computer connected to the monitoring network with a browser installed can access to it (Very flexible). Monitoring Wifi network can be setup to have access with portable devices as IPads. </p>
+<p>Each monitoring screen will have a small fan less computer dedicated to display the HMI. One screen located at the chart table and one screen in crew mess are only designated for monitoring and control. These screens should display information primarily in line with the presentation demonstrated by… </p>
+<p>Service </p>
+<p>Pcs </p>
+<p>Type </p>
+<p>Master PLC </p>
+<p>2 </p>
+<h3 class="doc-h3" id="h-60-9">605  Navigation system</h3>
+<p class="doc-lead">General</p>
+<p>Assuming built as pleasure yacht i.e. Malta CYC2020 does not apply. Share some information with BY Control and Monitoring so can be displayed in the HMI without needing to change over the navigation equipment for basic data: Curse, speed, depth, wind directions... </p>
+<p class="doc-lead">Sailing instruments (preliminary allowance list)</p>
+<p class="doc-lead">Processors</p>
+<p>One (1) B&amp;G Hercules WTP sailing processor with interface to ships communication Ethernet network. </p>
+<p class="doc-lead">Sensors</p>
+<p>One (1) B&amp;G WS730 VMHU in mast top, connected to NMEA 2000 bus via WS310 interface. </p>
+<p>One (1) B&amp;G DST800 Depth, speed and temp sensor (235kHz) connected to NMEA 2000 bus. </p>
+<h3 class="doc-h3" id="h-60-10">606  Audio / Video</h3>
+<p>N/A. For details see Preliminary allowance list P1. </p>
+<p>Central system </p>
+<p>Sonance DSP 8-130 Amplifier 5 </p>
+<p>WiiM Pro music streamer 11 </p>
+<p>Flybridge </p>
+<p>Sonance VPXT6R 4 </p>
+<p>Bathing platform </p>
+<p>Sonance VPXT6R 2 </p>
+</section>
+<section class="sp-area" id="area-70">
+<div class="sp-bc">70 › Rigging</div>
+<h2 class="doc-h2">70  Rigging</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Mechanical / Rig</span></div>
+<h3 class="doc-h3" id="h-70-1">701  Mast and rig (owner supplied)</h3>
+<p>General </p>
+<p>Mast, rigging and boom are to be owner supplied. A preliminary calculation of the forces to which they are subjected can be found in the attached RIMAST file. <span class="tag t-own">Owner's supply</span></p>
+<p>Stability has been performed at MLDC in the figure below to be considered preliminary at this point. </p>
+<p>Dimensions: </p>
+<p>I 38.0 m </p>
+<p>J 13.0 m </p>
+<p>P 38.7 m </p>
+<p>E 11.4 m </p>
+<h3 class="doc-h3" id="h-70-2">702  Sails</h3>
+<p>Sails will be supplied by the Owner. The yard will support the production, delivery and fitting out of the sails. </p>
+<p>The inventory and dimensions are provisional pending final design. </p>
+<p>Mainsail </p>
+<p>Area: 296 m² </p>
+<p>P: 38.7 m </p>
+<p>E: 11.4 m </p>
+<p>Genoa </p>
+<p>Area: 276 m² </p>
+</section>
+<section class="sp-area" id="area-90">
+<div class="sp-bc">90 › Miscellaneous</div>
+<h2 class="doc-h2">90  Miscellaneous</h2>
+<div class="sp-owner" data-owner=""><span class="sp-owner-txt">Section owner: Project management</span></div>
+<div class="sp-empty">Not started.</div>
+</section></div>
   </div>
-  <h2 class="sol-h" style="margin-top:26px">Project tools</h2>
-  <div class="pj-grid">
-    <a class="pj-tile live" href="specification.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg></div><h3>Specification</h3><p>The approved &ldquo;as sold&rdquo; spec under revision control.</p></a>
-    <a class="pj-tile live" href="change-orders.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M4 7h12M4 12h8M4 17h12"/><path d="M18 14l3 3-3 3"/></svg></div><h3>Change Orders</h3><p>Raise COs linked to a spec area &middot; section &middot; row.</p></a>
-    <a class="pj-tile live" href="planning.html"><div class="pj-ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div><h3>Planning & Follow-up</h3><p>Planning, meetings, memos and the management follow-up.</p></a>
-    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Budget & Cost</h3><p>Cost control, budgets and committed spend per project.</p></div>
-    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 10.5a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg></div><h3>Procurement & Purchasing</h3><p>Supplier orders, lead times and deliveries.</p></div>
-    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Quality & Sea Trials</h3><p>Inspections, NCRs, commissioning and sea trials.</p></div>
-    <div class="pj-tile soon"><span class="pj-badge">Coming soon</span><div class="pj-ico"><svg viewBox="0 0 24 24"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg></div><h3>Handover & Delivery</h3><p>Delivery checklist, owner handover and documentation.</p></div>
-  </div>
-  <p class="src-note" style="margin-top:22px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; realized projects and all edits are saved in this browser. A shared <strong>Projects</strong> store and real notifications are the Azure backend step.</span></p>
 
 
 <script>
@@ -1004,18 +1591,12 @@ window.PJX = (function(){
 
 <script>
 (function(){
-  var tb=document.getElementById('pj-portfolio'); if(!tb||!window.PJ_LIST) return;
-  var list=window.PJ_LIST();
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="pj-empty">No realized projects yet. Realize a project from Sales (Ongoing/Resting) to transfer it here.</div></td></tr>'; return; }
-  tb.innerHTML=list.map(function(p){
-    var q='?p='+encodeURIComponent(p.hull);
-    return '<tr><td><div class="proj-cell"><span class="proj-hull">'+esc(p.hull)+'</span><span class="proj-name">'+esc(p.name||'')+'</span></div></td>'+
-      '<td>'+esc(p.type||'')+'</td><td>'+esc(p.pm||'—')+'</td><td>'+esc(p.stage||'')+'</td><td>'+esc(p.since||'—')+'</td>'+
-      '<td><div class="proj-acts"><a class="btn-row primary" href="specification.html'+q+'">Spec</a>'+
-      '<a class="btn-row" href="change-orders.html'+q+'">Change orders</a>'+
-      '<a class="btn-row" href="planning.html'+q+'">Planning</a></div></td></tr>';
-  }).join('');
+  var sec=document.getElementById('sp-sections'); if(!sec) return;
+  var H=(new URLSearchParams(location.search).get('p')||window.PJ_DEFAULT||'B107C').trim().toUpperCase();
+  try{
+    var saved=localStorage.getItem('pw_pspec_'+H);
+    if(saved){ var o=JSON.parse(saved); if(o && o.html){ sec.innerHTML=o.html; } }
+  }catch(e){}
 })();
 </script>
 

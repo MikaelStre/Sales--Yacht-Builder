@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Handover & Delivery · Projects</title>
+<title>Create New Project · Yacht Builder</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -299,13 +299,7 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
-/* --- v27: editor tables (shared rich-text spec editor) --- */
-.sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
-.sp-table th,.sp-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
-.sp-table th{background:var(--surface-2);font-weight:700;color:var(--ink)}
-.sp-table td{color:var(--ink)}
 .src-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:-2px 0 16px;display:flex;gap:8px;align-items:flex-start}
 .src-note svg{width:16px;height:16px;stroke:var(--brand-2);flex:0 0 auto;margin-top:1px}
 .proj-cell{display:flex;flex-direction:column;gap:2px}
@@ -562,214 +556,6 @@
   body.cmt-printing .cmt-print{display:block!important}
   .cmt-sheet .cmt-row-c .cmt-row-who{color:#005080}
 }
-
-.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
-.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
-.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
-.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
-.co-card.co-steer{border-left:4px solid var(--good)}
-.co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:18px 0 8px}
-/* --- v26: Realize action + realized journey dot --- */
-.btn-row.realize{border-color:var(--good);color:var(--good)}
-.btn-row.realize:hover{background:var(--good);border-color:var(--good);color:#fff}
-.dot.good{background:var(--good)}
-/* --- v26: as-sold lock banner (Sales spec, read-only once realized) --- */
-.assold-bar{display:none;align-items:center;gap:11px;margin:0 0 16px;padding:12px 16px;border-radius:12px;
-  border:1px solid #d69600;border-left:4px solid #d69600;background:rgba(214,150,0,.10);
-  font:600 13px/1.45 var(--sans);color:#8a5a00}
-.assold-bar svg{width:20px;height:20px;stroke:#d69600;fill:none;stroke-width:2;flex:0 0 auto}
-.assold-bar a{color:var(--brand-2);text-decoration:underline}
-body.pw-assold .assold-bar{display:flex}
-body.pw-assold .sp-edit-btn,body.pw-assold .sp-edit-reset,body.pw-assold .sp-sec-edit,
-body.pw-assold .sp-addline,body.pw-assold .sp-fmt-bar,body.pw-assold .sp-own-sel,
-body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
-/* --- v26: Projects area chrome --- */
-.pj-sub{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 18px;border-bottom:1px solid var(--line);padding-bottom:0}
-.pj-sub a{font:600 13px/1 var(--sans);color:var(--muted);padding:9px 13px;border-radius:9px 9px 0 0;
-  border:1px solid transparent;border-bottom:0;position:relative;top:1px}
-.pj-sub a:hover{color:var(--brand-2);background:var(--surface-2)}
-.pj-sub a.on{color:var(--brand-2);background:var(--surface);border-color:var(--line);border-bottom:1px solid var(--surface)}
-.pj-pick{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:500 12.5px/1 var(--sans);color:var(--muted);align-self:center}
-.pj-pick select{font:600 12.5px/1 var(--sans);padding:6px 9px;border-radius:8px;border:1px solid var(--brand-2);background:var(--surface);color:var(--ink)}
-.pj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:880px){.pj-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.pj-grid{grid-template-columns:1fr}}
-.pj-tile{display:block;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
-  padding:20px;position:relative;transition:transform .15s,border-color .15s,box-shadow .15s}
-.pj-tile.live:hover{transform:translateY(-3px);border-color:var(--brand-2)}
-.pj-tile.soon{opacity:.72;background:var(--surface-2);cursor:default}
-.pj-tile .pj-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--brand-soft);
-  border:1px solid var(--brand-2);color:var(--brand);margin:0 0 12px}
-.pj-tile.soon .pj-ico{background:#eef1f3;border-color:var(--line);color:var(--faint)}
-.pj-tile .pj-ico svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.pj-tile h3{margin:0 0 4px;font-size:16.5px}
-.pj-tile p{margin:0;color:var(--muted);font-size:13px}
-.pj-tile .pj-badge{position:absolute;top:16px;right:16px;font:700 10px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;
-  border-radius:999px;padding:4px 9px;color:var(--faint);background:#eef1f3;border:1px solid var(--line)}
-.pj-status{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);border-radius:999px;padding:4px 10px;white-space:nowrap}
-.st-draft{color:#5b6b78;background:#eef1f3;border:1px solid var(--line)}
-.st-suggestive{color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600}
-.st-approved{color:#1573ad;background:#eaf2f8;border:1px solid var(--brand-2)}
-.st-implemented{color:var(--good);background:rgba(47,125,87,.10);border:1px solid var(--good)}
-.st-rejected{color:#b3432a;background:rgba(200,70,40,.10);border:1px solid #c84628}
-/* --- v26: snapshot / manual-update bar --- */
-.snap-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px;padding:10px 14px;border:1px solid var(--line);
-  border-radius:12px;background:var(--surface-2);font:500 12.5px/1.4 var(--muted)}
-.snap-bar .snap-v{font:700 12px/1 var(--mono);color:var(--brand);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px}
-.snap-bar .snap-sp{flex:1}
-.snap-btn{font:600 12px/1 var(--sans);padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.snap-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.snap-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-/* --- v26: generic card / table reuse for projects portfolio --- */
-.pj-port td .proj-cell{gap:1px}
-.pj-empty{padding:26px;text-align:center;color:var(--faint);font:500 13px/1.5 var(--sans)}
-/* --- v26: identity / viewer bar --- */
-.role-bar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:0 0 16px;font:500 12.5px/1.4 var(--muted)}
-.role-bar select{font:600 12.5px/1 var(--sans);padding:5px 8px;border-radius:8px;border:1px solid var(--brand-2);background:var(--surface);color:var(--ink)}
-.role-note{display:inline-flex;align-items:center;gap:8px;border-radius:9px;padding:7px 12px;font:600 12px/1.4 var(--sans)}
-.role-note.view{color:#8a5a00;background:rgba(214,150,0,.10);border:1px solid #d69600}
-.role-note.edit{color:var(--good);background:rgba(47,125,87,.08);border:1px solid var(--good)}
-.role-note button{font:inherit;color:var(--brand-2);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
-/* --- v26: change-order tool --- */
-.co-new{font:600 13px/1 var(--sans);color:#fff;background:var(--brand);border:0;border-radius:10px;padding:11px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
-.co-new:hover{background:var(--brand-2)}.co-new svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.co-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
-.co-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:var(--shadow);padding:15px 17px}
-.co-card .co-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.co-card .co-no{font:700 12px/1 var(--mono);color:var(--brand)}
-.co-card .co-ttl{font:700 14.5px/1.3 var(--sans);color:var(--ink)}
-.co-card .co-ref{font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:4px 9px}
-.co-card .co-meta{margin:9px 0 0;font:500 12px/1.5 var(--muted)}
-.co-card .co-desc{margin:9px 0 0;font:400 13px/1.5 var(--ink);border-top:1px solid var(--line);padding-top:9px}
-.co-card .co-desc img{max-width:100%;border-radius:6px}
-.co-card .co-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
-.co-card .co-people{font:500 11.5px/1.5 var(--muted)}
-.co-card .co-people b{color:var(--ink);font-weight:600}
-.co-overlay{position:fixed;inset:0;z-index:80;background:rgba(15,18,22,.5);display:flex;align-items:flex-start;justify-content:center;padding:34px 16px;overflow:auto}
-.co-sheet{width:680px;max-width:100%;background:var(--surface);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.3);padding:22px 24px}
-.co-sheet h3{margin:0 0 14px;font:700 18px/1.2 var(--sans)}
-.co-field{margin:0 0 13px}
-.co-field label{display:block;font:600 11px/1.2 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin:0 0 5px}
-.co-field input[type=text],.co-field select,.co-field textarea{width:100%;box-sizing:border-box;font:400 13.5px/1.4 var(--sans);color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
-.co-field input:focus,.co-field select:focus,.co-field textarea:focus{outline:none;border-color:var(--brand-2);box-shadow:inset 0 0 0 1px var(--brand-2)}
-.co-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-@media(max-width:560px){.co-cols{grid-template-columns:1fr}}
-.co-rt{border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.co-rt-bar{display:flex;gap:2px;flex-wrap:wrap;background:var(--surface-2);border-bottom:1px solid var(--line);padding:5px}
-.co-rt-bar button{width:30px;height:28px;border:0;background:transparent;border-radius:6px;cursor:pointer;font:600 13px/1 var(--sans);color:var(--ink)}
-.co-rt-bar button:hover{background:var(--brand-soft);color:var(--brand-2)}
-.co-rt-area{min-height:120px;max-height:300px;overflow:auto;padding:11px;font:400 13.5px/1.55 var(--sans);background:var(--surface)}
-.co-rt-area:focus{outline:none}
-.co-people-pick{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface-2)}
-.co-people-pick .co-grp{font:700 10.5px/1 var(--sans);color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:8px 0 5px}
-.co-people-pick .co-grp:first-child{margin-top:0}
-.co-people-pick label{display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1.4 var(--ink);text-transform:none;letter-spacing:0;margin:0 12px 5px 0;width:auto}
-.co-sheet-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
-.co-sheet-foot button{font:600 13px/1 var(--sans);padding:10px 16px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
-.co-sheet-foot button.go{background:var(--brand);border-color:var(--brand);color:#fff}
-.co-adv{display:inline-flex;gap:6px;flex-wrap:wrap}
-.co-adv button{font:600 11.5px/1 var(--sans);padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.co-adv button:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.co-adv button.danger:hover{border-color:#c84628;color:#b3432a}
-/* --- v26: spec section CO flag (flowback) --- */
-.sp-co-flag{display:inline-flex;align-items:center;gap:6px;margin-left:8px;font:600 11px/1 var(--sans);color:#1573ad;background:#eaf2f8;border:1px solid var(--brand-2);border-radius:999px;padding:4px 10px;vertical-align:middle}
-.sp-co-flag svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2}
-/* --- v26: revisions handler --- */
-.rev-row{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);padding:14px 16px;margin:0 0 11px}
-.rev-row .rev-v{font:700 13px/1 var(--mono);color:#fff;background:var(--brand);border-radius:8px;padding:8px 11px;flex:0 0 auto}
-.rev-row .rev-main{flex:1;min-width:0}
-.rev-row .rev-sum{font:600 13.5px/1.4 var(--ink)}
-.rev-row .rev-meta{font:500 12px/1.5 var(--muted);margin-top:3px}
-.rev-row .rev-meta a{color:var(--brand-2);text-decoration:underline}
-/* --- v26: planning --- */
-.pl-sec{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:18px 20px;margin:0 0 16px}
-.pl-sec h2{font:600 16px/1.2 var(--serif);margin:0 0 4px;display:flex;align-items:center;gap:9px}
-.pl-sec h2 svg{width:18px;height:18px;fill:none;stroke:var(--brand-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.pl-sec .pl-hint{font:500 12.5px/1.5 var(--muted);margin:0 0 12px}
-.pl-mile{display:grid;grid-template-columns:120px 1fr auto auto;gap:9px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
-.pl-mile:last-of-type{border-bottom:0}
-.pl-mile input[type=date]{font:500 12.5px/1 var(--sans);padding:6px 7px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2)}
-.pl-mile .pl-lab{font:500 13.5px/1.4 var(--ink);border:1px solid transparent;border-radius:6px;padding:5px 7px}
-.pl-mile .pl-lab:focus{outline:none;border-color:var(--brand-2);background:var(--surface-2)}
-.pl-mile select{font:600 11.5px/1 var(--sans);padding:5px 7px;border-radius:7px;border:1px solid var(--line);background:var(--surface)}
-.pl-mile .pl-del{border:0;background:none;color:var(--faint);cursor:pointer;font-size:16px}
-.pl-mile .pl-del:hover{color:#b3432a}
-.pl-add{margin-top:10px;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:8px 12px;cursor:pointer}
-.pl-meeting{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:0 0 10px;background:var(--surface-2)}
-.pl-meeting .pl-mhead{display:grid;grid-template-columns:120px 1fr;gap:9px;margin:0 0 7px}
-.pl-meeting input{font:500 13px/1.3 var(--sans);padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface)}
-.pl-memo-ed{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
-.pl-followup{border:1px dashed var(--brand-2);border-radius:12px;background:var(--brand-soft);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
-.pl-followup svg{width:34px;height:34px;fill:none;stroke:var(--brand-2);stroke-width:1.6;flex:0 0 auto}
-.pl-followup .pl-fu-b{flex:1}
-.pl-followup h3{margin:0 0 4px;font:700 14px/1.3 var(--sans)}
-.pl-followup p{margin:0 0 9px;font:500 12.5px/1.5 var(--muted)}
-.pl-ro .pl-lab,.pl-ro input,.pl-ro select,.pl-ro [contenteditable],.pl-ro .pl-add,.pl-ro .pl-del{pointer-events:none;opacity:.78}
-.pl-ro .pl-add,.pl-ro .pl-del{display:none}
-/* --- v26.1: CO hours, sign-off, printable owner sheet --- */
-.co-card .co-hrs{color:var(--ink)}
-.co-card .co-signed{margin-top:9px;font:600 12px/1.5 var(--sans);color:var(--good);background:rgba(47,125,87,.08);border:1px solid var(--good);border-radius:9px;padding:7px 11px}
-.co-card .co-signed a{color:var(--brand-2);text-decoration:underline}
-.co-await{display:inline-flex;align-items:center;gap:6px;font:600 11px/1 var(--sans);color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600;border-radius:999px;padding:4px 10px}
-.pj-status.st-awaiting-sign-off{color:#7a4dab;background:#f3edfb;border:1px solid #9a6fc9}
-.co-print{display:none}
-.co-print .cop-doc{max-width:720px;margin:0 auto;color:#111;font-family:var(--sans);padding:8px}
-.co-print .cop-logo{height:30px;margin:0 0 18px;display:block}
-.co-print h1{font:700 23px/1.2 var(--sans);margin:0 0 2px;color:#111}
-.co-print .cop-sub{font:600 13px/1.4 var(--sans);color:#005080;margin:0 0 20px}
-.co-print .cop-grid{display:grid;grid-template-columns:170px 1fr;gap:7px 16px;font-size:13px;margin:0 0 18px}
-.co-print .cop-grid dt{font-weight:700;color:#555}
-.co-print .cop-grid dd{margin:0;color:#111}
-.co-print .cop-h{font:700 12px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:#005080;margin:0 0 6px}
-.co-print .cop-desc{border:1px solid #ccc;border-radius:8px;padding:12px 14px;font-size:13px;margin:0 0 8px;min-height:60px;color:#111}
-.co-print .cop-sign{margin-top:30px;border-top:2px solid #111;padding-top:14px;color:#111}
-.co-print .cop-sign>b{font:700 14px/1.2 var(--sans)}
-.co-print .cop-note{font-size:11.5px;color:#555;margin:6px 0 0}
-.co-print .cop-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px}
-.co-print .cop-line{border-bottom:1px solid #111;height:34px}
-.co-print .cop-cap{font-size:11px;color:#555;margin-top:4px}
-@media print{
-  body.co-printing>*{display:none!important}
-  body.co-printing .co-print{display:block!important}
-}
-/* --- v33: "new proposal" badge on the Project development tab --- */
-.pj-badge-new{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;border-radius:50%;background:#d69600;color:#fff;font:700 11px/1 var(--sans);padding:0 4px;vertical-align:1px}
-/* --- v34: clickable file/PDF chip (opens in a new tab) --- */
-.dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
-a.dl-chip:hover{background:var(--brand-2);color:#fff}
-
-/* --- v39: price calculation host + risk register --- */
-.pc-h2{font:600 15px/1.3 var(--serif);margin:0 0 6px;color:var(--ink)}
-.pc-h2 .pc-hint{font:500 12px/1 var(--sans);color:var(--muted);margin-left:8px;text-transform:none;letter-spacing:0}
-.pc-lead{font:500 13.5px/1.6 var(--sans);color:var(--muted);margin:0 0 4px}
-.pc-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
-.pc-bar label{font:600 12px/1 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.pc-bar select{font:500 13.5px/1.3 var(--sans);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:280px}
-.pc-hint{font:500 12.5px/1.5 var(--sans);color:var(--muted)}
-.pc-frame{width:100%;height:86vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
-/* full-bleed: break out of the ~1120px content column so the tool gets the whole width */
-.pc-host{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;box-sizing:border-box;padding:0 clamp(12px,3vw,40px)}
-/* full screen: the iframe fills the whole window */
-.pc-frame.fs{position:fixed;inset:0;width:100vw;height:100vh;min-height:0;z-index:9999;border:0;border-radius:0}
-.pc-fsexit{position:fixed;top:12px;right:16px;z-index:10000;display:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.pc-fsexit.show{display:inline-flex}
-.pc-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:flex-start}
-.pc-note svg{width:16px;height:16px;stroke:var(--brand-2);fill:none;stroke-width:1.7;flex:0 0 auto;margin-top:1px}
-.rk-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0}
-table.rk{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:900px}
-table.rk th,table.rk td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
-table.rk th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.rk td.r,table.rk th.r{text-align:right}
-.rk-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.rk-txt{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.rk-sel{padding:4px 6px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1 var(--sans)}
-.rk-score{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.rk-lo{background:#e7f6ee;color:#1f7a52}.rk-md{background:#fbf3e0;color:#8a6d1a}.rk-hi{background:#fbe7e7;color:#b23b3b}
-.rk-ro td{color:var(--ink)}
-.rk-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.rk-role{font:500 12.5px/1.5 var(--sans);margin:6px 0 0}
-.rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
-.rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
 </style>
 </head>
 <body>
@@ -783,209 +569,294 @@ table.rk td.r,table.rk th.r{text-align:right}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
-
-<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script>
-<script>
-/* Runs FIRST (before any per-page app): resolves the active project from ?p and
-   exposes window.PJ_HULL / PJ_PROJ / PJ_LIST / PJ_CARRY. No DOM access here so it
-   is safe to run at the top of the page. */
-(function(){
-  var seed = window.PJ_SEED || [];
-  function realizedList(){
-    var rl=[]; try{ rl=JSON.parse(localStorage.getItem('pw_realized'))||[]; }catch(e){}
-    var map={}; var out=[];
-    seed.forEach(function(p){ map[p.hull.toUpperCase()]=Object.assign({},p); });
-    rl.forEach(function(p){ var k=(p.hull||'').toUpperCase(); if(!k) return;
-      map[k]=Object.assign({stage:'Realized — transferred from Sales'}, map[k]||{}, p); });
-    Object.keys(map).forEach(function(k){ out.push(map[k]); });
-    out.sort(function(a,b){ return (a.hull||'').localeCompare(b.hull||''); });
-    return out;
-  }
-  window.PJ_LIST = realizedList;
-  var list = realizedList();
-  var qp = new URLSearchParams(location.search).get('p');
-  var hull = qp || (list[0]&&list[0].hull) || window.PJ_DEFAULT;
-  window.PJ_HULL = (hull||'').toUpperCase();
-  window.PJ_PROJ = list.filter(function(p){return (p.hull||'').toUpperCase()===window.PJ_HULL;})[0]
-                   || {hull:hull,name:hull,pm:'',stage:''};
-  window.PJ_CARRY = '?p='+encodeURIComponent(hull);
-})();
-</script>
-
-<script>
-window.PJX = (function(){
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-  function nowISO(){ try{ return new Date().toISOString(); }catch(e){ return ''; } }
-  function fmt(iso){ try{ var d=new Date(iso); return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
-  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  function curUser(){ try{ return localStorage.getItem('pw_user') || window.PW_USER_DEFAULT || 'You'; }catch(e){ return window.PW_USER_DEFAULT||'You'; } }
-  function setUser(u){ try{ localStorage.setItem('pw_user', u); }catch(e){} }
-  // simulated Teams/email notification toast (matches the Sales editor look)
-  var nEl;
-  function notify(html, kind){
-    if(!nEl){ nEl=document.createElement('div'); document.body.appendChild(nEl); }
-    nEl.className='sp-notify'+(kind?(' '+kind):'');
-    var ic = kind==='warn'
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>';
-    nEl.innerHTML=ic+'<span>'+html+'</span>'; nEl.classList.add('show');
-    clearTimeout(nEl._t); nEl._t=setTimeout(function(){ nEl.classList.remove('show'); }, 6500);
-  }
-  // identity switcher (shared pw_user) -> calls onChange(user)
-  function identityBar(host, onChange){
-    var all=[]; (window.PJ_PMS||[]).concat(window.PJ_ENG||[],window.PJ_FOREMEN||[]).forEach(function(n){ if(all.indexOf(n)<0)all.push(n); });
-    var wrap=document.createElement('span'); wrap.className='sp-userbar';
-    wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Viewing as</span>';
-    var sel=document.createElement('select'); sel.className='sp-user-sel';
-    if(all.indexOf(curUser())<0){ var x=document.createElement('option'); x.value=curUser(); x.textContent=curUser(); sel.appendChild(x); }
-    all.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; if(n===curUser())o.selected=true; sel.appendChild(o); });
-    sel.value=curUser();
-    sel.addEventListener('change', function(){ setUser(sel.value); if(onChange)onChange(sel.value); });
-    wrap.appendChild(sel); host.appendChild(wrap); return sel;
-  }
-  // snapshot + manual-update bar. keys() -> array of per-project storage keys.
-  function snapBar(host, hull, keysFn, versionFn){
-    var KEY='pw_snapshots_'+hull;
-    var bar=document.createElement('div'); bar.className='snap-bar';
-    function paint(){
-      var snaps=load(KEY,[]);
-      bar.innerHTML='<span class="snap-v">'+esc(versionFn?versionFn():'')+'</span>'+
-        '<span>Local working copy · '+snaps.length+' snapshot'+(snaps.length===1?'':'s')+'</span><span class="snap-sp"></span>'+
-        '<button type="button" class="snap-btn" data-a="snap"><svg viewBox="0 0 24 24"><path d="M5 7h3l1-2h6l1 2h3v12H5z"/><circle cx="12" cy="13" r="3"/></svg>Take snapshot</button>'+
-        '<button type="button" class="snap-btn" data-a="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Snapshots ('+snaps.length+')</button>'+
-        '<button type="button" class="snap-btn" data-a="upd"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Update now</button>';
-    }
-    paint();
-    bar.addEventListener('click', function(e){
-      var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
-      if(a==='snap'){
-        var lab=prompt('Snapshot label:', 'Snapshot '+today()); if(lab===null) return;
-        var data={}; keysFn().forEach(function(k){ var v=localStorage.getItem(k); if(v!=null) data[k]=v; });
-        var snaps=load(KEY,[]); snaps.unshift({ts:nowISO(), label:lab, by:curUser(), data:data, version:(versionFn?versionFn():'')});
-        save(KEY,snaps); paint(); notify('Snapshot <b>'+esc(lab)+'</b> saved ('+keysFn().length+' items).');
-      } else if(a==='upd'){
-        notify('Updated — reloaded the latest saved state.'); setTimeout(function(){ location.reload(); }, 500);
-      } else if(a==='list'){ openSnaps(); }
-    });
-    function openSnaps(){
-      var snaps=load(KEY,[]);
-      var ov=document.createElement('div'); ov.className='cmt-overlay';
-      var body = snaps.length ? snaps.map(function(s,i){
-        return '<div class="rev-row"><div class="rev-v">#'+(snaps.length-i)+'</div><div class="rev-main">'+
-          '<div class="rev-sum">'+esc(s.label)+'</div><div class="rev-meta">'+esc(fmt(s.ts))+' · by '+esc(s.by)+(s.version?(' · '+esc(s.version)):'')+
-          ' · <a href="#" data-restore="'+i+'">Restore</a> · <a href="#" data-del="'+i+'">Delete</a></div></div></div>';
-      }).join('') : '<div class="pj-empty">No snapshots yet. Take one to capture the current state.</div>';
-      ov.innerHTML='<div class="cmt-sheet"><div class="cmt-sheet-top"><h3>Snapshots — '+esc(hull)+'</h3>'+
-        '<span class="cmt-sheet-tools"><button type="button" class="primary" data-close>Close</button></span></div>'+
-        '<p class="cmt-sheet-sub">Point-in-time copies of this project’s working data (spec, comments, change orders, revisions, planning).</p>'+body+'</div>';
-      document.body.appendChild(ov);
-      ov.addEventListener('click', function(e){
-        if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
-        var r=e.target.closest('[data-restore]'); var d=e.target.closest('[data-del]');
-        if(r){ e.preventDefault(); var i=+r.getAttribute('data-restore'); var s=load(KEY,[])[i];
-          if(s && confirm('Restore snapshot “'+s.label+'”? This overwrites the current working copy.')){
-            Object.keys(s.data).forEach(function(k){ localStorage.setItem(k, s.data[k]); }); location.reload(); } }
-        if(d){ e.preventDefault(); var j=+d.getAttribute('data-del'); var arr=load(KEY,[]); arr.splice(j,1); save(KEY,arr); ov.remove(); paint(); openSnaps(); }
-      });
-    }
-    host.appendChild(bar); return bar;
-  }
-  // mini rich-text editor: returns {el, getHTML, setHTML}
-  function richEditor(initialHTML, readOnly){
-    var box=document.createElement('div'); box.className='co-rt';
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    var area=document.createElement('div'); area.className='co-rt-area'; area.setAttribute('contenteditable', readOnly?'false':'true');
-    area.innerHTML=initialHTML||'';
-    var cmds=[['B','bold','Bold'],['I','italic','Italic'],['U','underline','Underline'],['•','insertUnorderedList','Bulleted list'],['1.','insertOrderedList','Numbered list'],['↺','removeFormat','Clear formatting']];
-    cmds.forEach(function(c){ var b=document.createElement('button'); b.type='button'; b.textContent=c[0]; b.title=c[2];
-      if(c[0]==='I')b.style.fontStyle='italic'; if(c[0]==='U')b.style.textDecoration='underline';
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly)return; document.execCommand(c[1],false,null); area.focus(); }); bar.appendChild(b); });
-    if(readOnly){ bar.style.display='none'; }
-    box.appendChild(bar); box.appendChild(area);
-    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
-  }
-  // file chip as an HTML string — a clickable link (opens in a new tab) when the
-  // file carries data/url, else a plain badge.
-  function chipHTML(f){
-    var name=(f&&f.name)||'file';
-    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
-    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
-    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
-    var src=(f&&(f.data||f.url))||'';
-    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
-    return '<span class="dl-chip">'+ic+label+'</span>';
-  }
-  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
-  function _openData(href, name){
-    try{
-      var c=href.indexOf(","); if(c<0) return false;
-      var meta=href.substring(5,c), data=href.substring(c+1);
-      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
-      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
-      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
-      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
-      var w=window.open(url,"_blank");
-      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
-      return true;
-    }catch(e){ return false; }
-  }
-  try{ document.addEventListener("click", function(e){
-    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
-    if(!a) return; var href=a.getAttribute("href")||"";
-    if(href.indexOf("data:")!==0) return;
-    e.preventDefault();
-    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
-    _openData(href, nm);
-  }, false); }catch(e){}
-  return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
-})();
-</script>
-
+  <script>window.PW_EXISTING = {"hulls": ["B107C", "B123-45", "B156-02", "B098-11", "B142-03"], "names": ["B107C", "Blue Horizon", "Aurora", "Norderö", "Silver Lining"]};</script>
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Projects</a> / Handover & Delivery</div>
-    <h1>Handover & Delivery</h1>
-    <p>Delivery checklist, owner handover and final documentation.</p>
+    <div class="crumb"><a href="index.html">Yacht Builder</a> / Create New Project</div>
+    <h1>Create New Project</h1>
+    <p>Step 1 &mdash; enter the project details, then set up its pricing and specification.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="change-orders.html">Change orders</a><a href="specification-revisions.html">Revisions</a><a href="planning.html">Planning</a><a href="project-development.html">Project development</a><a href="price-calculation.html">Price calculation</a><a href="still-to-buy.html">Still to buy</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0"/><path d="M5 17 7 6l9 7H5z"/></svg><strong>Handover & Delivery</strong> is coming soon. This area will connect once the Projects backend is in place.</div></div>
 
+  <!-- STEP 1 -->
+  <section id="step-form">
+    <div class="card">
+      <div class="form-pad">
+        <div class="form-grid">
+          <div class="field">
+            <label for="f-no">Project / hull no. <span class="req">*</span></label>
+            <input id="f-no" type="text" placeholder="B123-45" autocomplete="off">
+            <span class="help">Follows your Bxxx-xx convention</span>
+          </div>
+          <div class="field"><label for="f-type">Type</label>
+            <select id="f-type"><option>Sail</option><option>Power</option><option>Catamaran</option><option>Other</option></select></div>
+          <div class="field"><label for="f-name">Project name</label>
+            <input id="f-name" type="text" placeholder="e.g. Blue Horizon" autocomplete="off"></div>
+          <div class="field"><label for="f-client">Client / owner</label>
+            <input id="f-client" type="text" placeholder="Owner or client name" autocomplete="off"></div>
+          <div class="field"><label for="f-model">Model</label>
+            <select id="f-model"><option value="">Select&hellip;</option><option>Baltic Custom</option><option>Baltic Series (semi-custom)</option><option>Caf&eacute; Racer</option><option>Other</option></select></div>
+          <div class="field"><label for="f-loa">LOA</label>
+            <input id="f-loa" type="text" placeholder="e.g. 110 ft / 33.5 m" autocomplete="off"></div>
+          <div class="field"><label for="f-designer">Designer (naval architect)</label>
+            <input id="f-designer" type="text" placeholder="e.g. judel/vrolijk" autocomplete="off"></div>
+          <div class="field"><label for="f-lead">Lead engineer</label>
+            <select id="f-lead"><option value="">Select… (optional)</option><option>Andreas Boström</option><option>Benjamin Johansson</option><option>Bernhard Westerback</option><option>Henrik Hallbäck</option><option>Hugo Westerback</option><option>Jan Wikar</option><option>Jani Kahari</option><option>Jesper Lygdman</option><option>Joakim Romell</option><option>Johnny Björkvik</option><option>Jonatan Svenfors</option><option>Jukka Wideman</option><option>Julius Wuertz</option><option>Kenneth Sundvik</option><option>Kim Kolam</option><option>Linda Nordberg</option><option>Linh Nguyen</option><option>Malin Fleen</option><option>Mathias Björkström</option><option>Mikael Johansson</option><option>Patrik Högnabba</option><option>Philip Asplund</option><option>Pontus Fagerudd</option><option>Raul Sundström</option><option>Robert Wargh</option><option>Ronny Nyfelt</option><option>Sebastian Heselius</option><option>Stefan Mäki</option><option>Teppo Kivelä</option><option>Tom Sjölund</option><option>Viktor Sundkvist</option></select></div>
+          <div class="field"><label for="f-pm">Project manager</label>
+            <select id="f-pm"><option value="">Select… (optional)</option><option>Daniel Green</option><option>Mattias Svenlin</option><option>Mikael Nyberg</option><option>Patric Brännbacka</option><option>Tobias Enqvist</option><option>Tommy Johansson</option></select></div>
+        </div>
+        <div id="dupe-msg" class="dupe-msg" hidden></div>
+        <div class="form-actions">
+          <button type="button" class="btn-primary" id="create-btn">Create project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <a class="btn-text" href="index.html">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<script>
-/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
-   links, and reflects the project name in headers. */
-(function(){
-  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
-  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
-  var list = window.PJ_LIST ? window.PJ_LIST() : [];
-  var pick=document.getElementById('pj-pick');
-  if(pick){
-    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
-      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
-    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
-    var h=a.getAttribute('href')||'';
-    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
-    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
-  });
-  // badge the Project development tab when reference proposals are pending the PM
-  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
-    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
-    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
-    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
-  }catch(e){}
-})();
-</script>
+  <!-- STEP 2 + 3 -->
+  <section id="step-setup" style="display:none;">
+    <div class="proj-banner">
+      <span class="proj-no" id="b-no">B123-45</span>
+      <span class="proj-meta"><span class="nm" id="b-name">New project</span><span class="dt" id="b-dt">Details captured</span></span>
+      <button type="button" class="btn-link edit" id="edit-link">Edit details</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step-tracks">
+      <h3 class="step-h">Step 2 &mdash; what would you like to set up?</h3>
+      <div class="card create-grid">
+        <div class="track">
+          <div class="track-top"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></span><h4>Pricing Calculation</h4></div>
+          <p class="desc">Build a new pricing calculation for the project.</p>
+          <div class="opts">
+            <button type="button" class="opt" data-opt="pricing-existing">
+              <span class="opt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l5 5v13H4V3z"/><path d="M14 3v6h6"/></svg></span>
+              <span class="opt-txt"><strong>From Existing</strong><span>Copy a previous project&rsquo;s pricing as the starting point</span><span class="src">Projects /</span></span>
+              <span class="opt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button type="button" class="opt" data-opt="pricing-scratch">
+              <span class="opt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span>
+              <span class="opt-txt"><strong>Build from Scratch</strong><span>Start a blank calculation from the standard scheme</span><span class="src">Calc.scheme Template /</span></span>
+              <span class="opt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+        <div class="track">
+          <div class="track-top"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><h4>Build Specification</h4></div>
+          <p class="desc">Create the build specification for the project.</p>
+          <div class="opts">
+            <button type="button" class="opt" data-opt="spec-10pager">
+              <span class="opt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
+              <span class="opt-txt"><strong>Initial 10-Pager</strong><span>Generate the standard 10-page starting specification</span><span class="src">Project Templates / Bxxx-xx</span></span>
+              <span class="opt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button type="button" class="opt" data-opt="spec-existing">
+              <span class="opt-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l5 5v13H4V3z"/><path d="M14 3v6h6"/></svg></span>
+              <span class="opt-txt"><strong>From Existing</strong><span>Start from a previous build specification (B107C, B121&hellip;)</span><span class="src">Base Specifications /</span></span>
+              <span class="opt-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 — option screens -->
+    <div id="step-options" style="display:none;">
+
+      <section id="op-pricing-scratch" style="display:none;">
+        <button type="button" class="btn-link back-top" data-back>&larr; Back to options</button>
+        <div class="card"><div class="form-pad">
+          <div class="track-top" style="margin-bottom:10px;"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h8M8 15h4"/></svg></span><h4>New pricing calculation &mdash; from scratch</h4></div>
+          <p class="desc">A blank pricing calculation will be created for <strong class="proj-ref">the project</strong> from the standard scheme.</p>
+          <div class="src-line">Calc.scheme Template /</div>
+          <ul class="mini-list"><li>Standard cost structure &amp; sections</li><li>Labour &amp; materials sheets</li><li>Margin, options &amp; allowances</li></ul>
+          <div class="form-actions">
+            <button type="button" class="btn-primary" data-finish="Pricing calculation &mdash; built from scratch">Create pricing calculation</button>
+            <button type="button" class="btn-text btn-link" data-back>Cancel</button>
+          </div>
+        </div></div>
+      </section>
+
+      <section id="op-pricing-existing" style="display:none;">
+        <button type="button" class="btn-link back-top" data-back>&larr; Back to options</button>
+        <div class="card"><div class="form-pad">
+          <div class="track-top" style="margin-bottom:10px;"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l5 5v13H4V3z"/><path d="M14 3v6h6"/></svg></span><h4>New pricing calculation &mdash; from existing</h4></div>
+          <p class="desc">Choose a previous project to copy its pricing into <strong class="proj-ref">the project</strong>.</p>
+          <div class="empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>
+            No previous projects available yet &mdash; they&rsquo;ll be listed here from the <strong>Projects</strong> folder once connected.
+          </div>
+          <div class="form-actions"><button type="button" class="btn-text btn-link" data-back>Back to options</button></div>
+        </div></div>
+      </section>
+
+      <section id="op-spec-10pager" style="display:none;">
+        <button type="button" class="btn-link back-top" data-back>&larr; Back to options</button>
+        <div class="card"><div class="form-pad">
+          <div class="track-top" style="margin-bottom:10px;"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><h4>Initial 10-pager specification</h4></div>
+          <p class="desc">Generate the standard 10-page starting specification for <strong class="proj-ref">the project</strong> &mdash; one page per area code, from the Bxxx-xx template.</p>
+          <div class="src-line">Project Templates / Bxxx-xx</div>
+          <div class="area-list"><div class="area"><span class="area-code">GP</span><span>General Particulars</span></div><div class="area"><span class="area-code">00</span><span>General Conditions</span></div><div class="area"><span class="area-code">10</span><span>Hull</span></div><div class="area"><span class="area-code">20</span><span>Deck</span></div><div class="area"><span class="area-code">30</span><span>Interior</span></div><div class="area"><span class="area-code">40</span><span>Engine</span></div><div class="area"><span class="area-code">50</span><span>Plumbing</span></div><div class="area"><span class="area-code">60</span><span>Electrical</span></div><div class="area"><span class="area-code">70</span><span>Rigging</span></div><div class="area"><span class="area-code">90</span><span>Miscellaneous</span></div></div>
+          <div class="form-actions">
+            <button type="button" class="btn-primary" data-finish="Initial 10-pager specification &mdash; generated">Generate 10-pager</button>
+            <button type="button" class="btn-text btn-link" data-back>Cancel</button>
+          </div>
+        </div></div>
+      </section>
+
+      <section id="op-spec-existing" style="display:none;">
+        <button type="button" class="btn-link back-top" data-back>&larr; Back to options</button>
+        <div class="card"><div class="form-pad">
+          <div class="track-top" style="margin-bottom:10px;"><span class="track-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6l5 5v13H4V3z"/><path d="M14 3v6h6"/></svg></span><h4>Build specification &mdash; from existing</h4></div>
+          <p class="desc">Choose a base specification to copy into <strong class="proj-ref">the project</strong>.</p>
+          <div class="pick-list">
+            <label class="pick"><input type="radio" name="spec-existing" value="B107C — Specification"><span class="pick-main">B107C &mdash; Specification</span><span class="pick-sub">Base Specifications /</span></label>
+            <label class="pick"><input type="radio" name="spec-existing" value="B121 — Specification"><span class="pick-main">B121 &mdash; Specification</span><span class="pick-sub">Base Specifications /</span></label>
+            <label class="pick"><input type="radio" name="spec-existing" value="Specification template (TML-PROG-033 B)"><span class="pick-main">Specification template (TML-PROG-033&nbsp;B)</span><span class="pick-sub">Base Specifications /</span></label>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-primary" data-use="spec-existing">Use selected specification</button>
+            <button type="button" class="btn-text btn-link" data-back>Cancel</button>
+          </div>
+        </div></div>
+      </section>
+
+    </div>
+
+    <!-- STEP 4 — project created + uploads workspace -->
+    <div id="step-done" style="display:none;">
+      <div class="card"><div class="form-pad" style="text-align:center;">
+        <div class="done-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+        <h3 style="margin:4px 0 6px; font-size:22px;">Project <span id="d-no">B123-45</span> created</h3>
+        <p class="desc" style="margin:0;">Set up: <strong id="done-what">&mdash;</strong> &middot; it will appear under <strong>Ongoing Projects</strong> once connected.</p>
+      </div></div>
+
+      <div class="ws-note">Uploads are organised into the project&rsquo;s folders and every file is kept as a new <strong>revision</strong>. For now these map to your <strong>SharePoint</strong> folders; they move to the <strong>Azure site</strong> at deployment. You can try the revision behaviour here now.</div>
+
+      <h3 class="step-h">Specification</h3>
+      <a class="btn-primary" id="spec-link" href="specification.html" style="display:inline-flex; margin-bottom:14px;">Open Specification Builder</a>
+      <div class="up-card" id="u-bidspec" data-rev="0"><div class="up-head"><span class="up-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span><div class="up-meta"><strong>Bid Package Specification</strong><span class="up-path">Projects / <span class="proj-ref">&hellip;</span> / Specification</span></div><span class="up-revbadge">No revisions</span></div><label class="dropzone"><input type="file" accept=".doc,.docx,.pdf" hidden><span class="dz-text">Drop a file or <u>browse</u> &mdash; Word or PDF</span><span class="dz-file"></span></label><button type="button" class="btn-primary up-add" disabled>Add as revision</button><ul class="rev-list"><li class="rev-empty">No revisions yet</li></ul></div>
+
+      <h3 class="step-h" style="margin-top:24px;">Drawings</h3>
+      <div class="up-grid"><div class="up-card" id="u-cad2d" data-rev="0"><div class="up-head"><span class="up-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg></span><div class="up-meta"><strong>2D CAD Drawings</strong><span class="up-path">Projects / <span class="proj-ref">&hellip;</span> / Drawings / 2D CAD</span></div><span class="up-revbadge">No revisions</span></div><label class="dropzone"><input type="file" accept=".dwg,.dxf,.pdf" hidden><span class="dz-text">Drop a file or <u>browse</u> &mdash; DWG, DXF</span><span class="dz-file"></span></label><button type="button" class="btn-primary up-add" disabled>Add as revision</button><ul class="rev-list"><li class="rev-empty">No revisions yet</li></ul></div><div class="up-card" id="u-3d" data-rev="0"><div class="up-head"><span class="up-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg></span><div class="up-meta"><strong>3D Models</strong><span class="up-path">Projects / <span class="proj-ref">&hellip;</span> / Drawings / 3D Models</span></div><span class="up-revbadge">No revisions</span></div><label class="dropzone"><input type="file" accept=".step,.stp,.iges,.igs,.stl,.3dm,.sldprt,.catpart,.x_t" hidden><span class="dz-text">Drop a file or <u>browse</u> &mdash; STEP, IGES, STL…</span><span class="dz-file"></span></label><button type="button" class="btn-primary up-add" disabled>Add as revision</button><ul class="rev-list"><li class="rev-empty">No revisions yet</li></ul></div><div class="up-card" id="u-pdf" data-rev="0"><div class="up-head"><span class="up-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h2M9 13h6M9 17h6"/></svg></span><div class="up-meta"><strong>PDF Drawings</strong><span class="up-path">Projects / <span class="proj-ref">&hellip;</span> / Drawings / PDF Drawings</span></div><span class="up-revbadge">No revisions</span></div><label class="dropzone"><input type="file" accept=".pdf" hidden><span class="dz-text">Drop a file or <u>browse</u> &mdash; PDF</span><span class="dz-file"></span></label><button type="button" class="btn-primary up-add" disabled>Add as revision</button><ul class="rev-list"><li class="rev-empty">No revisions yet</li></ul></div></div>
+
+      <h3 class="step-h">Bid package</h3>
+      <div class="up-card" id="u-pkg" data-rev="0"><div class="up-head"><span class="up-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></span><div class="up-meta"><strong>Complete Bid Package</strong><span class="up-path">Projects / <span class="proj-ref">&hellip;</span> / Bid Package</span></div><span class="up-revbadge">No revisions</span></div><label class="dropzone"><input type="file" accept=".zip,.pdf,.docx" hidden><span class="dz-text">Drop a file or <u>browse</u> &mdash; ZIP, PDF…</span><span class="dz-file"></span></label><button type="button" class="btn-primary up-add" disabled>Add as revision</button><ul class="rev-list"><li class="rev-empty">No revisions yet</li></ul></div>
+
+      <div class="form-actions" style="justify-content:center; border:0; margin-block-start:18px; padding-block-start:0;">
+        <a class="btn-primary" href="ongoing.html">Go to Ongoing Projects</a>
+        <button type="button" class="btn-text btn-link" id="another-btn">Create another project</button>
+        <a class="btn-text" href="index.html">Back to Yacht Builder</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+    function $(id) { return document.getElementById(id); }
+    function v(id) { var e = $(id); return e ? (e.value || '').trim() : ''; }
+    function toast(m) { if (window.__toast) window.__toast(m); }
+    var stepForm = $('step-form'), stepSetup = $('step-setup'),
+        stepTracks = $('step-tracks'), stepOptions = $('step-options'), stepDone = $('step-done');
+    var panels = ['op-pricing-existing', 'op-pricing-scratch', 'op-spec-10pager', 'op-spec-existing'];
+
+    $('create-btn').addEventListener('click', function () {
+      var no = v('f-no');
+      var nm = v('f-name');
+      var dm = $('dupe-msg');
+      function clearDup(){ if(dm){ dm.hidden=true; dm.className='dupe-msg'; dm.innerHTML=''; } }
+      function showDup(kind, msg){ if(!dm) return; dm.hidden=false; dm.className='dupe-msg '+kind;
+        dm.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><span>'+msg+'</span>'; }
+      clearDup();
+      if (!no) { $('f-no').focus(); toast('Enter a project / hull number to continue'); return; }
+      var ex = window.PW_EXISTING || {hulls:[], names:[]};
+      var cr = []; try { cr = JSON.parse(localStorage.getItem('pw_created')) || []; } catch(e) {}
+      var hulls = ex.hulls.concat(cr.map(function(c){return c.hull;})).map(function(s){return (s||'').toUpperCase();});
+      var names = ex.names.concat(cr.map(function(c){return c.name;})).map(function(s){return (s||'').toLowerCase();});
+      if (hulls.indexOf(no.toUpperCase()) !== -1) {
+        showDup('err', 'A project with hull number ' + no + ' already exists in Ongoing or Resting. Choose a different hull number to avoid overwriting it.');
+        $('f-no').focus(); return;
+      }
+      if (nm && names.indexOf(nm.toLowerCase()) !== -1) {
+        showDup('warn', 'Heads up: a project named ' + nm + ' already exists. The hull number is unique, so you can continue — but a clearer name avoids confusion.');
+      }
+      try {
+        var list = JSON.parse(localStorage.getItem('pw_created')) || [];
+        if (!list.some(function(c){ return (c.hull||'').toUpperCase() === no.toUpperCase(); })) {
+          function gv(id){ var e=$(id); return e?e.value:''; }
+          var pinfo={hull:no, name:nm||'New project', type:$('f-type').value, client:gv('f-client'),
+                     model:gv('f-model'), loa:gv('f-loa'), designer:gv('f-designer'),
+                     leadEng:gv('f-lead'), pm:gv('f-pm')};
+          try{ localStorage.setItem('pw_projinfo_'+no.toUpperCase(), JSON.stringify(pinfo)); }catch(e){}
+          list.push({hull:no, name:pinfo.name, type:pinfo.type, owner:pinfo.pm||'—',
+                     client:pinfo.client, model:pinfo.model, designer:pinfo.designer,
+                     leadEng:pinfo.leadEng, pm:pinfo.pm, stage:'New — details entered', status:'ongoing',
+                     updated:new Date().toISOString().slice(0,10), paused:'', last:''});
+          localStorage.setItem('pw_created', JSON.stringify(list));
+        }
+      } catch(e) {}
+      window.__proj = no;
+      $('b-no').textContent = no;
+      $('b-name').textContent = v('f-name') || 'New project';
+      var bits = [];
+      var c = v('f-client'); if (c) bits.push(c);
+      var m = $('f-model').value; if (m) bits.push(m);
+      var l = v('f-loa'); if (l) bits.push(l);
+      bits.push($('f-type').value);
+      var le = $('f-lead').value; if (le) bits.push('Eng: ' + le);
+      var pm = $('f-pm').value; if (pm) bits.push('PM: ' + pm);
+      $('b-dt').textContent = bits.join('  ·  ');
+      Array.prototype.forEach.call(document.querySelectorAll('.proj-ref'), function (el) { el.textContent = no; });
+      stepForm.style.display = 'none';
+      stepSetup.style.display = 'block';
+      showTracks();
+      stepSetup.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    function showTracks() { stepOptions.style.display = 'none'; stepTracks.style.display = 'block'; }
+    function showPanel(key) {
+      stepTracks.style.display = 'none';
+      stepOptions.style.display = 'block';
+      panels.forEach(function (p) { $(p).style.display = (p === 'op-' + key) ? 'block' : 'none'; });
+      stepOptions.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function showDone(label) {
+      stepTracks.style.display = 'none';
+      stepOptions.style.display = 'none';
+      $('d-no').textContent = window.__proj;
+      $('done-what').innerHTML = label;
+      var sl = $('spec-link'); if (sl) sl.href = 'specification.html?p=' + encodeURIComponent(window.__proj);
+      stepDone.style.display = 'block';
+      stepDone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-opt]'), function (b) {
+      b.addEventListener('click', function () { showPanel(b.getAttribute('data-opt')); });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-back]'), function (b) {
+      b.addEventListener('click', showTracks);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-use]'), function (b) {
+      b.addEventListener('click', function () {
+        var scope = b.getAttribute('data-use');
+        var sel = document.querySelector('input[name="' + scope + '"]:checked');
+        if (!sel) { toast('Select a specification to continue'); return; }
+        showDone('Build specification — copied from ' + sel.value);
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-finish]'), function (b) {
+      b.addEventListener('click', function () { showDone(b.getAttribute('data-finish')); });
+    });
+    $('another-btn').addEventListener('click', function () { window.location.reload(); });
+    $('edit-link').addEventListener('click', function () {
+      stepSetup.style.display = 'none'; stepForm.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
+  </script>
+
 </main>
-
 <footer>
   <div class="wrap foot-inner">
     <span>Baltic Yachts · Sales — Yacht Builder</span>

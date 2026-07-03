@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Risks · Engineering Projects</title>
+<title>Solutions Database · Yacht Builder</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -299,13 +299,7 @@
   #toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px); background: var(--brand); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50; max-width: 90vw; }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-
 /* --- v18: project hub --- */
-/* --- v27: editor tables (shared rich-text spec editor) --- */
-.sp-table{border-collapse:collapse;width:100%;margin:10px 0;font:400 13px/1.45 var(--sans)}
-.sp-table th,.sp-table td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
-.sp-table th{background:var(--surface-2);font-weight:700;color:var(--ink)}
-.sp-table td{color:var(--ink)}
 .src-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:-2px 0 16px;display:flex;gap:8px;align-items:flex-start}
 .src-note svg{width:16px;height:16px;stroke:var(--brand-2);flex:0 0 auto;margin-top:1px}
 .proj-cell{display:flex;flex-direction:column;gap:2px}
@@ -562,305 +556,9 @@
   body.cmt-printing .cmt-print{display:block!important}
   .cmt-sheet .cmt-row-c .cmt-row-who{color:#005080}
 }
-
-.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
-.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
-.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
-.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
-.co-card.co-steer{border-left:4px solid var(--good)}
-.co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:18px 0 8px}
-/* --- v26: Realize action + realized journey dot --- */
-.btn-row.realize{border-color:var(--good);color:var(--good)}
-.btn-row.realize:hover{background:var(--good);border-color:var(--good);color:#fff}
-.dot.good{background:var(--good)}
-/* --- v26: as-sold lock banner (Sales spec, read-only once realized) --- */
-.assold-bar{display:none;align-items:center;gap:11px;margin:0 0 16px;padding:12px 16px;border-radius:12px;
-  border:1px solid #d69600;border-left:4px solid #d69600;background:rgba(214,150,0,.10);
-  font:600 13px/1.45 var(--sans);color:#8a5a00}
-.assold-bar svg{width:20px;height:20px;stroke:#d69600;fill:none;stroke-width:2;flex:0 0 auto}
-.assold-bar a{color:var(--brand-2);text-decoration:underline}
-body.pw-assold .assold-bar{display:flex}
-body.pw-assold .sp-edit-btn,body.pw-assold .sp-edit-reset,body.pw-assold .sp-sec-edit,
-body.pw-assold .sp-addline,body.pw-assold .sp-fmt-bar,body.pw-assold .sp-own-sel,
-body.pw-assold .sp-due-input,body.pw-assold .sp-override{display:none!important}
-/* --- v26: Projects area chrome --- */
-.pj-sub{display:flex;flex-wrap:wrap;gap:4px;margin:2px 0 18px;border-bottom:1px solid var(--line);padding-bottom:0}
-.pj-sub a{font:600 13px/1 var(--sans);color:var(--muted);padding:9px 13px;border-radius:9px 9px 0 0;
-  border:1px solid transparent;border-bottom:0;position:relative;top:1px}
-.pj-sub a:hover{color:var(--brand-2);background:var(--surface-2)}
-.pj-sub a.on{color:var(--brand-2);background:var(--surface);border-color:var(--line);border-bottom:1px solid var(--surface)}
-.pj-pick{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font:500 12.5px/1 var(--sans);color:var(--muted);align-self:center}
-.pj-pick select{font:600 12.5px/1 var(--sans);padding:6px 9px;border-radius:8px;border:1px solid var(--brand-2);background:var(--surface);color:var(--ink)}
-.pj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:880px){.pj-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.pj-grid{grid-template-columns:1fr}}
-.pj-tile{display:block;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
-  padding:20px;position:relative;transition:transform .15s,border-color .15s,box-shadow .15s}
-.pj-tile.live:hover{transform:translateY(-3px);border-color:var(--brand-2)}
-.pj-tile.soon{opacity:.72;background:var(--surface-2);cursor:default}
-.pj-tile .pj-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--brand-soft);
-  border:1px solid var(--brand-2);color:var(--brand);margin:0 0 12px}
-.pj-tile.soon .pj-ico{background:#eef1f3;border-color:var(--line);color:var(--faint)}
-.pj-tile .pj-ico svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.pj-tile h3{margin:0 0 4px;font-size:16.5px}
-.pj-tile p{margin:0;color:var(--muted);font-size:13px}
-.pj-tile .pj-badge{position:absolute;top:16px;right:16px;font:700 10px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;
-  border-radius:999px;padding:4px 9px;color:var(--faint);background:#eef1f3;border:1px solid var(--line)}
-.pj-status{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);border-radius:999px;padding:4px 10px;white-space:nowrap}
-.st-draft{color:#5b6b78;background:#eef1f3;border:1px solid var(--line)}
-.st-suggestive{color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600}
-.st-approved{color:#1573ad;background:#eaf2f8;border:1px solid var(--brand-2)}
-.st-implemented{color:var(--good);background:rgba(47,125,87,.10);border:1px solid var(--good)}
-.st-rejected{color:#b3432a;background:rgba(200,70,40,.10);border:1px solid #c84628}
-/* --- v26: snapshot / manual-update bar --- */
-.snap-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px;padding:10px 14px;border:1px solid var(--line);
-  border-radius:12px;background:var(--surface-2);font:500 12.5px/1.4 var(--muted)}
-.snap-bar .snap-v{font:700 12px/1 var(--mono);color:var(--brand);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px}
-.snap-bar .snap-sp{flex:1}
-.snap-btn{font:600 12px/1 var(--sans);padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
-.snap-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.snap-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-/* --- v26: generic card / table reuse for projects portfolio --- */
-.pj-port td .proj-cell{gap:1px}
-.pj-empty{padding:26px;text-align:center;color:var(--faint);font:500 13px/1.5 var(--sans)}
-/* --- v26: identity / viewer bar --- */
-.role-bar{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:0 0 16px;font:500 12.5px/1.4 var(--muted)}
-.role-bar select{font:600 12.5px/1 var(--sans);padding:5px 8px;border-radius:8px;border:1px solid var(--brand-2);background:var(--surface);color:var(--ink)}
-.role-note{display:inline-flex;align-items:center;gap:8px;border-radius:9px;padding:7px 12px;font:600 12px/1.4 var(--sans)}
-.role-note.view{color:#8a5a00;background:rgba(214,150,0,.10);border:1px solid #d69600}
-.role-note.edit{color:var(--good);background:rgba(47,125,87,.08);border:1px solid var(--good)}
-.role-note button{font:inherit;color:var(--brand-2);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
-/* --- v26: change-order tool --- */
-.co-new{font:600 13px/1 var(--sans);color:#fff;background:var(--brand);border:0;border-radius:10px;padding:11px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
-.co-new:hover{background:var(--brand-2)}.co-new svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.co-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
-.co-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:var(--shadow);padding:15px 17px}
-.co-card .co-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.co-card .co-no{font:700 12px/1 var(--mono);color:var(--brand)}
-.co-card .co-ttl{font:700 14.5px/1.3 var(--sans);color:var(--ink)}
-.co-card .co-ref{font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:4px 9px}
-.co-card .co-meta{margin:9px 0 0;font:500 12px/1.5 var(--muted)}
-.co-card .co-desc{margin:9px 0 0;font:400 13px/1.5 var(--ink);border-top:1px solid var(--line);padding-top:9px}
-.co-card .co-desc img{max-width:100%;border-radius:6px}
-.co-card .co-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
-.co-card .co-people{font:500 11.5px/1.5 var(--muted)}
-.co-card .co-people b{color:var(--ink);font-weight:600}
-.co-overlay{position:fixed;inset:0;z-index:80;background:rgba(15,18,22,.5);display:flex;align-items:flex-start;justify-content:center;padding:34px 16px;overflow:auto}
-.co-sheet{width:680px;max-width:100%;background:var(--surface);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.3);padding:22px 24px}
-.co-sheet h3{margin:0 0 14px;font:700 18px/1.2 var(--sans)}
-.co-field{margin:0 0 13px}
-.co-field label{display:block;font:600 11px/1.2 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin:0 0 5px}
-.co-field input[type=text],.co-field select,.co-field textarea{width:100%;box-sizing:border-box;font:400 13.5px/1.4 var(--sans);color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
-.co-field input:focus,.co-field select:focus,.co-field textarea:focus{outline:none;border-color:var(--brand-2);box-shadow:inset 0 0 0 1px var(--brand-2)}
-.co-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-@media(max-width:560px){.co-cols{grid-template-columns:1fr}}
-.co-rt{border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.co-rt-bar{display:flex;gap:2px;flex-wrap:wrap;background:var(--surface-2);border-bottom:1px solid var(--line);padding:5px}
-.co-rt-bar button{width:30px;height:28px;border:0;background:transparent;border-radius:6px;cursor:pointer;font:600 13px/1 var(--sans);color:var(--ink)}
-.co-rt-bar button:hover{background:var(--brand-soft);color:var(--brand-2)}
-.co-rt-area{min-height:120px;max-height:300px;overflow:auto;padding:11px;font:400 13.5px/1.55 var(--sans);background:var(--surface)}
-.co-rt-area:focus{outline:none}
-.co-people-pick{max-height:150px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface-2)}
-.co-people-pick .co-grp{font:700 10.5px/1 var(--sans);color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:8px 0 5px}
-.co-people-pick .co-grp:first-child{margin-top:0}
-.co-people-pick label{display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1.4 var(--ink);text-transform:none;letter-spacing:0;margin:0 12px 5px 0;width:auto}
-.co-sheet-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
-.co-sheet-foot button{font:600 13px/1 var(--sans);padding:10px 16px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
-.co-sheet-foot button.go{background:var(--brand);border-color:var(--brand);color:#fff}
-.co-adv{display:inline-flex;gap:6px;flex-wrap:wrap}
-.co-adv button{font:600 11.5px/1 var(--sans);padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
-.co-adv button:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.co-adv button.danger:hover{border-color:#c84628;color:#b3432a}
-/* --- v26: spec section CO flag (flowback) --- */
-.sp-co-flag{display:inline-flex;align-items:center;gap:6px;margin-left:8px;font:600 11px/1 var(--sans);color:#1573ad;background:#eaf2f8;border:1px solid var(--brand-2);border-radius:999px;padding:4px 10px;vertical-align:middle}
-.sp-co-flag svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2}
-/* --- v26: revisions handler --- */
-.rev-row{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);padding:14px 16px;margin:0 0 11px}
-.rev-row .rev-v{font:700 13px/1 var(--mono);color:#fff;background:var(--brand);border-radius:8px;padding:8px 11px;flex:0 0 auto}
-.rev-row .rev-main{flex:1;min-width:0}
-.rev-row .rev-sum{font:600 13.5px/1.4 var(--ink)}
-.rev-row .rev-meta{font:500 12px/1.5 var(--muted);margin-top:3px}
-.rev-row .rev-meta a{color:var(--brand-2);text-decoration:underline}
-/* --- v26: planning --- */
-.pl-sec{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:18px 20px;margin:0 0 16px}
-.pl-sec h2{font:600 16px/1.2 var(--serif);margin:0 0 4px;display:flex;align-items:center;gap:9px}
-.pl-sec h2 svg{width:18px;height:18px;fill:none;stroke:var(--brand-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.pl-sec .pl-hint{font:500 12.5px/1.5 var(--muted);margin:0 0 12px}
-.pl-mile{display:grid;grid-template-columns:120px 1fr auto auto;gap:9px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
-.pl-mile:last-of-type{border-bottom:0}
-.pl-mile input[type=date]{font:500 12.5px/1 var(--sans);padding:6px 7px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2)}
-.pl-mile .pl-lab{font:500 13.5px/1.4 var(--ink);border:1px solid transparent;border-radius:6px;padding:5px 7px}
-.pl-mile .pl-lab:focus{outline:none;border-color:var(--brand-2);background:var(--surface-2)}
-.pl-mile select{font:600 11.5px/1 var(--sans);padding:5px 7px;border-radius:7px;border:1px solid var(--line);background:var(--surface)}
-.pl-mile .pl-del{border:0;background:none;color:var(--faint);cursor:pointer;font-size:16px}
-.pl-mile .pl-del:hover{color:#b3432a}
-.pl-add{margin-top:10px;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:8px 12px;cursor:pointer}
-.pl-meeting{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin:0 0 10px;background:var(--surface-2)}
-.pl-meeting .pl-mhead{display:grid;grid-template-columns:120px 1fr;gap:9px;margin:0 0 7px}
-.pl-meeting input{font:500 13px/1.3 var(--sans);padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface)}
-.pl-memo-ed{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
-.pl-followup{border:1px dashed var(--brand-2);border-radius:12px;background:var(--brand-soft);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
-.pl-followup svg{width:34px;height:34px;fill:none;stroke:var(--brand-2);stroke-width:1.6;flex:0 0 auto}
-.pl-followup .pl-fu-b{flex:1}
-.pl-followup h3{margin:0 0 4px;font:700 14px/1.3 var(--sans)}
-.pl-followup p{margin:0 0 9px;font:500 12.5px/1.5 var(--muted)}
-.pl-ro .pl-lab,.pl-ro input,.pl-ro select,.pl-ro [contenteditable],.pl-ro .pl-add,.pl-ro .pl-del{pointer-events:none;opacity:.78}
-.pl-ro .pl-add,.pl-ro .pl-del{display:none}
-/* --- v26.1: CO hours, sign-off, printable owner sheet --- */
-.co-card .co-hrs{color:var(--ink)}
-.co-card .co-signed{margin-top:9px;font:600 12px/1.5 var(--sans);color:var(--good);background:rgba(47,125,87,.08);border:1px solid var(--good);border-radius:9px;padding:7px 11px}
-.co-card .co-signed a{color:var(--brand-2);text-decoration:underline}
-.co-await{display:inline-flex;align-items:center;gap:6px;font:600 11px/1 var(--sans);color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600;border-radius:999px;padding:4px 10px}
-.pj-status.st-awaiting-sign-off{color:#7a4dab;background:#f3edfb;border:1px solid #9a6fc9}
-.co-print{display:none}
-.co-print .cop-doc{max-width:720px;margin:0 auto;color:#111;font-family:var(--sans);padding:8px}
-.co-print .cop-logo{height:30px;margin:0 0 18px;display:block}
-.co-print h1{font:700 23px/1.2 var(--sans);margin:0 0 2px;color:#111}
-.co-print .cop-sub{font:600 13px/1.4 var(--sans);color:#005080;margin:0 0 20px}
-.co-print .cop-grid{display:grid;grid-template-columns:170px 1fr;gap:7px 16px;font-size:13px;margin:0 0 18px}
-.co-print .cop-grid dt{font-weight:700;color:#555}
-.co-print .cop-grid dd{margin:0;color:#111}
-.co-print .cop-h{font:700 12px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:#005080;margin:0 0 6px}
-.co-print .cop-desc{border:1px solid #ccc;border-radius:8px;padding:12px 14px;font-size:13px;margin:0 0 8px;min-height:60px;color:#111}
-.co-print .cop-sign{margin-top:30px;border-top:2px solid #111;padding-top:14px;color:#111}
-.co-print .cop-sign>b{font:700 14px/1.2 var(--sans)}
-.co-print .cop-note{font-size:11.5px;color:#555;margin:6px 0 0}
-.co-print .cop-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px}
-.co-print .cop-line{border-bottom:1px solid #111;height:34px}
-.co-print .cop-cap{font-size:11px;color:#555;margin-top:4px}
-@media print{
-  body.co-printing>*{display:none!important}
-  body.co-printing .co-print{display:block!important}
-}
-/* --- v33: "new proposal" badge on the Project development tab --- */
-.pj-badge-new{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;margin-left:6px;border-radius:50%;background:#d69600;color:#fff;font:700 11px/1 var(--sans);padding:0 4px;vertical-align:1px}
-/* --- v34: clickable file/PDF chip (opens in a new tab) --- */
-.dl-chip{display:inline-flex;align-items:center;gap:4px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
-a.dl-chip:hover{background:var(--brand-2);color:#fff}
-
-/* --- v39: price calculation host + risk register --- */
-.pc-h2{font:600 15px/1.3 var(--serif);margin:0 0 6px;color:var(--ink)}
-.pc-h2 .pc-hint{font:500 12px/1 var(--sans);color:var(--muted);margin-left:8px;text-transform:none;letter-spacing:0}
-.pc-lead{font:500 13.5px/1.6 var(--sans);color:var(--muted);margin:0 0 4px}
-.pc-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
-.pc-bar label{font:600 12px/1 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.pc-bar select{font:500 13.5px/1.3 var(--sans);padding:7px 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);max-width:280px}
-.pc-hint{font:500 12.5px/1.5 var(--sans);color:var(--muted)}
-.pc-frame{width:100%;height:86vh;min-height:640px;border:1px solid var(--line);border-radius:12px;background:#0b1017;display:block}
-/* full-bleed: break out of the ~1120px content column so the tool gets the whole width */
-.pc-host{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw;box-sizing:border-box;padding:0 clamp(12px,3vw,40px)}
-/* full screen: the iframe fills the whole window */
-.pc-frame.fs{position:fixed;inset:0;width:100vw;height:100vh;min-height:0;z-index:9999;border:0;border-radius:0}
-.pc-fsexit{position:fixed;top:12px;right:16px;z-index:10000;display:none;box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.pc-fsexit.show{display:inline-flex}
-.pc-note{font:500 12.5px/1.5 var(--sans);color:var(--muted);margin:10px 0 0;display:flex;gap:8px;align-items:flex-start}
-.pc-note svg{width:16px;height:16px;stroke:var(--brand-2);fill:none;stroke-width:1.7;flex:0 0 auto;margin-top:1px}
-.rk-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0 0}
-table.rk{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:900px}
-table.rk th,table.rk td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
-table.rk th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.rk td.r,table.rk th.r{text-align:right}
-.rk-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.rk-txt{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.rk-sel{padding:4px 6px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1 var(--sans)}
-.rk-score{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.rk-lo{background:#e7f6ee;color:#1f7a52}.rk-md{background:#fbf3e0;color:#8a6d1a}.rk-hi{background:#fbe7e7;color:#b23b3b}
-.rk-ro td{color:var(--ink)}
-.rk-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.rk-role{font:500 12.5px/1.5 var(--sans);margin:6px 0 0}
-.rk-role.edit{color:var(--good)}.rk-role.view{color:var(--muted)}
-.rk-legend{display:flex;gap:14px;flex-wrap:wrap;font:500 12px/1 var(--sans);color:var(--muted);margin:10px 0 0;align-items:center}
-
-/* --- v27: Engineering Projects — force the app's dark palette on these pages --- */
-body.eng-dark{
-  --bg:#0d1318; --surface:#161f29; --surface-2:#131c25;
-  --ink:#e9eef3; --muted:#9fb0bd; --faint:#71828f; --line:#243240;
-  --brand:#2b7bb0; --brand-2:#3f9bd6; --brand-soft:#15293a;
-  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.30);
-}
-body.eng-dark .home-block.soon{opacity:.7}
-/* engineering area / tools */
-.eng-areas{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 18px}
-.eng-area-btn{font:600 12.5px/1 var(--sans);color:var(--muted);background:var(--surface-2);border:1px solid var(--line);
-  border-radius:9px;padding:8px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
-.eng-area-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.eng-area-btn.on{color:#fff;background:var(--brand);border-color:var(--brand)}
-.eng-area-btn .ea-code{font:700 11px/1 var(--mono);opacity:.85}
-.eng-panel{border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:18px 20px;margin:0 0 18px}
-.eng-panel h2{font:600 16px/1.2 var(--serif);margin:0 0 4px;display:flex;align-items:center;gap:9px}
-.eng-panel h2 svg{width:18px;height:18px;fill:none;stroke:var(--brand-2);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.eng-hint{font:500 12.5px/1.5 var(--muted);margin:0 0 12px}
-.eng-tbl{width:100%;border-collapse:collapse;font:500 13px/1.4 var(--sans)}
-.eng-tbl th{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.03em;color:var(--faint);text-align:left;padding:8px 9px;border-bottom:1px solid var(--line)}
-.eng-tbl td{padding:8px 9px;border-bottom:1px dashed var(--line);vertical-align:middle;color:var(--ink)}
-.eng-tbl tr:last-child td{border-bottom:0}
-.eng-tbl input[type=text],.eng-tbl input[type=number],.eng-tbl select{font:500 12.5px/1 var(--sans);padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:100%;box-sizing:border-box}
-.eng-tbl .qty{width:64px}
-.eng-comp{font:600 13px/1.3 var(--sans);color:var(--ink)}
-.eng-comp .eng-src{display:block;font:500 11px/1.3 var(--sans);color:var(--faint)}
-.st-pill{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);border-radius:999px;padding:5px 10px;white-space:nowrap}
-.st-prog{color:#b06a00;background:rgba(214,150,0,.12);border:1px solid #d69600}
-.st-ready{color:var(--good);background:rgba(47,125,87,.12);border:1px solid var(--good)}
-.eng-del{border:0;background:none;color:var(--faint);cursor:pointer;font-size:16px;line-height:1}
-.eng-del:hover{color:#e0663f}
-.eng-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 0;align-items:center}
-.eng-btn{font:600 12.5px/1 var(--sans);padding:9px 13px;border-radius:9px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
-.eng-btn:hover{border-color:var(--brand-2);color:var(--brand-2)}
-.eng-btn.go{background:var(--brand);border-color:var(--brand);color:#fff}
-.eng-btn.go:hover{background:var(--brand-2);color:#fff}
-.eng-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.eng-chip{display:inline-flex;align-items:center;gap:6px;font:600 11.5px/1 var(--sans);color:var(--brand-2);background:var(--brand-soft);
-  border:1px solid var(--brand-2);border-radius:7px;padding:5px 9px;margin:0 6px 6px 0;text-decoration:none}
-.eng-chip svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2}
-.eng-chip .x{color:var(--faint);cursor:pointer;font-weight:700}
-.eng-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:760px){.eng-cols{grid-template-columns:1fr}}
-.eng-sol{border:1px solid var(--line);border-radius:11px;background:var(--surface-2);padding:12px 14px;margin:0 0 10px;cursor:pointer}
-.eng-sol:hover{border-color:var(--brand-2)}
-.eng-sol.on{border-color:var(--brand-2);box-shadow:inset 0 0 0 1px var(--brand-2)}
-.eng-sol h4{margin:0 0 3px;font:700 13.5px/1.3 var(--sans);color:var(--ink)}
-.eng-sol .eng-sol-meta{font:500 11.5px/1.4 var(--faint)}
-.eng-readonly-bar{display:flex;align-items:center;gap:11px;margin:0 0 16px;padding:11px 15px;border-radius:12px;
-  border:1px solid var(--brand-2);border-left:4px solid var(--brand-2);background:var(--brand-soft);font:600 12.5px/1.45 var(--ink)}
-.eng-readonly-bar svg{width:19px;height:19px;stroke:var(--brand-2);fill:none;stroke-width:2;flex:0 0 auto}
-.eng-co-grp{font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--faint);margin:16px 0 8px}
-.eng-pick-list{max-height:170px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--surface-2)}
-.eng-pick-list .grp{font:700 10.5px/1 var(--sans);color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:9px 0 6px}
-.eng-pick-list .grp:first-child{margin-top:0}
-.eng-pick-list label{display:inline-flex;align-items:center;gap:6px;font:500 12.5px/1.4 var(--ink);margin:0 12px 6px 0}
-.eng-form{display:grid;gap:11px}
-.eng-form label.fl{font:600 11px/1.2 var(--sans);color:var(--muted);text-transform:uppercase;letter-spacing:.03em;display:block;margin:0 0 5px}
-.eng-form input[type=text],.eng-form select{font:400 13.5px/1.4 var(--sans);color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%;box-sizing:border-box}
-/* --- v28: file-kind chips (2D / 3D / datasheet / doc) --- */
-.eng-chip.k-2d{color:#9a6fc9;background:#241a33;border-color:#7a4dab}
-.eng-chip.k-3d{color:var(--brand-2);background:var(--brand-soft);border-color:var(--brand-2)}
-.eng-chip.k-docx{color:#54b98a;background:#11261c;border-color:var(--good)}
-/* --- v28: Baltic Solutions workflow --- */
-.st-proposed{color:#d69600;background:rgba(214,150,0,.14);border:1px solid #d69600}
-.st-approved2{color:var(--good);background:rgba(47,125,87,.14);border:1px solid var(--good)}
-.eng-owner{font:500 11.5px/1.4 var(--faint)}
-.eng-owner b{color:var(--ink)}
-/* --- v28: per-area documentation suite --- */
-.eng-doc-tabs{display:inline-flex;gap:4px;border:1px solid var(--line);border-radius:9px;padding:3px;background:var(--surface-2);margin:0 0 12px}
-.eng-doc-tabs button{font:600 12.5px/1 var(--sans);padding:8px 14px;border:0;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer}
-.eng-doc-tabs button.on{background:var(--brand);color:#fff}
-.eng-doc-view{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:14px 16px;max-height:560px;overflow:auto}
-.eng-doc-view .sp-area{margin:0}
-/* --- v28: project solutions agreement / steering --- */
-.agree-row{display:flex;flex-wrap:wrap;gap:8px;margin:11px 0 0;align-items:center}
-.agree-chip{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--sans);border-radius:999px;padding:7px 12px;border:1px dashed var(--line);background:var(--surface-2);color:var(--muted);cursor:pointer}
-.agree-chip.done{border-style:solid;border-color:var(--good);color:var(--good);background:rgba(47,125,87,.10);cursor:default}
-.agree-chip svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
-.co-card.steering{border-left:4px solid var(--good)}
-.steering-badge{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1 var(--sans);text-transform:uppercase;letter-spacing:.04em;color:var(--good);background:rgba(47,125,87,.12);border:1px solid var(--good);border-radius:999px;padding:5px 10px}
-/* --- v30: Interior documents hub --- */
-.int-stack{display:flex;flex-direction:column;gap:12px}
-.int-doc .co-rt-area{max-height:440px;overflow:auto}
-.int-doc .co-ttl{font-size:15px}
-.int-doc .sp-table{font-size:12px}
 </style>
 </head>
-<body class="eng-dark">
+<body>
 <header class="bar">
   <div class="wrap bar-inner">
     <a class="logo" href="index.html">
@@ -871,389 +569,92 @@ body.eng-dark .home-block.soon{opacity:.7}
     <span class="badge">Internal · Restricted</span>
   </div>
 </header>
-
-<script>window.PJ_SEED=[{"hull": "B111-01", "name": "RAVEN", "type": "Sail", "pm": "Mikael Nyberg", "stage": "Build · Hull & deck lamination", "since": "2026-03-02"}, {"hull": "B175-09", "name": "Northern Star", "type": "Sail", "pm": "Tobias Enqvist", "stage": "Build · Systems installation", "since": "2026-01-15"}, {"hull": "B068-22", "name": "Pinta", "type": "Power", "pm": "Daniel Green", "stage": "Build · Interior fit-out", "since": "2025-11-20"}];window.PJ_PMS=["Daniel Green", "Mattias Svenlin", "Mikael Nyberg", "Patric Brännbacka", "Tobias Enqvist", "Tommy Johansson"];window.PJ_ENG=["Andreas Boström", "Benjamin Johansson", "Bernhard Westerback", "Henrik Hallbäck", "Hugo Westerback", "Jan Wikar", "Jani Kahari", "Jesper Lygdman", "Joakim Romell", "Johnny Björkvik", "Jonatan Svenfors", "Jukka Wideman", "Julius Wuertz", "Kenneth Sundvik", "Kim Kolam", "Linda Nordberg", "Linh Nguyen", "Malin Fleen", "Mathias Björkström", "Mikael Johansson", "Patrik Högnabba", "Philip Asplund", "Pontus Fagerudd", "Raul Sundström", "Robert Wargh", "Ronny Nyfelt", "Sebastian Heselius", "Stefan Mäki", "Teppo Kivelä", "Tom Sjölund", "Viktor Sundkvist"];window.PJ_FOREMEN=["Rabbe Sundqvist", "Krister Holmberg", "Benny Ahlskog", "Roger Nyman", "Sven Backlund", "Tor Lindqvist"];window.PJ_DEFAULT="B111-01";window.PW_USER_DEFAULT="Mikael Strengell";</script><script>window.ENG_PURCHASERS=["Anna Lindqvist", "Markus Holm", "Sofia Berg", "Daniel Ek"];window.ENG_SALES=["Kenneth Nyfelt", "Henry Hawkins", "Joakim Kasslin", "Daniel Wahlroos"];window.ENG_HEAD="Mikael Strengell";window.ENG_SOL_SEED=[{"id": "BS-010-1", "area": "10", "name": "Through-hull valve set — DZR bronze", "supplier": "TruDesign / Forespar", "desc": "<p>Approved through-hull and seacock set in DZR bronze for hulls below the waterline. Sizes per the systems diagram.</p>", "files": [{"name": "TH-valve-set-DZR.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-010-2", "area": "10", "name": "Hull anode kit — aluminium", "supplier": "MG Duff", "desc": "<p>Sacrificial aluminium anode kit sized to the wetted surface; brackets bonded to the grounding plate.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-020-1", "area": "20", "name": "Electric primary winch — 1100ST", "supplier": "Harken", "desc": "<p>Self-tailing electric primary winch, 24&nbsp;V. Mounted on the cockpit coaming pads per the deck plan.</p>", "files": [{"name": "Winch-1100ST-datasheet.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-020-2", "area": "20", "name": "Hydraulic furler — Code 0", "supplier": "Reckmann", "desc": "<p>Below-deck hydraulic furler for the Code&nbsp;0, integrated with the central hydraulic ring main.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-040-1", "area": "40", "name": "Main engine flexible mounts (set)", "supplier": "Vetus / R&D", "desc": "<p>Vibration-isolating flexible engine mounts matched to the main engine mass and torque.</p>", "files": [{"name": "Engine-mounts.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-050-1", "area": "50", "name": "Freshwater pressure pump — 24V", "supplier": "Jabsco", "desc": "<p>Variable-speed freshwater pressure set with accumulator; feeds the manifold per the plumbing schematic.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-060-1", "area": "60", "name": "Lithium battery module — 5&nbsp;kWh", "supplier": "Mastervolt", "desc": "<p>LiFePO4 house-bank module, 24&nbsp;V 5&nbsp;kWh, with integrated BMS and CAN monitoring.</p>", "files": [{"name": "Li-module-5kWh.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}, {"id": "BS-060-2", "area": "60", "name": "Navigation light set — LED", "supplier": "Lopolight", "desc": "<p>Certified LED navigation light set for vessels &gt;20&nbsp;m, with dual-source masthead.</p>", "files": [], "status": "Approved", "owner": "Library"}, {"id": "BS-070-1", "area": "70", "name": "Carbon boom gooseneck fitting", "supplier": "Baltic / Hall", "desc": "<p>Titanium gooseneck fitting bonded to the carbon boom; engineered to the rig load case.</p>", "files": [{"name": "Gooseneck-load-case.pdf", "kind": "pdf"}], "status": "Approved", "owner": "Library"}];window.ENG_AREAS=[{"code": "GP", "title": "General Particulars", "sections": [{"name": "Principal dimensions", "rows": ["L.O.A.", "D.W.L.", "Beam", "Draft", "Displacement (light)", "I / I’ / I’’", "J / J / J code", "P", "E"]}, {"name": "Construction", "rows": ["Hull", "Keel", "Deck", "Interior"]}, {"name": "Equipment", "rows": ["Winches", "Anchoring system", "Fuel tanks", "Fresh water", "Holding tank", "Watermaker", "Heating / AC", "Main engine", "Generators", "Propeller", "Bow &amp; stern thruster", "Mast &amp; rigging", "Batteries", "AC system", "Electronics"]}, {"name": "Design", "rows": ["Naval architect", "Exterior &amp; interior design", "Project management", "Classification", "Flag state", "Cabins", "Delivery"]}]}, {"code": "00", "title": "General Conditions", "sections": [{"name": "Specification", "rows": ["The purpose of the Technical Specification is to define the …", "The Technical Specification will be accompanied by the Gener…", "The intent is to produce a lightweight, comfortable, perform…", "In case of either gaps, or conflict, between the drawings an…", "Work shown in the drawings and not in the specs, or vice ver…", "The Builder undertakes to ensure that the boat is built in a…"]}, {"name": "Articles supplied by shipyard and owner", "rows": ["The yard to receive and take responsibility for all articles…"]}, {"name": "Access", "rows": ["The owner, the naval architect, his representatives and or a…"]}, {"name": "Materials and workmanship", "rows": ["All materials and manufactured articles furnished by the yar…", "If the yard proposes an equivalent substitution that differs…", "The Builder shall use skilled workmanship, in keeping with t…", "Materials and workmanship can be regularly inspected by the …", "Particular care is to be taken to avoid bimetallic corrosion…", "All materials to be in accordance with class regulations."]}, {"name": "Insurance", "rows": ["See Yacht Construction Agreement."]}, {"name": "Warranty", "rows": ["See Yacht Construction Agreement."]}, {"name": "Drawings and Definitions", "rows": ["All drawings, specification and further information supplied…", "The drawings will be interpreted and completed with referenc…", "All the drawings will be drawn to scale but not all will con…", "The Builder will correct any defects or errors, which may oc…", "The Builder shall follow all details and dimensions shown on…", "The Builder is to review all plans, drawings, subcontractor …", "The Builder’s drawings", "The Builder is responsible for making and submitting all oth…"]}, {"name": "Classification and Compliance", "rows": ["The Yacht will be constructed in accordance with the class r…", "Certification of Class, Hull and Machinery DNV GL.", "Mast and rig class certification. To be decided if any."]}, {"name": "Flag state requirements", "rows": ["The flag state will be Malta.", "A change of flag state during the build may cause additional…"]}, {"name": "Weight control", "rows": ["The builder shall supply a detailed weight study which also …"]}, {"name": "Commissioning and Testing", "rows": ["The builder has developed an extensive commissioning process…", "The builders project team hands over the testing of the boat…", "All commissioning and test protocols to be accepted by the c…", "Following Hand over documents are prepared.", "Owner’s manual", "Warranty cards", "Warranty registration cards", "Warranty certificate"]}, {"name": "Delivery of yacht", "rows": ["If on delivery of the yacht to the owner any item of work sh…", "At delivery of the yacht Baltic Yachts will provide two pers…"]}]}, {"code": "10", "title": "Hull", "sections": [{"name": "General Concept", "rows": ["Hull lines will be in accordance with Naval Architect design…", "Details of engineering and construction according to the Str…", "The hulls and wetdeck (bridge between the hulls) will be bui…", "Hulls and wetdeck are built in advanced composite sandwich c…", "Inner skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "Core: Corecell core bonded under vacuum to obtain best bondi…", "Outer skin: Woven roving (0°/90°) and biaxial (±45°) standar…", "For the lamination, an oven will be assembled around the mou…"]}, {"name": "101  Hull structures", "rows": ["The hull shell will be supported by transverse and longitudi…", "The high-stress areas, such as the ones surrounding the pivo…", "Hull internal structures and bulkheads will be provided with…", "Structural engineering to be done by Rivoyre Ingenierie.", "Hull will be NDT checked and report to be shared with owner’…", "Structural bulkheads", "All bulkheads have a sandwich construction with skins made o…", "The bulkheads are manufactured on a vacuum table, to be flat…"]}, {"name": "102  Hull finish and fairing", "rows": ["General", "The complete paint system shall be Awlcraft as per yards’ st…", "A complete kit for touch up or small repairs to be supplied …", "The colours will be following the preliminary OWNER’s wishes…", "Metallic Flag Blue colour for the topsides,", "White or Oyster White for the deck and superstructure and fl…", "Black for the under-waterline paint", "Hull sides, transom and superstructure"]}, {"name": "103  Transom, swim and boarding platform", "rows": ["Transom", "Two transom doors shall be included and serve as access door…", "Transom swim platform", "A hydraulic tender lifting platform from TENDERLIFT will be …", "In lowered position, the platform must be deeply submerged t…", "The platform can also be lowered at the same level as the tr…", "The hull shapes will not be symmetrical to their respective …", "Platform to serve as swim platform when open, teak covered a…"]}, {"name": "105  Anchoring system", "rows": ["The ground tackle is to meet class rules. The builder is to …", "The anchor and chain handling systems are to be installed in…", "A mock-up in plywood will be made of the anchor handling arr…", "Windlass", "One Maxwell 8000 VWCLP hydraulically driven windlass to be i…", "The windlass motor shall be dual speed controlled. A chain c…", "Brakes and clutches for manual release shall be fitted to th…", "Anchor"]}, {"name": "106  Hull fittings and hardware", "rows": ["Hull windows", "All hull windows are to be installed according to class rule…", "Bow and stern thruster and Installation.", "Bow thruster foundation to be made according to the specific…", "Thrusters shall be controlled at both helm stations by a sma…", "Bow thruster", "OMS hydraulic swing thruster H-0300-S.", "Stern thruster"]}, {"name": "150  Pivoting daggerboard and skeg system", "rows": ["The boat is fitted with 2 fixed skegs and pivoting daggerboa…", "The daggerboard is a composite structure made of carbon lami…", "The skeg is incorporated to the hulls and will house the piv…", "Skegs:", "Lateral area: 1.7 m2 each", "Span: 0.4 m", "Carbon pivoting boards:", "Lateral area: 5.0 m2 each"]}]}, {"code": "20", "title": "Deck", "sections": [{"name": "General concept", "rows": ["The deck will have a superstructure including a flybridge.", "The deck will incorporate a toe rail in composite, details s…", "The flybridge will have twin helm stations one (1) port side…", "The area forward incorporates a comfortable relaxing cockpit…", "The main tender is stored on a tenderlift most aft. The crew…"]}, {"name": "201  Deck structure", "rows": ["General", "Deck is built in female moulds which are strong and airtight…", "The deck will be built using composite construction with epo…", "For the lamination, an oven will be assembled around the mou…", "The deck shell will be supported by transversal and longitud…"]}, {"name": "202  Finish", "rows": ["See hull finish 102"]}, {"name": "204  Decking", "rows": ["Standard deck", "Teak will be of the best available quality, quarter sawn Ind…", "A teak deck will be provided for the side decks and cockpits…", "Margin planks around hatches and fittings;", "1. 35 – 50 mm margin plank around hatch cut out. Corners to …", "Detail 1. 35mm margin plank w/ caulking", "In the corners", "15367073025"]}, {"name": "210  Deck fittings and hardware", "rows": ["General", "All deck equipment will be installed by means of through bol…", "When non-ferrous metal is used, titanium should be preferred…", "Deck fillers", "Deck fillers, one each filling point for fresh water and one…", "Pulpit, pushpit and stanchions", "Pulpit, pushpit and stanchions will be built according to de…", "Pulpit, pushpit and stanchions will be made from carbon usin…"]}, {"name": "211  Deck sail handling gear", "rows": ["General", "The sail handling gear will be supplied by Harken or equival…", "The maximum working load for standing and running rigging is…", "All hydraulic cylinders to be in anodized aluminum body and …", "Bobstay", "N/A", "Main sail system", "Main sheet xx kg"]}]}, {"code": "30", "title": "Interior", "sections": [{"name": "General", "rows": ["General", "The interior styling is done by Jamie Bush and the following…", "240425_ZETEO_DESIGN DEVELOPMENT PRESENTATION compressed-Mock…", "240531_APPLIANCES SCHEDULE", "240531_PLUMBING SCHEDULE", "240531_WOOD SCHEDULE", "BALTIC PERFORMANCE LIGHT (BENCHMARK LIARA AND HER DUAL ROLES…", "GENERAL The BALTIC PERFORMANCE LIGHT class uses specialist t…"]}, {"name": "301  Cabins, heads and showers", "rows": ["Bulkheads", "Advanced lightweight construction techniques are used in the…", "Main bulkheads are made on a vacuum table and the core is ma…", "BHDs will be built in by additional interior panels. Painted…", "Interior walls build-up specified in Noise and vibration stu…", "Floors", "Cabin soles throughout the entire Yacht will be a composite/…", "Main Deck: -Teak."]}]}, {"code": "40", "title": "Engine", "sections": [{"name": "401  Engine room", "rows": ["General", "The engine rooms are internally insulated for both fire safe…", "Access to the engine rooms will be through watertight deck h…", "The walls and ceilings of the engine room will be clad with …", "The engine room insulation will consist of two layers of hig…", "The engine room floor will be made of GRP or Aluminum plates…", "If space permits A workbench with a vice will be installed i…", "Pipes in the engine room, machinery spaces, and other areas …"]}, {"name": "402  Engine and propulsion system", "rows": ["Main engines", "There will be similar setups on each side. The propulsion sy…", "The electrical propulsion engine is a Danfoss Editron EM-PMI…", "Propeller &amp; Shaft setup", "Brunton's Varifold 4-bladed folding propeller to be provided…", "2 Stainless Steel 1.4460 Propeller shaft (front-side propell…", "2 stern tubes, length and diameter to be defined, flange on …", "2 Stand-by Seal, inflatable, for shaft with Stainless Steel …"]}, {"name": "403  Diesel Generator", "rows": ["General", "Monitoring and controlling the generators is done from the v…", "The diesel generators will have an HMI page that tracks vari…", "Oil pressure", "Oil temperature", "Wet exhaust temperature", "Dry exhaust temperatures", "High-level water sensor for silencer"]}, {"name": "404  Fuel and oil system", "rows": ["Schematic drawing: 1221-404001(P1) Fuel system.", "General", "The fuel system is to comply with class requirements. All va…", "The fuel system serves the two generators onboard and the di…", "Fuel polishing", "Two fuel polishing systems are installed, one per side, mode…", "Fuel tanks", "The fuel tanks are made in stainless steel. There are four 1…"]}, {"name": "405  Exhaust system", "rows": ["Schematic drawing: 1221-405001(P1) Exhaust System.", "The generators have exhaust systems where exhaust gases are …", "The exhaust equipment, piping, lift silencer and water separ…"]}, {"name": "406  Engine room ventilation system", "rows": ["Schematic drawing: 1221-406001(P1) Engine room ventilation.", "Engine room ventilation is based on the requirements of the …", "The requirements of the installed equipment are manufacturer…", "Control of engine room ventilation", "The system is based on temperature control; this will try to…", "Engine room ventilation system Main components", "A60 Fire dampers installed in Engine room", "Engine room air inlet via water trap"]}]}, {"code": "50", "title": "Plumbing", "sections": [{"name": "General", "rows": ["All piping systems are designed and optimized for their purp…", "For freshwater, wastewater +GF+ ABS plastic piping and Hep2O…", "501 Fresh water system"]}, {"name": "General", "rows": ["Schematic drawing: 1221-501001(P2) Fresh water system.", "The freshwater system is optimized for the yacht considering…", "The supply of pressurized water is achieved by two pressure …", "Shore water supply is connected in the lazarette via a filte…", "The freshwater system will supply water to the following are…"]}, {"name": "Fresh water tanks", "rows": ["Two 2000 litre HDPE freshwater tanks are installed, one in e…"]}, {"name": "Hot water boilers", "rows": ["One 200L hot water boiler per hull with electric heating ele…", "Main components of the Fresh water system:", "Component", "Pcs", "Type", "Fresh water tanks", "2", "4000 liters (divided into port &amp; Stb) *"]}, {"name": "502  Waste water system", "rows": ["General", "Schematic drawing: 1221-502001(P1) Waste water system.", "All grey water collected from showers, wash basins and galle…", "Tanks", "The waste tanks are made of HDPE plastic. There is one holdi…", "All tanks are equipped with service valves and service hatch…", "Waste system main components", "Component"]}]}, {"code": "60", "title": "Electrical", "sections": [{"name": "General", "rows": ["General", "This specification outlines the installation of a hybrid pro…", "The power sources for this system include shore power and ge…", "Given that the HVDC battery bank continuously provides power…"]}, {"name": "One line diagram", "rows": ["The electrical system is divided into two sides for redundan…"]}, {"name": "Cables and Supports", "rows": ["All wiring will be installed within conduits or stainless-st…", "The Builder will ensure the use of lightweight marine-grade …", "Cables passing through structures and exposed to potential m…"]}, {"name": "Switchgear and Panels", "rows": ["General", "All switchboards and distribution boards shall be housed in …", "Switchboards with removable fuses shall be equipped with a f…"]}, {"name": "Grounding system and Corrosion prevention", "rows": ["A lightning conductor is installed in the mast, with an elec…", "Corrosion prevention anodes will be recessed in the hull, an…"]}, {"name": "601  AC system", "rows": ["General", "The two three-phase main inverters are supplying 230/400VAC …", "The types of consumers on the AC bus include:", "• Galley equipment", "• Water heater", "• Water maker", "• Air conditioning compressors", "• Battery chargers for 24V systems"]}, {"name": "602  DC systems", "rows": ["All critical data from DC systems will be monitored through …", "All DC equipment will be isolated from the hull.", "In addition to the electronic cathodic protection system, th…", "HVDC battery system", "The high voltage battery bank shall consist of 2 (two) separ…", "Aiming for a minimum of 8 hours silent night period in accor…", "HVDC system main components:", "2x Permanent magnet generators."]}, {"name": "603  Control and Monitoring system", "rows": ["The monitoring and control system utilizes a decentralized I…", "HMI is based in a webserver, any device or computer connecte…", "Each monitoring screen will have a small fan less computer d…", "Service", "Pcs", "Type", "Master PLC", "2"]}, {"name": "605  Navigation system", "rows": ["General", "Assuming built as pleasure yacht i.e. Malta CYC2020 does not…", "Sailing instruments (preliminary allowance list)", "Processors", "One (1) B&amp;G Hercules WTP sailing processor with interfac…", "Sensors", "One (1) B&amp;G WS730 VMHU in mast top, connected to NMEA 20…", "One (1) B&amp;G DST800 Depth, speed and temp sensor (235kHz)…"]}, {"name": "606  Audio / Video", "rows": ["N/A. For details see Preliminary allowance list P1.", "Central system", "Sonance DSP 8-130 Amplifier 5", "WiiM Pro music streamer 11", "Flybridge", "Sonance VPXT6R 4", "Bathing platform", "Sonance VPXT6R 2"]}]}, {"code": "70", "title": "Rigging", "sections": [{"name": "701  Mast and rig (owner supplied)", "rows": ["General", "Mast, rigging and boom are to be owner supplied. A prelimina…", "Stability has been performed at MLDC in the figure below to …", "Dimensions:", "I 38.0 m", "J 13.0 m", "P 38.7 m", "E 11.4 m"]}, {"name": "702  Sails", "rows": ["Sails will be supplied by the Owner. The yard will support t…", "The inventory and dimensions are provisional pending final d…", "Mainsail", "Area: 296 m²", "P: 38.7 m", "E: 11.4 m", "Genoa", "Area: 276 m²"]}]}, {"code": "90", "title": "Miscellaneous", "sections": []}];</script>
-<script>
-/* Runs FIRST (before any per-page app): resolves the active project from ?p and
-   exposes window.PJ_HULL / PJ_PROJ / PJ_LIST / PJ_CARRY. No DOM access here so it
-   is safe to run at the top of the page. */
-(function(){
-  var seed = window.PJ_SEED || [];
-  function realizedList(){
-    var rl=[]; try{ rl=JSON.parse(localStorage.getItem('pw_realized'))||[]; }catch(e){}
-    var map={}; var out=[];
-    seed.forEach(function(p){ map[p.hull.toUpperCase()]=Object.assign({},p); });
-    rl.forEach(function(p){ var k=(p.hull||'').toUpperCase(); if(!k) return;
-      map[k]=Object.assign({stage:'Realized — transferred from Sales'}, map[k]||{}, p); });
-    Object.keys(map).forEach(function(k){ out.push(map[k]); });
-    out.sort(function(a,b){ return (a.hull||'').localeCompare(b.hull||''); });
-    return out;
-  }
-  window.PJ_LIST = realizedList;
-  var list = realizedList();
-  var qp = new URLSearchParams(location.search).get('p');
-  var hull = qp || (list[0]&&list[0].hull) || window.PJ_DEFAULT;
-  window.PJ_HULL = (hull||'').toUpperCase();
-  window.PJ_PROJ = list.filter(function(p){return (p.hull||'').toUpperCase()===window.PJ_HULL;})[0]
-                   || {hull:hull,name:hull,pm:'',stage:''};
-  window.PJ_CARRY = '?p='+encodeURIComponent(hull);
-})();
-</script>
-
-<script>
-window.PJX = (function(){
-  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function today(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
-  function nowISO(){ try{ return new Date().toISOString(); }catch(e){ return ''; } }
-  function fmt(iso){ try{ var d=new Date(iso); return d.toLocaleDateString(undefined,{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }catch(e){ return iso; } }
-  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
-  function save(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-  function curUser(){ try{ return localStorage.getItem('pw_user') || window.PW_USER_DEFAULT || 'You'; }catch(e){ return window.PW_USER_DEFAULT||'You'; } }
-  function setUser(u){ try{ localStorage.setItem('pw_user', u); }catch(e){} }
-  // simulated Teams/email notification toast (matches the Sales editor look)
-  var nEl;
-  function notify(html, kind){
-    if(!nEl){ nEl=document.createElement('div'); document.body.appendChild(nEl); }
-    nEl.className='sp-notify'+(kind?(' '+kind):'');
-    var ic = kind==='warn'
-      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>'
-      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>';
-    nEl.innerHTML=ic+'<span>'+html+'</span>'; nEl.classList.add('show');
-    clearTimeout(nEl._t); nEl._t=setTimeout(function(){ nEl.classList.remove('show'); }, 6500);
-  }
-  // identity switcher (shared pw_user) -> calls onChange(user)
-  function identityBar(host, onChange){
-    var all=[]; (window.PJ_PMS||[]).concat(window.PJ_ENG||[],window.PJ_FOREMEN||[]).forEach(function(n){ if(all.indexOf(n)<0)all.push(n); });
-    var wrap=document.createElement('span'); wrap.className='sp-userbar';
-    wrap.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Viewing as</span>';
-    var sel=document.createElement('select'); sel.className='sp-user-sel';
-    if(all.indexOf(curUser())<0){ var x=document.createElement('option'); x.value=curUser(); x.textContent=curUser(); sel.appendChild(x); }
-    all.forEach(function(n){ var o=document.createElement('option'); o.value=n; o.textContent=n; if(n===curUser())o.selected=true; sel.appendChild(o); });
-    sel.value=curUser();
-    sel.addEventListener('change', function(){ setUser(sel.value); if(onChange)onChange(sel.value); });
-    wrap.appendChild(sel); host.appendChild(wrap); return sel;
-  }
-  // snapshot + manual-update bar. keys() -> array of per-project storage keys.
-  function snapBar(host, hull, keysFn, versionFn){
-    var KEY='pw_snapshots_'+hull;
-    var bar=document.createElement('div'); bar.className='snap-bar';
-    function paint(){
-      var snaps=load(KEY,[]);
-      bar.innerHTML='<span class="snap-v">'+esc(versionFn?versionFn():'')+'</span>'+
-        '<span>Local working copy · '+snaps.length+' snapshot'+(snaps.length===1?'':'s')+'</span><span class="snap-sp"></span>'+
-        '<button type="button" class="snap-btn" data-a="snap"><svg viewBox="0 0 24 24"><path d="M5 7h3l1-2h6l1 2h3v12H5z"/><circle cx="12" cy="13" r="3"/></svg>Take snapshot</button>'+
-        '<button type="button" class="snap-btn" data-a="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Snapshots ('+snaps.length+')</button>'+
-        '<button type="button" class="snap-btn" data-a="upd"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></svg>Update now</button>';
-    }
-    paint();
-    bar.addEventListener('click', function(e){
-      var b=e.target.closest('[data-a]'); if(!b) return; var a=b.getAttribute('data-a');
-      if(a==='snap'){
-        var lab=prompt('Snapshot label:', 'Snapshot '+today()); if(lab===null) return;
-        var data={}; keysFn().forEach(function(k){ var v=localStorage.getItem(k); if(v!=null) data[k]=v; });
-        var snaps=load(KEY,[]); snaps.unshift({ts:nowISO(), label:lab, by:curUser(), data:data, version:(versionFn?versionFn():'')});
-        save(KEY,snaps); paint(); notify('Snapshot <b>'+esc(lab)+'</b> saved ('+keysFn().length+' items).');
-      } else if(a==='upd'){
-        notify('Updated — reloaded the latest saved state.'); setTimeout(function(){ location.reload(); }, 500);
-      } else if(a==='list'){ openSnaps(); }
-    });
-    function openSnaps(){
-      var snaps=load(KEY,[]);
-      var ov=document.createElement('div'); ov.className='cmt-overlay';
-      var body = snaps.length ? snaps.map(function(s,i){
-        return '<div class="rev-row"><div class="rev-v">#'+(snaps.length-i)+'</div><div class="rev-main">'+
-          '<div class="rev-sum">'+esc(s.label)+'</div><div class="rev-meta">'+esc(fmt(s.ts))+' · by '+esc(s.by)+(s.version?(' · '+esc(s.version)):'')+
-          ' · <a href="#" data-restore="'+i+'">Restore</a> · <a href="#" data-del="'+i+'">Delete</a></div></div></div>';
-      }).join('') : '<div class="pj-empty">No snapshots yet. Take one to capture the current state.</div>';
-      ov.innerHTML='<div class="cmt-sheet"><div class="cmt-sheet-top"><h3>Snapshots — '+esc(hull)+'</h3>'+
-        '<span class="cmt-sheet-tools"><button type="button" class="primary" data-close>Close</button></span></div>'+
-        '<p class="cmt-sheet-sub">Point-in-time copies of this project’s working data (spec, comments, change orders, revisions, planning).</p>'+body+'</div>';
-      document.body.appendChild(ov);
-      ov.addEventListener('click', function(e){
-        if(e.target===ov||e.target.closest('[data-close]')){ ov.remove(); return; }
-        var r=e.target.closest('[data-restore]'); var d=e.target.closest('[data-del]');
-        if(r){ e.preventDefault(); var i=+r.getAttribute('data-restore'); var s=load(KEY,[])[i];
-          if(s && confirm('Restore snapshot “'+s.label+'”? This overwrites the current working copy.')){
-            Object.keys(s.data).forEach(function(k){ localStorage.setItem(k, s.data[k]); }); location.reload(); } }
-        if(d){ e.preventDefault(); var j=+d.getAttribute('data-del'); var arr=load(KEY,[]); arr.splice(j,1); save(KEY,arr); ov.remove(); paint(); openSnaps(); }
-      });
-    }
-    host.appendChild(bar); return bar;
-  }
-  // mini rich-text editor: returns {el, getHTML, setHTML}
-  function richEditor(initialHTML, readOnly){
-    var box=document.createElement('div'); box.className='co-rt';
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    var area=document.createElement('div'); area.className='co-rt-area'; area.setAttribute('contenteditable', readOnly?'false':'true');
-    area.innerHTML=initialHTML||'';
-    var cmds=[['B','bold','Bold'],['I','italic','Italic'],['U','underline','Underline'],['•','insertUnorderedList','Bulleted list'],['1.','insertOrderedList','Numbered list'],['↺','removeFormat','Clear formatting']];
-    cmds.forEach(function(c){ var b=document.createElement('button'); b.type='button'; b.textContent=c[0]; b.title=c[2];
-      if(c[0]==='I')b.style.fontStyle='italic'; if(c[0]==='U')b.style.textDecoration='underline';
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly)return; document.execCommand(c[1],false,null); area.focus(); }); bar.appendChild(b); });
-    if(readOnly){ bar.style.display='none'; }
-    box.appendChild(bar); box.appendChild(area);
-    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
-  }
-  // file chip as an HTML string — a clickable link (opens in a new tab) when the
-  // file carries data/url, else a plain badge.
-  function chipHTML(f){
-    var name=(f&&f.name)||'file';
-    var kind=(f&&f.kind) || (/\.pdf$/i.test(name)?'pdf':(/\.(dwg|dxf)$/i.test(name)?'2d':(/\.(step|stp|igs|iges)$/i.test(name)?'3d':(/\.(docx?|rtf)$/i.test(name)?'docx':'file'))));
-    var ic='<svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:-2px;fill:none;stroke:currentColor;stroke-width:2"><path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/></svg>';
-    var label=' '+esc(kind.toUpperCase())+' · '+esc(name);
-    var src=(f&&(f.data||f.url))||'';
-    if(src){ return '<a class="dl-chip" href="'+src+'" target="_blank" rel="noopener" title="Open '+esc(name)+'">'+ic+label+'</a>'; }
-    return '<span class="dl-chip">'+ic+label+'</span>';
-  }
-  // open data: file chips via a Blob URL (browsers block navigating to data: URLs directly)
-  function _openData(href, name){
-    try{
-      var c=href.indexOf(","); if(c<0) return false;
-      var meta=href.substring(5,c), data=href.substring(c+1);
-      var mime=(meta.split(";")[0])||"application/octet-stream", bytes;
-      if(/;base64/i.test(meta)){ var bin=atob(data), n=bin.length, u=new Uint8Array(n); for(var i=0;i<n;i++){ u[i]=bin.charCodeAt(i); } bytes=u; }
-      else { bytes=new TextEncoder().encode(decodeURIComponent(data)); }
-      var url=URL.createObjectURL(new Blob([bytes],{type:mime}));
-      var w=window.open(url,"_blank");
-      if(!w){ var a=document.createElement("a"); a.href=url; a.download=name||"file"; document.body.appendChild(a); a.click(); a.remove(); }
-      setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
-      return true;
-    }catch(e){ return false; }
-  }
-  try{ document.addEventListener("click", function(e){
-    var a=(e.target&&e.target.closest)?e.target.closest("a.dl-chip,a.eng-chip,a.file-chip"):null;
-    if(!a) return; var href=a.getAttribute("href")||"";
-    if(href.indexOf("data:")!==0) return;
-    e.preventDefault();
-    var nm=(a.getAttribute("title")||"").replace(/^Open\s+/,"");
-    _openData(href, nm);
-  }, false); }catch(e){}
-  return {esc:esc, today:today, nowISO:nowISO, fmt:fmt, load:load, save:save, curUser:curUser, setUser:setUser,
-          notify:notify, identityBar:identityBar, snapBar:snapBar, richEditor:richEditor, chipHTML:chipHTML};
-})();
-</script>
-
-<script>
-window.ENGX = (function(){
-  var X = window.PJX;
-  function hull(){ return (new URLSearchParams(location.search).get('p')||window.PJ_DEFAULT||'B107C').trim().toUpperCase(); }
-  // ---- rich-text editor: B/I/U, bullet + numbered lists, and a table ----
-  function editor(initialHTML, readOnly){
-    var box=document.createElement('div'); box.className='co-rt';
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    var area=document.createElement('div'); area.className='co-rt-area';
-    area.setAttribute('contenteditable', readOnly?'false':'true');
-    area.innerHTML=initialHTML||'';
-    function ex(c){ return function(){ document.execCommand(c,false,null); }; }
-    function insTable(){
-      var h='<table class="sp-table"><thead><tr><th>Heading 1</th><th>Heading 2</th><th>Heading 3</th></tr></thead>'+
-        '<tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>';
-      document.execCommand('insertHTML',false,h);
-    }
-    var defs=[['B','Bold',ex('bold'),'font-weight:700'],['I','Italic',ex('italic'),'font-style:italic'],
-      ['U','Underline',ex('underline'),'text-decoration:underline'],['•','Bulleted list',ex('insertUnorderedList'),''],
-      ['1.','Numbered list',ex('insertOrderedList'),''],['▦','Insert table',insTable,''],
-      ['↺','Clear formatting',ex('removeFormat'),'']];
-    defs.forEach(function(d){ var b=document.createElement('button'); b.type='button'; b.textContent=d[0]; b.title=d[1];
-      if(d[3]) b.setAttribute('style',d[3]);
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); if(readOnly) return; d[2](); area.focus(); });
-      bar.appendChild(b); });
-    if(readOnly){ bar.style.display='none'; }
-    box.appendChild(bar); box.appendChild(area);
-    return { el:box, getHTML:function(){ return area.innerHTML; }, setHTML:function(h){ area.innerHTML=h; }, area:area };
-  }
-  // ---- Baltic Solutions library (seeded once into localStorage, then editable) ----
-  function ensureSeed(){ try{ if(!localStorage.getItem('pw_baltic_solutions')){ X.save('pw_baltic_solutions', window.ENG_SOL_SEED||[]); } }catch(e){} }
-  function solutions(){ ensureSeed(); return X.load('pw_baltic_solutions', []); }
-  function saveSolutions(arr){ X.save('pw_baltic_solutions', arr); }
-  function areaTitle(code){ var a=(window.ENG_AREAS||[]).filter(function(x){return x.code===code;})[0]; return a?a.title:code; }
-  // file kind from extension: pdf datasheet / 2d drawing / 3d model / doc
-  function kindFromName(name){
-    var n=(name||'').toLowerCase();
-    if(/\.(step|stp|igs|iges|3dm|sldprt|x_t)$/.test(n)) return '3d';
-    if(/\.(dwg|dxf)$/.test(n)) return '2d';
-    if(/\.(docx?|rtf)$/.test(n)) return 'docx';
-    return 'pdf';
-  }
-  var KIND_ICON={
-    pdf:'<path d="M6 2h9l3 3v17H6z"/><path d="M9 12h6M9 16h6"/>',
-    '2d':'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M9 4v16"/>',
-    '3d':'<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/>',
-    docx:'<path d="M6 2h9l3 3v17H6z"/><path d="M9 13l1.2 4 1.3-4 1.3 4 1.2-4"/>'
-  };
-  function fileChip(f, onRemove){
-    var kind=f.kind||kindFromName(f.name);
-    var ic='<svg viewBox="0 0 24 24">'+(KIND_ICON[kind]||KIND_ICON.pdf)+'</svg>';
-    var node=document.createElement(onRemove?'span':'a'); node.className='eng-chip k-'+kind;
-    if(!onRemove){ var src=f.data||f.url||''; node.setAttribute('href', src||'#'); if(src){ node.setAttribute('target','_blank'); node.setAttribute('rel','noopener'); } }
-    node.innerHTML=ic+'<span>'+X.esc(kind.toUpperCase())+' · '+X.esc(f.name)+'</span>';
-    if(onRemove){ var x=document.createElement('span'); x.className='x'; x.textContent='×'; x.title='Remove';
-      x.addEventListener('click', function(e){ e.preventDefault(); onRemove(); }); node.appendChild(x); }
-    return node;
-  }
-  // multi-file picker that reads each as a data-URI (mind the localStorage budget)
-  function pickFiles(accept, cb){
-    var inp=document.createElement('input'); inp.type='file'; if(accept) inp.accept=accept; inp.multiple=true;
-    inp.style.display='none'; document.body.appendChild(inp);
-    inp.addEventListener('change', function(){
-      var fs=inp.files?[].slice.call(inp.files):[]; var pending=fs.length; var out=[];
-      if(!pending){ inp.remove(); return; }
-      function done(){ if(--pending===0){ cb(out); inp.remove(); } }
-      fs.forEach(function(f){ var fr=new FileReader();
-        fr.onload=function(){ out.push({name:f.name,kind:kindFromName(f.name),data:fr.result}); done(); };
-        fr.onerror=function(){ out.push({name:f.name,kind:kindFromName(f.name),data:''}); done(); };
-        try{ fr.readAsDataURL(f); }catch(e){ out.push({name:f.name,kind:kindFromName(f.name),data:''}); done(); } });
-    });
-    inp.click();
-  }
-  // attach a toolbar to an EXISTING contenteditable element. The content is baked
-  // statically into the page HTML (so it renders in the no-JS preview); JS only adds
-  // the toolbar + editing on top.
-  function attachEditor(boxEl, areaEl, readOnly){
-    if(readOnly){ return { getHTML:function(){ return areaEl.innerHTML; }, setHTML:function(h){ areaEl.innerHTML=h; }, area:areaEl }; }
-    areaEl.setAttribute('contenteditable','true');
-    var bar=document.createElement('div'); bar.className='co-rt-bar';
-    function ex(c){ return function(){ document.execCommand(c,false,null); }; }
-    function insTable(){ var h='<table class="sp-table"><thead><tr><th>Heading 1</th><th>Heading 2</th><th>Heading 3</th></tr></thead>'+
-      '<tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>';
-      document.execCommand('insertHTML',false,h); }
-    var defs=[['B','Bold',ex('bold'),'font-weight:700'],['I','Italic',ex('italic'),'font-style:italic'],
-      ['U','Underline',ex('underline'),'text-decoration:underline'],['•','Bulleted list',ex('insertUnorderedList'),''],
-      ['1.','Numbered list',ex('insertOrderedList'),''],['▦','Insert table',insTable,''],['↺','Clear formatting',ex('removeFormat'),'']];
-    defs.forEach(function(d){ var b=document.createElement('button'); b.type='button'; b.textContent=d[0]; b.title=d[1]; if(d[3]) b.setAttribute('style',d[3]);
-      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
-      b.addEventListener('click', function(e){ e.preventDefault(); d[2](); areaEl.focus(); }); bar.appendChild(b); });
-    boxEl.insertBefore(bar, boxEl.firstChild);
-    return { getHTML:function(){ return areaEl.innerHTML; }, setHTML:function(h){ areaEl.innerHTML=h; }, area:areaEl };
-  }
-  return { hull:hull, editor:editor, attachEditor:attachEditor, solutions:solutions, saveSolutions:saveSolutions,
-           areaTitle:areaTitle, fileChip:fileChip, kindFromName:kindFromName, pickFiles:pickFiles };
-})();
-</script>
-
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Risks</div>
-    <h1>Risks</h1>
-    <p>The <strong>project risk register</strong> (read-only, maintained by the PM on the project side) for <span class="pj-proj-ref"></span>, and the <strong>engineering risk list</strong> for this project. Engineers add risks and <strong>Share to project</strong>; the PM folds shared risks into the register (no approve/decline needed).</p>
+    <div class="crumb"><a href="index.html">Yacht Builder</a> / Solutions database</div>
+    <h1>Solutions database</h1>
+    <p>Pick a pre-approved solution to drop into a section, or propose a custom one for sign-off.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html" class="on">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="role-bar" id="er-role"></div>
-  <div class="eng-panel"><h2 class="er-h">Project risk register <span class="er-sub">read-only · from the project</span></h2><div id="er-proj"></div></div>
-  <div class="eng-panel"><h2 class="er-h">Engineering risk list <span class="er-sub">this project · share to the project</span></h2><div id="er-eng"></div></div>
+  <div class="sp-toolbar">
+    <div class="sp-legend"><span class="tag t-std">Standard</span><span class="tag t-opt">Optional</span><span class="tag t-own">Owner&rsquo;s supply</span><span class="sol-badge approved">Approved</span><span class="sol-badge pending">Custom · pending</span></div>
+  </div>
 
+  <div class="card import-bar">
+    <span class="import-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A4.5 4.5 0 0 1 18 14"/><path d="M12 11v9M8.5 16.5 12 20l3.5-3.5"/></svg></span>
+    <div class="import-meta">
+      <strong>Solutions source</strong>
+      <span>Pre-written solutions &mdash; with their supporting 2D / 3D models and drawings &mdash; are imported from the central solutions server, not the project folders.</span>
+      <span class="import-conn">Server connection configured at deployment &middot; 16 solutions available</span>
+    </div>
+    <button type="button" class="btn-primary" data-action="Import / sync solutions from the server">Import / Sync</button>
+  </div>
 
-<script>
-/* Runs LAST (DOM ready): fills the project picker, carries ?p through in-area
-   links, and reflects the project name in headers. */
-(function(){
-  var hull = new URLSearchParams(location.search).get('p') || (window.PJ_PROJ&&window.PJ_PROJ.hull) || window.PJ_DEFAULT;
-  var carry = window.PJ_CARRY || ('?p='+encodeURIComponent(hull));
-  var list = window.PJ_LIST ? window.PJ_LIST() : [];
-  var pick=document.getElementById('pj-pick');
-  if(pick){
-    list.forEach(function(p){ var o=document.createElement('option'); o.value=p.hull;
-      o.textContent=p.hull+(p.name&&p.name!==p.hull?(' · '+p.name):''); if((p.hull||'').toUpperCase()===window.PJ_HULL)o.selected=true; pick.appendChild(o); });
-    pick.addEventListener('change', function(){ var u=new URL(location.href); u.searchParams.set('p', pick.value); location.href=u.toString(); });
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('a[href]'), function(a){
-    var h=a.getAttribute('href')||'';
-    if(/^[a-z0-9-]+\.html$/i.test(h)){ a.setAttribute('href', h+carry); }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.pj-proj-ref'), function(el){
-    el.textContent = window.PJ_PROJ && window.PJ_PROJ.name && window.PJ_PROJ.name!==hull ? (hull+' · '+window.PJ_PROJ.name) : hull;
-  });
-  // badge the Project development tab when reference proposals are pending the PM
-  try{ var HH=(window.PJ_HULL||'').toUpperCase(); var pfx='pw_eng_projdoc_'+HH+'_'; var pend=0;
-    for(var j=0;j<localStorage.length;j++){ var kk=localStorage.key(j); if(kk&&kk.indexOf(pfx)===0){ var dd=JSON.parse(localStorage.getItem(kk)||'null'); if(dd&&dd.html&&(dd.status||'Pending')==='Pending') pend++; } }
-    try{ var ca=JSON.parse(localStorage.getItem('pw_proj_calcs_'+HH)||'[]'); for(var m=0;m<ca.length;m++){ var ag=ca[m].agree||{}; if(!(ag.eng&&ag.fore&&ag.pm)) pend++; } }catch(e){}
-    if(pend){ Array.prototype.forEach.call(document.querySelectorAll('.pj-sub a[href^="project-development"]'), function(a){ if(a.querySelector('.pj-badge-new'))return; var s=document.createElement('span'); s.className='pj-badge-new'; s.textContent='!'; s.title=pend+' new proposal'+(pend>1?'s':'')+' for the PM to review'; a.appendChild(s); }); }
-  }catch(e){}
-})();
-</script>
+  <div class="card sol-propose">
+    <h3 class="step-h" style="margin-top:0;">Propose a custom solution</h3>
+    <div class="form-grid">
+      <div class="field"><label for="cs-title">Title</label><input id="cs-title" type="text" placeholder="e.g. Retractable carbon hydrofoil set" autocomplete="off"></div>
+      <div class="field"><label for="cs-area">Area</label><select id="cs-area"><option>GP General Particulars</option><option>00 General Conditions</option><option>10 Hull</option><option>20 Deck</option><option>30 Interior</option><option>40 Engine</option><option>50 Plumbing</option><option>60 Electrical</option><option>70 Rigging</option><option>90 Miscellaneous</option></select></div>
+    </div>
+    <div class="field" style="margin-top:16px;"><label for="cs-desc">Description</label><textarea id="cs-desc" rows="3" placeholder="Describe the solution, equipment and supplier…"></textarea></div>
+    <div class="form-actions"><button type="button" class="btn-primary" data-action="Submit custom solution for approval">Submit for approval</button><span class="sp-actions-lbl">Custom solutions need sign-off before they can be used.</span></div>
+  </div>
+
+  <div class="sol-toolbar2">
+    <input id="sol-search" type="search" placeholder="Search solutions by name, equipment or supplier…" autocomplete="off">
+    <div class="sol-jump"><span class="sj-lbl">Jump to area:</span><a href="#sol-area-00">00</a><a href="#sol-area-10">10</a><a href="#sol-area-20">20</a><a href="#sol-area-30">30</a><a href="#sol-area-40">40</a><a href="#sol-area-50">50</a><a href="#sol-area-60">60</a><a href="#sol-area-70">70</a><a href="#sol-area-90">90</a></div>
+  </div>
+
+  <h2 class="sol-h">Pending approval</h2>
+<div class="sol-grid">
+<div class="sol-card pending"><div class="sol-head"><span class="area-code">10</span><strong>Retractable carbon hydrofoil set</strong><span class="sol-badge pending">Custom · pending</span></div><p class="sol-text">Owner-requested DSS-style retractable foils for added stability and speed. New engineering — load paths and case design to be validated before sign-off.</p><div class="sol-by">Proposed by Andreas Boström</div><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>foil-concept.step</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>foil-loads.pdf</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Approve: Retractable carbon hydrofoil set">Approve</button><button type="button" class="btn-sm danger" data-action="Reject: Retractable carbon hydrofoil set">Reject</button></div></div>
+<div class="sol-card pending"><div class="sol-head"><span class="area-code">60</span><strong>Lithium 320 kWh battery upgrade</strong><span class="sol-badge pending">Custom · pending</span></div><p class="sol-text">Upgrade from the standard HVDC bank to a 320 kWh lithium configuration. Requires class review and thermal-management approval.</p><div class="sol-by">Proposed by Mikael Johansson</div><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>li-bank.step</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>thermal-calc.pdf</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Approve: Lithium 320 kWh battery upgrade">Approve</button><button type="button" class="btn-sm danger" data-action="Reject: Lithium 320 kWh battery upgrade">Reject</button></div></div>
+<div class="sol-card pending"><div class="sol-head"><span class="area-code">20</span><strong>Carbon cockpit table with electric lift</strong><span class="sol-badge pending">Custom · pending</span></div><p class="sol-text">Bespoke carbon cockpit table converting to a sun-bed via electric lift. Custom mechanism — weight and structural attachment to confirm.</p><div class="sol-by">Proposed by Patrik Högnabba</div><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg>table-mech.dwg</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>table.step</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Approve: Carbon cockpit table with electric lift">Approve</button><button type="button" class="btn-sm danger" data-action="Reject: Carbon cockpit table with electric lift">Reject</button></div></div>
+</div>
+<h2 class="sol-h">Solutions library</h2>
+<h3 class="sol-group" id="sol-area-00">00 General Conditions</h3>
+<div class="sp-empty" style="text-align:start;padding:6px 0 12px;">No solutions in this area yet.</div>
+<h3 class="sol-group" id="sol-area-10">10 Hull</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>Awlcraft paint system</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Hull finish <span class="tag t-std">Standard</span></div><p class="sol-text">Complete Awlcraft topcoat over epoxy barrier-coat primer, applied to the yard's standard. Touch-up and small-repair kit supplied to the yacht.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>paint-scheme.pdf</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Awlcraft paint system">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>Ultramarin 270 kg anchor + windlass</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Anchoring <span class="tag t-std">Standard</span></div><p class="sol-text">Primary 270 kg high-holding-power anchor (Ultramarin or equivalent), hydraulic windlass, chain and stern anchor.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>anchor-GA.pdf</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>windlass-mount.step</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Ultramarin 270 kg anchor + windlass">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>OMS hydraulic swing bow-thruster</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Manoeuvring <span class="tag t-opt">Optional</span></div><p class="sol-text">OMS hydraulic swing bow-thruster, model H-0300-S, retracting flush to the hull when not in use.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>H-0300-S.step</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg>thruster-install.dwg</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: OMS hydraulic swing bow-thruster">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-20">20 Deck</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>Harken hydraulic deck winches</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Winches <span class="tag t-std">Standard</span></div><p class="sol-text">Harken hydraulic deck winch package sized to the sailplan, with central hydraulic supply.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg>winch-layout.dwg</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Harken hydraulic deck winches">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>Teak decking — laid</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Decking <span class="tag t-opt">Optional</span></div><p class="sol-text">Laid teak decking with 35–50 mm margin planks around hatches; corners caulked. Thickness per weight allowance.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Teak decking — laid">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>Bimini &amp; sprayhood package</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Shade <span class="tag t-opt">Optional</span></div><p class="sol-text">Folding bimini, sprayhood/dodger and cockpit cushions in coordinated fabric; stainless or carbon frames.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Bimini &amp; sprayhood package">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-30">30 Interior</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>OceanAir electric skylights</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Skylights <span class="tag t-opt">Optional</span></div><p class="sol-text">Electrically controlled skylights (OceanAir or similar) throughout, with integrated mosquito and blackout screens.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: OceanAir electric skylights">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-40">40 Engine</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>Danfoss electric propulsion</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Propulsion <span class="tag t-std">Standard</span></div><p class="sol-text">Danfoss electrical propulsion system with HVDC architecture; silent, emission-free harbour and short-range running.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Danfoss electric propulsion">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>2 × Cummins B4.5 generators</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Power generation <span class="tag t-std">Standard</span></div><p class="sol-text">Two Cummins B4.5 diesel generators, 129 kW @ 1800 rpm, sound-shielded, feeding the HVDC bank.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>genset-GA.pdf</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>genset.step</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: 2 × Cummins B4.5 generators">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>Brunton Varifold folding propeller</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Propeller <span class="tag t-std">Standard</span></div><p class="sol-text">Brunton Varifold folding 4-blade propeller for minimal drag under sail.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>varifold.step</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Brunton Varifold folding propeller">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-50">50 Plumbing</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>HEM watermaker 30/4000</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Water <span class="tag t-std">Standard</span></div><p class="sol-text">HEM watermaker, model 30/4000, ~15 000 L/day, with remote monitoring.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>watermaker-install.pdf</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: HEM watermaker 30/4000">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>HDPE fresh &amp; holding tanks</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Tankage <span class="tag t-std">Standard</span></div><p class="sol-text">2 × 1 000 L HDPE fresh-water tanks and 2 × 1 000 L holding tanks; 1 × 400 L black-water tank.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: HDPE fresh &amp; holding tanks">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-60">60 Electrical</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>HVDC battery bank ~240 kWh</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Energy storage <span class="tag t-std">Standard</span></div><p class="sol-text">High-voltage DC battery bank, approx. 240 kWh, supporting electric propulsion and silent hotel loads.</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 22V12M21 7l-9 5-9-5"/></svg>battery-bank.step</span><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg>bank-layout.dwg</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: HVDC battery bank ~240 kWh">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>B&amp;G navigation + Starlink</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Navigation <span class="tag t-opt">Optional</span></div><p class="sol-text">B&amp;G instrument and navigation suite with Starlink connectivity and integrated displays.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: B&amp;G navigation + Starlink">Use in section</button></div></div>
+<div class="sol-card"><div class="sol-head"><strong>230/400 V 3-phase AC system</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">AC supply <span class="tag t-std">Standard</span></div><p class="sol-text">230 / 400 V, 50 Hz, 3-phase AC system with shore-power inlet and galvanic isolation.</p><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: 230/400 V 3-phase AC system">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-70">70 Rigging</h3>
+<div class="sol-grid">
+<div class="sol-card"><div class="sol-head"><strong>Owner-supplied mast &amp; rig (Reckman)</strong><span class="sol-badge approved">Approved</span></div><div class="sol-meta">Rig <span class="tag t-own">Owner's supply</span></div><p class="sol-text">Owner-supplied carbon mast and rigging; hydraulic furlers with integrated halyards (Reckman or equivalent).</p><div class="sol-files"><span class="file-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l3 3v17H6z"/><path d="M9 13h6M9 17h4"/></svg>rig-dimensions.pdf</span></div><div class="sol-foot"><button type="button" class="btn-sm primary" data-action="Use solution: Owner-supplied mast &amp; rig (Reckman)">Use in section</button></div></div>
+</div>
+<h3 class="sol-group" id="sol-area-90">90 Miscellaneous</h3>
+<div class="sp-empty" style="text-align:start;padding:6px 0 12px;">No solutions in this area yet.</div>
+
 </main>
-
-<style>
-.er-h{font:700 14px/1.3 var(--sans);margin:0 0 4px;color:var(--ink)}
-.er-sub{font:500 11px/1 var(--sans);color:var(--faint);text-transform:none;margin-left:8px}
-.er-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:9px}
-table.er{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:880px}
-table.er th,table.er td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;color:var(--ink)}
-table.er th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.er td.r,table.er th.r{text-align:right}
-.er-sc{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.er-lo{background:rgba(91,214,163,.14);color:#5bd6a3}.er-md{background:rgba(255,209,102,.14);color:#ffd166}.er-hi{background:rgba(255,123,123,.16);color:#ff8b8b}
-.er-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.er-tx{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.er-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.er-shared{color:#5bd6a3;font-weight:700}
-</style>
-<script>
-(function(){
-  var X=window.PJX; if(!X) return;
-  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
-  var EKEY='pw_eng_risks_'+H, PKEY='pw_proj_risks_'+H;
-  var ENG=window.PJ_ENG||[], DEF=window.PW_USER_DEFAULT||'';
-  var roleEl=document.getElementById('er-role');
-  function canEdit(){ var u=X.curUser(); return ENG.indexOf(u)>=0 || u===DEF; }
-  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
-  function band(n){ return n<=5?'er-lo':n<=10?'er-md':'er-hi'; }
-  function loadE(){ return X.load(EKEY,[])||[]; }  function saveE(a){ X.save(EKEY,a); }
-  function role(){
-    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ renderAll(); });
-    var note=document.createElement('span');
-    if(canEdit()){ note.className='role-note edit'; note.innerHTML='Editing as <b>'+X.esc(X.curUser())+'</b> — add engineering risks and share them to the project.'; }
-    else { note.className='role-note view'; note.innerHTML='Viewer — switch to an engineer to author risks.'; }
-    roleEl.appendChild(note);
-  }
-  function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="er-in" data-ei="'+i+'" data-ef="'+f+'">'+o+'</select>'; }
-  function stat(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="er-in" style="width:auto" data-ei="'+i+'" data-ef="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
-
-  function renderProj(){
-    var host=document.getElementById('er-proj'); var a=X.load(PKEY,[])||[];
-    if(!a.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No project risks recorded yet for '+X.esc(H)+'.</div>'; return; }
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead><tr><th>Identified risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">Initial</th><th class="r">Residual</th><th>Status</th></tr></thead><tbody>'+
-      a.map(function(r){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td><td>'+X.esc(r.status||'')+'</td></tr>'; }).join('')+'</tbody></table></div>';
-  }
-  function renderEng(){
-    var host=document.getElementById('er-eng'); var ed=canEdit(); var a=loadE();
-    if(!a.length && !ed){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks yet. Switch to an engineer to add them.</div>'; return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-      if(ed){ return '<tr>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="risk">'+X.esc(r.risk||'')+'</textarea></td>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="action">'+X.esc(r.action||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+stat(i,r.status)+'</td>'+
-        '<td>'+(r.added?'<span class="er-shared">in register</span>':'<button class="eng-btn" data-share="'+i+'">'+(r.shared?'Shared ✓':'Share to project')+'</button>')+
-        ' <button class="eng-btn" data-del="'+i+'">✕</button></td></tr>';
-      }
-      return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+X.esc(r.status||'')+'</td><td>'+(r.shared?'<span class="er-shared">shared</span>':'')+'</td></tr>';
-    }).join('');
-    var head = ed
-      ? '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th class="r">P′</th><th class="r">C′</th><th class="r">Resid.</th><th>Status</th><th>Share</th></tr>'
-      : '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">Risk</th><th class="r">Resid.</th><th>Status</th><th></th></tr>';
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
-      (ed?'<button type="button" class="er-add" id="er-add">+ Add engineering risk</button>':'');
-    if(ed) wire();
-  }
-  function wire(){
-    var host=document.getElementById('er-eng');
-    host.querySelectorAll('[data-ei]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadE(); a[+el.dataset.ei][el.dataset.ef]=el.value; saveE(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.ef)>=0) renderEng(); }); });
-    host.querySelectorAll('[data-share]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); var r=a[+b.dataset.share]; r.shared=!r.shared; saveE(a); X.notify(r.shared?'Shared to project — the PM can add it to the register.':'Unshared.'); renderEng(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); a.splice(+b.dataset.del,1); saveE(a); renderEng(); }); });
-    var add=document.getElementById('er-add'); if(add) add.addEventListener('click', function(){ var a=loadE(); a.push({id:'ER-'+(a.length+1)+'-'+H,risk:'',desc:'',p0:3,c0:3,action:'',resp:'Engineering',p1:2,c1:2,status:'Not started',shared:false,by:X.curUser()}); saveE(a); renderEng(); }); }
-  function renderAll(){ role(); renderProj(); renderEng(); }
-  renderAll();
-})();
-</script>
-
 <footer>
   <div class="wrap foot-inner">
     <span>Baltic Yachts · Sales — Yacht Builder</span>

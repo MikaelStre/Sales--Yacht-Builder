@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Risks · Engineering Projects</title>
+<title>Calc versions · Engineering Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -1136,13 +1136,11 @@ window.ENGX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Risks</div>
-    <h1>Risks</h1>
-    <p>The <strong>project risk register</strong> (read-only, maintained by the PM on the project side) for <span class="pj-proj-ref"></span>, and the <strong>engineering risk list</strong> for this project. Engineers add risks and <strong>Share to project</strong>; the PM folds shared risks into the register (no approve/decline needed).</p>
+    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Calc versions</div>
+    <h1>Calc versions</h1>
+    <p>The <strong>version handler</strong> &mdash; every calculation sent to <span class="pj-proj-ref"></span>, with its <strong>current revision</strong>, full <strong>revision history</strong> and where it stands in <strong>review</strong> (Engineering / Production / PM). Calculations are authored in <a href="../calculations/">Engineering &rarr; Calculations</a> and reviewed on the project&rsquo;s <strong>Project development</strong> page.</p>
   </div>
-<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html" class="on">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="role-bar" id="er-role"></div>
-  <div class="eng-panel"><h2 class="er-h">Project risk register <span class="er-sub">read-only · from the project</span></h2><div id="er-proj"></div></div>
-  <div class="eng-panel"><h2 class="er-h">Engineering risk list <span class="er-sub">this project · share to the project</span></h2><div id="er-eng"></div></div>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html" class="on">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div id="cv-list"></div>
 
 
 <script>
@@ -1175,82 +1173,44 @@ window.ENGX = (function(){
 </script>
 </main>
 
-<style>
-.er-h{font:700 14px/1.3 var(--sans);margin:0 0 4px;color:var(--ink)}
-.er-sub{font:500 11px/1 var(--sans);color:var(--faint);text-transform:none;margin-left:8px}
-.er-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin-top:9px}
-table.er{width:100%;border-collapse:collapse;font:500 12.5px/1.4 var(--sans);min-width:880px}
-table.er th,table.er td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;color:var(--ink)}
-table.er th{background:var(--surface-2);color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
-table.er td.r,table.er th.r{text-align:right}
-.er-sc{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:7px;padding:2px 7px}
-.er-lo{background:rgba(91,214,163,.14);color:#5bd6a3}.er-md{background:rgba(255,209,102,.14);color:#ffd166}.er-hi{background:rgba(255,123,123,.16);color:#ff8b8b}
-.er-in{width:46px;padding:4px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);text-align:center;font:500 13px/1 var(--sans)}
-.er-tx{width:100%;min-width:120px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:500 12.5px/1.4 var(--sans);resize:vertical;min-height:32px}
-.er-add{margin:10px 0 0;font:600 12px/1 var(--sans);color:var(--brand-2);background:none;border:1px dashed var(--brand-2);border-radius:8px;padding:7px 12px;cursor:pointer}
-.er-shared{color:#5bd6a3;font-weight:700}
-</style>
 <script>
 (function(){
-  var X=window.PJX; if(!X) return;
+  var X=window.PJX, E=window.ENGX;
   var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
-  var EKEY='pw_eng_risks_'+H, PKEY='pw_proj_risks_'+H;
-  var ENG=window.PJ_ENG||[], DEF=window.PW_USER_DEFAULT||'';
-  var roleEl=document.getElementById('er-role');
-  function canEdit(){ var u=X.curUser(); return ENG.indexOf(u)>=0 || u===DEF; }
-  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
-  function band(n){ return n<=5?'er-lo':n<=10?'er-md':'er-hi'; }
-  function loadE(){ return X.load(EKEY,[])||[]; }  function saveE(a){ X.save(EKEY,a); }
-  function role(){
-    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ renderAll(); });
-    var note=document.createElement('span');
-    if(canEdit()){ note.className='role-note edit'; note.innerHTML='Editing as <b>'+X.esc(X.curUser())+'</b> — add engineering risks and share them to the project.'; }
-    else { note.className='role-note view'; note.innerHTML='Viewer — switch to an engineer to author risks.'; }
-    roleEl.appendChild(note);
+  var KEY='pw_proj_calcs_'+H;
+  function esc(s){ return X.esc(s); }
+  function chip(slot,label,who){
+    if(who){ return '<span class="agree-chip done"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>'+label+': '+esc(who)+'</span>'; }
+    return '<span class="agree-chip"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>'+label+' &mdash; pending</span>';
   }
-  function sel(i,f,val){ var o=''; for(var n=1;n<=5;n++){ o+='<option value="'+n+'"'+(+val===n?' selected':'')+'>'+n+'</option>'; } return '<select class="er-in" data-ei="'+i+'" data-ef="'+f+'">'+o+'</select>'; }
-  function stat(i,val){ var opts=['Not started','Started','Further investigated','Done']; return '<select class="er-in" style="width:auto" data-ei="'+i+'" data-ef="status">'+opts.map(function(o){return '<option'+(o===val?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'; }
-
-  function renderProj(){
-    var host=document.getElementById('er-proj'); var a=X.load(PKEY,[])||[];
-    if(!a.length){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No project risks recorded yet for '+X.esc(H)+'.</div>'; return; }
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead><tr><th>Identified risk</th><th>Mitigating action</th><th>Resp.</th><th class="r">Initial</th><th class="r">Residual</th><th>Status</th></tr></thead><tbody>'+
-      a.map(function(r){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-        return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td><td>'+X.esc(r.resp||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td><td>'+X.esc(r.status||'')+'</td></tr>'; }).join('')+'</tbody></table></div>';
+  function revRows(revs){
+    if(!revs||!revs.length) return '<tr><td>—</td><td>—</td><td>—</td><td>Not yet issued</td></tr>';
+    return revs.map(function(r){ return '<tr><td>'+esc(r.rev)+'</td><td>'+esc((r.when||'').slice(0,10))+'</td><td>'+esc(r.by||'')+'</td><td>'+esc(r.note||'')+'</td></tr>'; }).join('');
   }
-  function renderEng(){
-    var host=document.getElementById('er-eng'); var ed=canEdit(); var a=loadE();
-    if(!a.length && !ed){ host.innerHTML='<div style="padding:12px;color:var(--muted)">No engineering risks yet. Switch to an engineer to add them.</div>'; return; }
-    var rows=a.map(function(r,i){ var n0=num(r.p0)*num(r.c0),n1=num(r.p1)*num(r.c1);
-      if(ed){ return '<tr>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="risk">'+X.esc(r.risk||'')+'</textarea></td>'+
-        '<td><textarea class="er-tx" data-ei="'+i+'" data-ef="action">'+X.esc(r.action||'')+'</textarea></td>'+
-        '<td class="r">'+sel(i,'p0',r.p0)+'</td><td class="r">'+sel(i,'c0',r.c0)+'</td><td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td>'+
-        '<td class="r">'+sel(i,'p1',r.p1)+'</td><td class="r">'+sel(i,'c1',r.c1)+'</td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+stat(i,r.status)+'</td>'+
-        '<td>'+(r.added?'<span class="er-shared">in register</span>':'<button class="eng-btn" data-share="'+i+'">'+(r.shared?'Shared ✓':'Share to project')+'</button>')+
-        ' <button class="eng-btn" data-del="'+i+'">✕</button></td></tr>';
-      }
-      return '<tr><td>'+X.esc(r.risk||'')+'</td><td>'+X.esc(r.action||'')+'</td>'+
-        '<td class="r"><span class="er-sc '+band(n0)+'">'+n0+'</span></td><td class="r"><span class="er-sc '+band(n1)+'">'+n1+'</span></td>'+
-        '<td>'+X.esc(r.status||'')+'</td><td>'+(r.shared?'<span class="er-shared">shared</span>':'')+'</td></tr>';
+  function render(){
+    var arr=X.load(KEY,[])||[]; var host=document.getElementById('cv-list');
+    if(!arr.length){ host.innerHTML='<div class="eng-panel"><div class="pj-empty">No calculations sent to this project yet. Author one in <b>Engineering → Calculations</b> and use <b>Send to project</b>.</div></div>'; return; }
+    host.innerHTML=arr.map(function(c,i){
+      var ag=c.agree||{}; var approved=(ag.eng&&ag.fore&&ag.pm);
+      var st=approved?'Approved':(c.status||'Under review');
+      var cls=approved?'st-ready':'st-proposed';
+      return '<div class="eng-panel"><div class="co-top" style="display:flex;align-items:center;gap:9px;margin:0 0 4px">'+
+        '<span class="co-ref">'+esc(c.area)+' · '+esc(E.areaTitle(c.area))+'</span>'+
+        '<span class="co-ttl" style="font:700 14px/1.3 var(--sans)">'+esc(c.title)+'</span><span style="flex:1"></span>'+
+        '<span class="pj-status st-ready" style="background:var(--brand-soft);border-color:var(--brand-2);color:var(--brand-2)">Rev '+esc(c.rev||'—')+'</span>'+
+        '<span class="pj-status '+cls+'">'+esc(st)+'</span></div>'+
+        '<div class="eng-owner">'+esc(c.doc||'')+(c.doc?' · ':'')+'last issued by <b>'+esc(c.by||'—')+'</b> · '+esc(X.fmt(c.when))+'</div>'+
+        '<div class="agree-row" style="margin:9px 0 4px">'+chip('eng','Engineering',ag.eng)+chip('fore','Production',ag.fore)+chip('pm','PM',ag.pm)+'</div>'+
+        '<div class="eng-co-grp">Revision history</div>'+
+        '<table class="eng-tbl"><thead><tr><th>Rev</th><th>Date</th><th>By</th><th>Description</th></tr></thead><tbody>'+revRows(c.revs)+'</tbody></table>'+
+        '<div class="eng-actions"><button type="button" class="eng-btn" data-t="'+i+'"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>View sheet</button></div>'+
+        '<div class="eng-doc-view" id="cv-'+i+'" style="display:none;margin-top:9px">'+(c.text||'')+'</div></div>';
     }).join('');
-    var head = ed
-      ? '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">P</th><th class="r">C</th><th class="r">Risk</th><th class="r">P′</th><th class="r">C′</th><th class="r">Resid.</th><th>Status</th><th>Share</th></tr>'
-      : '<tr><th>Engineering risk</th><th>Mitigating action</th><th class="r">Risk</th><th class="r">Resid.</th><th>Status</th><th></th></tr>';
-    host.innerHTML='<div class="er-wrap"><table class="er"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div>'+
-      (ed?'<button type="button" class="er-add" id="er-add">+ Add engineering risk</button>':'');
-    if(ed) wire();
+    Array.prototype.forEach.call(host.querySelectorAll('[data-t]'), function(b){ b.addEventListener('click', function(){
+      var v=document.getElementById('cv-'+b.getAttribute('data-t')); var o=v.style.display!=='none'; v.style.display=o?'none':''; b.innerHTML=(o?'<svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>View sheet':'Hide sheet');
+    }); });
   }
-  function wire(){
-    var host=document.getElementById('er-eng');
-    host.querySelectorAll('[data-ei]').forEach(function(el){ el.addEventListener('input', function(){ var a=loadE(); a[+el.dataset.ei][el.dataset.ef]=el.value; saveE(a); if(['p0','c0','p1','c1'].indexOf(el.dataset.ef)>=0) renderEng(); }); });
-    host.querySelectorAll('[data-share]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); var r=a[+b.dataset.share]; r.shared=!r.shared; saveE(a); X.notify(r.shared?'Shared to project — the PM can add it to the register.':'Unshared.'); renderEng(); }); });
-    host.querySelectorAll('[data-del]').forEach(function(b){ b.addEventListener('click', function(){ var a=loadE(); a.splice(+b.dataset.del,1); saveE(a); renderEng(); }); });
-    var add=document.getElementById('er-add'); if(add) add.addEventListener('click', function(){ var a=loadE(); a.push({id:'ER-'+(a.length+1)+'-'+H,risk:'',desc:'',p0:3,c0:3,action:'',resp:'Engineering',p1:2,c1:2,status:'Not started',shared:false,by:X.curUser()}); saveE(a); renderEng(); }); }
-  function renderAll(){ role(); renderProj(); renderEng(); }
-  renderAll();
+  render();
 })();
 </script>
 
