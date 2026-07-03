@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Engineering Projects · Baltic Yachts</title>
+<title>Solutions · Engineering Projects</title>
 <style>
   :root {
     --bg: #f4f6f8; --surface: #ffffff; --surface-2: #f8fafb;
@@ -1130,28 +1130,15 @@ window.ENGX = (function(){
 <main class="wrap">
 
   <div class="intro">
-    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Engineering Projects</div>
-    <h1>Engineering Projects</h1>
-    <p>Boats in build, from an <strong>engineering</strong> viewpoint. Pick a project to see its specification and the state of its change orders &mdash; this overview is <strong>read-only</strong>; use <a href="area.html">Area &amp; tools</a> to do the work.</p>
+    <div class="crumb"><a href="../../">&larr; All apps</a> / <a href="../">Engineering</a> / <a href="index.html">Engineering Projects</a> / Solutions</div>
+    <h1>Solutions</h1>
+    <p>Refine and engineer <strong>Baltic Solution</strong> components for this project, attach 2D PDFs, and <strong>shoot</strong> a proposed solution into the specification.</p>
   </div>
-<nav class="pj-sub"><a href="index.html" class="on">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="card">
-    <table class="pj-port">
-      <thead><tr><th>Project</th><th>Type</th><th>Project manager</th><th>Stage</th><th>In build since</th><th></th></tr></thead>
-      <tbody id="eng-portfolio"><tr><td colspan="6"><div class="pj-empty">Loading projects&hellip;</div></td></tr></tbody>
-    </table>
+<nav class="pj-sub"><a href="index.html">Overview</a><a href="specification.html">Specification</a><a href="area.html">Area & tools</a><a href="solutions.html" class="on">Solutions</a><a href="calc-versions.html">Calc versions</a><a href="project-solutions.html">Project solutions</a><a href="risks.html">Risks</a><span class="pj-pick">Project<select id="pj-pick" aria-label="Choose project"></select></span></nav>  <div class="eng-cols">
+    <div class="eng-panel"><h2><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Baltic Solutions</h2><p class="eng-hint">Pick a component to refine, or start from a blank proposal.</p><div class="eng-actions" style="margin:0 0 10px"><select id="sol-area" class="eng-btn"></select><button type="button" class="eng-btn" id="sol-blank">Blank proposal</button></div><div id="sol-list"></div></div>
+    <div class="eng-panel"><h2><svg viewBox="0 0 24 24"><path d="M4 7h12M4 12h8M4 17h12M18 14l3 3-3 3"/></svg>Refine &amp; propose</h2><div class="eng-form"><div><label class="fl">Title</label><input type="text" id="sol-title" placeholder="Proposed solution title"></div><div><label class="fl">Area</label><select id="sol-area2"></select></div><div><label class="fl">Engineering description</label><div id="sol-ed"></div></div><div><label class="fl">2D drawings / PDFs</label><div id="sol-files"></div><button type="button" class="eng-btn" id="sol-attach"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Attach PDF</button></div><div class="eng-actions"><button type="button" class="eng-btn go" id="sol-shoot"><svg viewBox="0 0 24 24"><path d="M4 7h12M18 14l3 3-3 3M4 12h8M4 17h12"/></svg>Shoot to spec</button><button type="button" class="eng-btn" id="sol-toproject"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/></svg>Send to project</button><span id="sol-flash" style="color:var(--good);font:600 12px/1 var(--sans)"></span></div></div></div>
   </div>
-  <div class="eng-panel">
-    <h2><svg viewBox="0 0 24 24"><path d="M4 7h12M4 12h8M4 17h12M18 14l3 3-3 3"/></svg>Change orders &mdash; <span class="pj-proj-ref"></span></h2>
-    <p class="eng-hint">Ongoing and realized change orders for the selected project, with their current state. Read-only here &mdash; change orders are raised and progressed in the Projects area.</p>
-    <div id="eng-cos"></div>
-  </div>
-  <div class="eng-panel">
-    <h2><svg viewBox="0 0 24 24"><path d="M6 2h9l3 3v17H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Reference documents &mdash; <span class="pj-proj-ref"></span></h2>
-    <p class="eng-hint">Material sent to this project from <b>Area &amp; tools</b> (per area), to work from. The <b>PM</b> accepts or declines each suggestion.</p>
-    <div class="role-bar" id="eng-refrole" style="margin:0 0 10px"></div>
-    <div id="eng-refdocs"></div>
-  </div>
-  <p class="src-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><span>Demo data &mdash; reads the shared project specification and change orders saved in this browser.</span></p>
+  <div class="eng-panel"><h2><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Proposed to spec — <span class="pj-proj-ref"></span></h2><p class="eng-hint">Solutions shot to the specification for this project (shown on the spec as proposed solutions).</p><div id="sol-proposed"></div></div>
 
 
 <script>
@@ -1186,92 +1173,86 @@ window.ENGX = (function(){
 
 <script>
 (function(){
-  var X=window.PJX;
-  var tb=document.getElementById('eng-portfolio');
-  if(tb && window.PJ_LIST){
-    var list=window.PJ_LIST();
-    if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="pj-empty">No realized projects yet.</div></td></tr>'; }
-    else { tb.innerHTML=list.map(function(p){
-      var q='?p='+encodeURIComponent(p.hull);
-      return '<tr><td><div class="proj-cell"><span class="proj-hull">'+X.esc(p.hull)+'</span><span class="proj-name">'+X.esc(p.name||'')+'</span></div></td>'+
-        '<td>'+X.esc(p.type||'')+'</td><td>'+X.esc(p.pm||'—')+'</td><td>'+X.esc(p.stage||'')+'</td><td>'+X.esc(p.since||'—')+'</td>'+
-        '<td><div class="proj-acts"><a class="btn-row primary" href="specification.html'+q+'">Spec</a>'+
-        '<a class="btn-row" href="area.html'+q+'">Area &amp; tools</a></div></td></tr>';
-    }).join(''); }
-  }
-  // ---- ongoing & realized change orders (read-only) ----
-  var host=document.getElementById('eng-cos'); if(!host) return;
-  var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
-  var cos=X.load('pw_cos_'+H, []);
-  function ref(co){ var r=[co.area,co.section,co.row].filter(function(x){return x;}).join(' · '); return r||'—'; }
-  function rows(arr){
-    return arr.map(function(co){
-      var cls='st-'+(co.status||'Draft').toLowerCase().replace(/\s+/g,'-');
-      return '<tr><td><span class="co-no" style="font:700 12px/1 var(--mono);color:var(--brand-2)">'+X.esc(co.no||'')+'</span></td>'+
-        '<td class="eng-comp">'+X.esc(co.title||'')+'<span class="eng-src">'+X.esc(ref(co))+'</span></td>'+
-        '<td><span class="pj-status '+cls+'">'+X.esc(co.status||'Draft')+'</span>'+(co.version?(' <span class="co-ref">'+X.esc(co.version)+'</span>'):'')+'</td></tr>';
-    }).join('');
-  }
-  if(!cos.length){ host.innerHTML='<div class="pj-empty">No change orders for this project yet.</div>'; return; }
-  var ongoing=cos.filter(function(c){ var s=c.status||'Draft'; return s!=='Implemented'&&s!=='Rejected'; });
-  var realized=cos.filter(function(c){ return (c.status||'')==='Implemented'; });
-  var rej=cos.filter(function(c){ return (c.status||'')==='Rejected'; });
-  var html='';
-  html+='<div class="eng-co-grp">Ongoing ('+ongoing.length+')</div>';
-  html+= ongoing.length ? '<table class="eng-tbl"><tbody>'+rows(ongoing)+'</tbody></table>' : '<div class="pj-empty">None ongoing.</div>';
-  html+='<div class="eng-co-grp">Realized &mdash; implemented ('+realized.length+')</div>';
-  html+= realized.length ? '<table class="eng-tbl"><tbody>'+rows(realized)+'</tbody></table>' : '<div class="pj-empty">None implemented yet.</div>';
-  if(rej.length){ html+='<div class="eng-co-grp">Rejected ('+rej.length+')</div><table class="eng-tbl"><tbody>'+rows(rej)+'</tbody></table>'; }
-  host.innerHTML=html;
-})();
-</script>
-<script>
-(function(){
-  var X=window.PJX;
-  var host=document.getElementById('eng-refdocs'); if(!host) return;
+  var X=window.PJX, E=window.ENGX;
   var H=window.PJ_HULL||window.PJ_DEFAULT||'B107C';
   var AREAS=window.ENG_AREAS||[];
-  function projPM(){ return (window.PJ_PROJ&&window.PJ_PROJ.pm)||''; }
-  var roleEl=document.getElementById('eng-refrole');
-  function role(){
-    if(!roleEl) return;
-    roleEl.innerHTML=''; X.identityBar(roleEl, function(){ role(); render(); });
-    var note=document.createElement('span');
-    if(X.curUser()===projPM()){ note.className='role-note edit'; note.innerHTML='You are the <b>PM</b> — accept or decline material sent to this project.'; }
-    else { note.className='role-note view'; note.innerHTML='Only the project PM (<b>'+X.esc(projPM()||'—')+'</b>) accepts or declines. Switch identity to act.'; }
-    roleEl.appendChild(note);
+  var PROP='pw_proposed_solutions_'+H;
+  var files=[];   // {name,kind,data}
+  var ed=E.editor('', false);
+  document.getElementById('sol-ed').appendChild(ed.el);
+
+  // area filters
+  function areaOpts(sel, withAll){ sel.innerHTML=(withAll?'<option value="">All areas</option>':'')+AREAS.map(function(a){ return '<option value="'+X.esc(a.code)+'">'+X.esc(a.code)+' · '+X.esc(a.title)+'</option>'; }).join(''); }
+  var areaSel=document.getElementById('sol-area'); areaOpts(areaSel, true);
+  var areaSel2=document.getElementById('sol-area2'); areaOpts(areaSel2, false);
+
+  function paintList(){
+    var code=areaSel.value;
+    var list=E.solutions().filter(function(s){ return !code || s.area===code; });
+    var host=document.getElementById('sol-list');
+    if(!list.length){ host.innerHTML='<div class="pj-empty">No components in this area yet. Add them in Baltic Solutions.</div>'; return; }
+    host.innerHTML=list.map(function(s){ return '<div class="eng-sol" data-id="'+X.esc(s.id)+'"><h4>'+X.esc(s.name)+'</h4>'+
+      '<div class="eng-sol-meta">'+X.esc(s.area)+' · '+X.esc(E.areaTitle(s.area))+(s.supplier?(' · '+X.esc(s.supplier)):'')+'</div></div>'; }).join('');
+    Array.prototype.forEach.call(host.querySelectorAll('.eng-sol'), function(el){
+      el.addEventListener('click', function(){ loadInto(el.getAttribute('data-id')); Array.prototype.forEach.call(host.querySelectorAll('.eng-sol'),function(n){n.classList.remove('on');}); el.classList.add('on'); });
+    });
   }
-  function decide(code, status){
-    var k='pw_eng_projdoc_'+H+'_'+code; var d=X.load(k, null); if(!d) return;
-    d.status=status; d.decidedBy=X.curUser(); d.decidedWhen=X.nowISO(); X.save(k, d);
-    X.notify('Reference material for <b>'+X.esc(code)+'</b> <b>'+X.esc(status.toLowerCase())+'</b> by the PM.');
-    render();
+  function loadInto(id){
+    var s=E.solutions().filter(function(x){return x.id===id;})[0]; if(!s) return;
+    document.getElementById('sol-title').value=s.name;
+    areaSel2.value=s.area;
+    ed.setHTML(s.desc||'');
+    files=(s.files||[]).map(function(f){ return {name:f.name,kind:f.kind||'pdf',data:f.data||''}; });
+    paintFiles();
   }
-  function render(){
-    var isPM = X.curUser()===projPM();
-    var found=[];
-    AREAS.forEach(function(a){ var d=X.load('pw_eng_projdoc_'+H+'_'+a.code, null); if(d&&d.html){ found.push({code:a.code, title:a.title, doc:d}); } });
-    if(!found.length){ host.innerHTML='<div class="pj-empty">Nothing sent to this project yet. In <b>Area &amp; tools</b>, open an area\'s <b>Reference material</b> and use <b>Send to project</b>.</div>'; return; }
-    host.innerHTML=found.map(function(f,i){
-      var st=f.doc.status||'Pending';
-      var cls=st==='Accepted'?'st-ready':(st==='Declined'?'st-rejected':'st-proposed');
-      var decided=f.doc.decidedBy ? ('<div class="eng-owner">'+X.esc(st)+' by <b>'+X.esc(f.doc.decidedBy)+'</b> · '+X.esc(X.fmt(f.doc.decidedWhen))+'</div>') : '';
-      var fc=(f.doc.files||[]).map(function(x){ return X.chipHTML(x); }).join('');
-      var acts=(isPM && st==='Pending') ? ('<div class="eng-actions"><button type="button" class="eng-btn go" data-acc="'+X.esc(f.code)+'"><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>Accept</button>'+
-        '<button type="button" class="eng-btn" data-dec="'+X.esc(f.code)+'"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>Decline</button></div>') : '';
-      return '<div class="co-card"><div class="co-top"><span class="co-ref">'+X.esc(f.code)+' · '+X.esc(f.title)+'</span>'+
-        '<span style="flex:1"></span><span class="pj-status '+cls+'">'+X.esc(st)+'</span>'+
-        '<button type="button" class="eng-btn" data-t="'+i+'" style="margin-left:8px">View</button></div>'+
-        '<div class="eng-owner">Sent by <b>'+X.esc(f.doc.by||'—')+'</b> · '+X.esc(X.fmt(f.doc.when))+'</div>'+ decided +(fc?('<div style="margin-top:7px">'+fc+'</div>'):'')+
-        '<div class="eng-doc-view" id="rd-'+i+'" style="display:none;margin-top:9px">'+(f.doc.html||'')+'</div>'+ acts +'</div>';
+  function paintFiles(){
+    var host=document.getElementById('sol-files'); host.innerHTML='';
+    files.forEach(function(f,idx){ host.appendChild(E.fileChip(f, function(){ files.splice(idx,1); paintFiles(); })); });
+  }
+  function attach(){
+    var inp=document.createElement('input'); inp.type='file'; inp.accept='application/pdf,.pdf'; inp.style.display='none'; document.body.appendChild(inp);
+    inp.addEventListener('change', function(){ var f=inp.files&&inp.files[0]; if(f){ var fr=new FileReader(); fr.onload=function(){ var d=''; try{ d=fr.result; }catch(e){} files.push({name:f.name,kind:'pdf',data:d}); paintFiles(); }; try{ fr.readAsDataURL(f); }catch(e){ files.push({name:f.name,kind:'pdf',data:''}); paintFiles(); } } inp.remove(); });
+    inp.click();
+  }
+  function paintProposed(){
+    var arr=X.load(PROP, []); var host=document.getElementById('sol-proposed');
+    if(!arr.length){ host.innerHTML='<div class="pj-empty">Nothing proposed yet.</div>'; return; }
+    host.innerHTML=arr.map(function(p,i){
+      var fc=(p.files||[]).map(function(f){ return X.chipHTML(f); }).join('');
+      return '<div class="co-card"><div class="co-top"><span class="co-ref">'+X.esc(p.area)+' · '+X.esc(E.areaTitle(p.area))+'</span><span class="co-ttl">'+X.esc(p.title)+'</span>'+
+        '<span style="flex:1"></span><button type="button" class="eng-del" data-del="'+i+'" title="Remove">×</button></div>'+
+        '<div class="co-desc">'+(p.text||'')+'</div>'+(fc?('<div style="margin-top:9px">'+fc+'</div>'):'')+
+        '<div class="co-meta">Proposed by '+X.esc(p.by||'')+' · '+X.esc(X.fmt(p.when))+'</div></div>';
     }).join('');
-    Array.prototype.forEach.call(host.querySelectorAll('[data-t]'), function(b){ b.addEventListener('click', function(){
-      var v=document.getElementById('rd-'+b.getAttribute('data-t')); var open=v.style.display!=='none'; v.style.display=open?'none':''; b.textContent=open?'View':'Hide';
-    }); });
-    Array.prototype.forEach.call(host.querySelectorAll('[data-acc]'), function(b){ b.addEventListener('click', function(){ decide(b.getAttribute('data-acc'),'Accepted'); }); });
-    Array.prototype.forEach.call(host.querySelectorAll('[data-dec]'), function(b){ b.addEventListener('click', function(){ decide(b.getAttribute('data-dec'),'Declined'); }); });
+    Array.prototype.forEach.call(host.querySelectorAll('[data-del]'), function(b){ b.addEventListener('click', function(){ var a=X.load(PROP,[]); a.splice(+b.getAttribute('data-del'),1); X.save(PROP,a); paintProposed(); }); });
   }
-  role(); render();
+  function shoot(){
+    var t=document.getElementById('sol-title').value.trim();
+    if(!t){ X.notify('Give the proposed solution a title first.','warn'); return; }
+    var a=X.load(PROP, []);
+    a.unshift({id:'PS-'+((+new Date())%100000), area:areaSel2.value||AREAS[0].code, title:t, text:ed.getHTML(), files:files.slice(), by:X.curUser(), when:X.nowISO()});
+    X.save(PROP, a);
+    document.getElementById('sol-title').value=''; ed.setHTML(''); files=[]; paintFiles(); paintProposed();
+    var f=document.getElementById('sol-flash'); f.textContent='Shot to spec ✓'; setTimeout(function(){ f.textContent=''; },1800);
+    X.notify('Proposed solution <b>'+X.esc(t)+'</b> shot to the specification ('+X.esc(areaSel2.value)+').');
+  }
+  function toProject(){
+    var t=document.getElementById('sol-title').value.trim();
+    if(!t){ X.notify('Give the solution a title first.','warn'); return; }
+    var KEY='pw_project_solutions_'+H;
+    var a=X.load(KEY, []);
+    a.unshift({id:'PJS-'+((+new Date())%100000), area:areaSel2.value||AREAS[0].code, title:t, text:ed.getHTML(),
+      files:files.slice(), by:X.curUser(), when:X.nowISO(), status:'Proposed', agree:{}});
+    X.save(KEY, a);
+    var f=document.getElementById('sol-flash'); f.textContent='Sent to project ✓'; setTimeout(function(){ f.textContent=''; },1800);
+    X.notify('Solution <b>'+X.esc(t)+'</b> flowed to <b>'+X.esc(H)+'</b> — agree on it in <b>Project solutions</b> to steer the build.');
+  }
+  areaSel.addEventListener('change', paintList);
+  document.getElementById('sol-blank').addEventListener('click', function(){ document.getElementById('sol-title').value=''; ed.setHTML(''); files=[]; paintFiles(); });
+  document.getElementById('sol-attach').addEventListener('click', attach);
+  document.getElementById('sol-shoot').addEventListener('click', shoot);
+  document.getElementById('sol-toproject').addEventListener('click', toProject);
+  paintList(); paintFiles(); paintProposed();
 })();
 </script>
 
