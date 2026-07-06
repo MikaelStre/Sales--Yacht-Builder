@@ -897,7 +897,7 @@ function renderCO(c){
   } else if(chartCard){ chartCard.style.display='none'; }
   const note=document.getElementById('coNote');
   if(note) note.innerHTML = EMBED
-    ? 'Change orders are created by the Project Manager on the <a href="../projects/change-orders.html">Change-orders page</a> and shown here read-only for traceability. The <b>agreed material impact</b> used in the budget is set on the <b>Setup</b> tab.'
+    ? 'Change orders are created by the Project Manager on the <a href="../projects/change-orders.html" target="_top">Change-orders page</a> and shown here read-only for traceability. The <b>agreed material impact</b> used in the budget is set on the <b>Setup</b> tab.'
     : 'Change orders are authored on the project Change-orders page inside the app; shown here read-only. The <b>agreed material impact</b> used in the budget is set on the <b>Setup</b> tab.';
 }
 
@@ -1102,7 +1102,7 @@ document.getElementById('fileJson').addEventListener('change',e=>{
 // --------- embedding boot ----------
 if(EMBED){
   const sub=document.querySelector('.sub'); if(sub) sub.textContent='Per-project material file · '+HULL+(MODE==='view'?' · read-only':'');
-  state.meta.hull=state.meta.hull||HULL;
+  state.meta.hull=HULL;
   try{ const pi=JSON.parse(lsget('pw_projinfo_'+HULL)); if(pi){ const M=state.meta;
     M.name=M.name||pi.name||''; M.client=M.client||pi.client||''; M.model=M.model||pi.model||''; M.type=M.type||pi.type||''; } }catch(e){}
   // Change orders come from the project side (read-only); refresh from pw_cos_<HULL> on every load.
