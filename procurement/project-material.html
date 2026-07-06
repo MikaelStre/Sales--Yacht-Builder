@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Baltic Yachts · Procurement area</title><style>
+<title>Baltic Yachts · Project Material</title><style>
   :root{
     --bg:#0b1017; --panel:#121a26; --panel2:#0f1622; --line:#1e2a3a; --line2:#1b2634;
     --ink:#e6edf5; --mut:#9fb0c4; --mut2:#7d8da3; --mut3:#6b7a90;
@@ -142,30 +142,51 @@
 </style></head>
 <body><div class="wrap">
   <div class="topbar" id="topbar"><header>
-    <div><div class="crumb"><a href="../">&larr; All apps</a> / Procurement</div><h1>Baltic Yachts · <span>Procurement</span></h1>
-      <div class="sub">Procurement area</div></div>
+    <div><div class="crumb"><a href="../">&larr; All apps</a> / <a href="index.html">Procurement</a> &rsaquo; Project Material</div><h1>Baltic Yachts · <span>Project Material</span></h1>
+      <div class="sub">Project Material</div></div>
+    
   </header></div>
-  <div class="hub">
-  <a class="tile" href="project-material.html"><span class="st live">Live</span>
-      <div class="ic" style="background:#12508f">📦</div>
-      <h3>Project Material</h3><p>Per-project material budgets, the Still-to-Buy list and cost-to-complete forecasting from IFS data.</p></a>
-  <div class="tile soon"><span class="st soon2">Planned</span>
-      <div class="ic" style="background:#3a2f12">🏭</div>
-      <h3>Suppliers &amp; Purchase Orders</h3><p>Supplier register, PO status and lead-time tracking against the still-to-buy list.</p></div>
-  <div class="tile soon"><span class="st soon2">Planned</span>
-      <div class="ic" style="background:#173a2a">⭐</div>
-      <h3>Top Priority Items</h3><p>Critical long-lead procurement items per project, with supplier and PO status.</p></div>
-  <div class="tile soon"><span class="st soon2">Planned</span>
-      <div class="ic" style="background:#3a1c1c">⚠️</div>
-      <h3>Findings &amp; Deviations</h3><p>Log of cost deviations and findings against estimate, with change-order links.</p></div>
-  <div class="tile soon"><span class="st soon2">Planned</span>
-      <div class="ic" style="background:#2a2440">📚</div>
-      <h3>Standard Inventory</h3><p>Standard-stock issues, returns and net-used trend across projects.</p></div>
+  
+<div class="summary">
+  <div class="kpi"><div class="v">€15,876,357</div><div class="l">Material budget</div><div class="s">current, incl. CO</div></div>
+  <div class="kpi warn"><div class="v">€195,181</div><div class="l">Still to buy</div><div class="s">open estimate</div></div>
+  <div class="kpi good"><div class="v">+€444,146</div><div class="l">Diff to budget</div><div class="s">incl. still to buy</div></div>
+  <div class="kpi bad"><div class="v">9</div><div class="l">Outstanding long-lead</div><div class="s">not yet ordered</div></div>
+  <div class="kpi warn"><div class="v">0</div><div class="l">On the way</div><div class="s">in progress</div></div>
 </div>
-<div class="card" style="margin-top:20px"><h2>About this area</h2>
-  <p class="note">This is the Procurement landing page — the counterpart to Sales &amp; Pricing. The first operational
-  tool, <b>Project Material › Still to Buy</b>, is built and ready to review. Other tiles are placeholders for the
-  next build rounds. Everything here is a freestanding prototype today and is structured to slide into the app
-  (per-project files keyed by hull, read-only mode, no external dependencies).</p></div>
+<div class="card"><h2>Operational tools</h2>
+  <div class="hub" style="margin-top:6px">
+    <a class="tile" href="still-to-buy.html?p=B121-01"><span class="st live">Live</span>
+      <div class="ic" style="background:#12508f">🧾</div>
+      <h3>Still to Buy</h3><p>The operational still-to-buy list, BOM cost elements, budget forecast and the material cost trend charts.</p></a>
+    <div class="tile soon"><span class="st soon2">Planned</span>
+      <div class="ic" style="background:#2a2440">📐</div>
+      <h3>Material Master</h3><p>Baseline material list per model, feeding the project still-to-buy list at build start.</p></div>
+    <div class="tile soon"><span class="st soon2">Planned</span>
+      <div class="ic" style="background:#173a2a">🔁</div>
+      <h3>Reservations &amp; Allowances</h3><p>Lump-sum reservations and allowance draw-down (mast, rig, sails) against actuals.</p></div>
+  </div>
+</div>
+<div class="card"><h2>Projects <span class="hint">open the Still-to-Buy tool for a project</span></h2>
+  <div class="tblwrap"><table class="dtbl projtbl">
+    <thead><tr><th>Hull</th><th>Model</th><th class="r">Material budget</th><th class="r">Actual</th><th class="r">Still to buy</th><th class="r">Forecast diff</th><th></th></tr></thead>
+    <tbody>
+      <tr><td class="b">B121-01</td><td>B111<div class="mini">Activity 1220</div></td>
+        <td class="r">€15,876,357</td><td class="r">€15,237,030</td>
+        <td class="r" style="color:var(--orange)">€195,181</td>
+        <td class="r b" style="color:var(--green)">+€444,146</td>
+        <td><a class="btn sm primary" href="still-to-buy.html?p=B121-01">Open</a></td></tr>
+      <tr class="off"><td class="muted">B122-01</td><td class="muted">—</td><td class="r muted">—</td><td class="r muted">—</td><td class="r muted">—</td><td class="r muted">—</td>
+        <td><span class="btn sm" style="opacity:.5">soon</span></td></tr>
+    </tbody></table></div>
+  <p class="note" style="margin-top:10px">Opening a project launches the Still-to-Buy tool as a per-project file
+  (<code>?p=HULL</code>) — the same embedding pattern the pricing tool uses, so it drops straight into the app later.</p>
+</div>
+<div class="card"><h2>Outstanding long-lead items <span class="hint">not yet ordered · from the Still-to-Buy priority tracker</span></h2>
+  <div class="tblwrap"><table class="dtbl projtbl">
+    <thead><tr><th>Sub-ID</th><th>Item</th><th>Supplier</th><th>Note</th></tr></thead>
+    <tbody><tr><td class="b">10</td><td>Hull &amp; superstructure glasses</td><td>Tilse</td><td class="muted">High priority</td></tr><tr><td class="b">30</td><td>Custom Fridge&amp;freezers</td><td>Frigonautica/Veco-Frigoboat/other?</td><td class="muted">på g</td></tr><tr><td class="b">30</td><td>Kitchen appliances</td><td>Miele</td><td class="muted">på g</td></tr><tr><td class="b">30</td><td>Wine coolers</td><td>Miele</td><td class="muted">på g</td></tr><tr><td class="b">50</td><td>Aircon Mave</td><td>Mave</td><td class="muted">på g</td></tr><tr><td class="b">50</td><td>Dive &amp; pneumatic system compressor</td><td>Bauer / Kahlenberg?</td><td class="muted"></td></tr><tr><td class="b">50</td><td>Electrical motors for hydraulic tanks</td><td>?</td><td class="muted"></td></tr><tr><td class="b">80</td><td>Rudders</td><td>Isotop</td><td class="muted">3D och laminat spec saknas </td></tr><tr><td class="b">80</td><td>Steering system</td><td>JP3</td><td class="muted">på g. Lager köpt </td></tr></tbody></table></div>
+  <p class="note" style="margin-top:8px">Full status board (Ordered / On the way / Outstanding) lives in the Still-to-Buy tool → <b>Priority items</b> tab.</p>
+</div>
   <footer>Baltic Yachts · Engineering &amp; Design — procurement area prototype · part of the Yacht Builder</footer>
 </div></body></html>
