@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yacht Life — Baltic Yachts</title>
+<style>
+/* ══ v42 DESIGN TOKENS ══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#16242e; --muted:#5b6b78; --faint:#8595a2; --line:#e4e9ee;
+  --bg:#eef2f5; --surface:#fff; --surface-2:#f7fafb;
+  --brand:#0e5a8a; --brand-2:#1573ad; --accent:#2b8fc9; --brand-soft:#eaf2f8;
+  --good:#2f7d57; --good-bg:#e5f3ec;
+  --warn:#b7791f; --warn-bg:#fbeecb; --danger:#c0362c; --danger-bg:#fbe4e1;
+  --info:#1573ad; --info-bg:#eaf2f8; --purple:#6b4fa0;
+  --radius:16px; --r2:9px;
+  --sans:Calibri,"Segoe UI",Candara,"Helvetica Neue",Arial,sans-serif;
+  --serif:Cambria,Georgia,"Times New Roman",serif;
+  --shadow:0 1px 2px rgba(16,40,60,.05),0 14px 36px rgba(16,40,60,.08);
+}
+body{font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--bg);min-height:100vh}
+.hidden{display:none!important}
+
+/* HEADER */
+header.top{background:linear-gradient(135deg,#0e5a8a,#1573ad 62%,#2b8fc9);position:sticky;top:0;z-index:200;box-shadow:0 2px 18px rgba(16,40,60,.28);overflow:hidden}
+header.top::after{content:"";position:absolute;right:-120px;top:-150px;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.06)}
+.hdr{max-width:1320px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:15px}
+.brand img{height:38px;width:auto;display:block}
+.vline{width:1px;height:26px;background:rgba(255,255,255,.4)}
+.brand .bt h1{font-size:15px;font-weight:600;color:#fff;letter-spacing:.02em}
+.brand .bt p{font-size:11px;color:rgba(255,255,255,.75);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.hdr-btns{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;font-family:inherit;text-decoration:none;line-height:1.2}
+.btn-primary{background:var(--brand);color:#fff}.btn-primary:hover{background:var(--brand-2)}
+.btn-accent{background:#fff;color:var(--brand);font-weight:700}.btn-accent:hover{background:var(--brand-soft)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4)}.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-outline{background:#fff;color:var(--brand);border:1.5px solid var(--line)}.btn-outline:hover{border-color:var(--brand-2)}
+.btn-soft{background:var(--brand-soft);color:var(--brand)}.btn-soft:hover{background:#dcebf6}
+.btn-sm{padding:7px 12px;font-size:12px}.btn-block{width:100%;justify-content:center}
+
+.proto-bar{background:var(--brand-soft);border-bottom:1px solid #cfe0ee;color:var(--brand);font-size:12px;text-align:center;padding:7px 16px;font-weight:600}
+main{max-width:1320px;margin:0 auto;padding:24px}
+.crumbs{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:18px;flex-wrap:wrap}
+.crumbs button{background:none;border:none;color:var(--muted);font:inherit;cursor:pointer;padding:0}
+.crumbs button:hover{color:var(--brand);text-decoration:underline}
+.crumbs .sep{color:var(--faint)}.crumbs .here{color:var(--ink);font-weight:700}
+.page-head{margin-bottom:22px}
+.page-head h2{font-family:var(--serif);font-size:32px;font-weight:400;color:var(--ink)}
+.page-head p{font-size:14px;color:var(--muted);margin-top:8px;max-width:780px;line-height:1.55}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--brand-2);margin-bottom:8px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-hdr{padding:15px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:12px}
+.card-hdr h3{font-size:13px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.06em}
+.card-body{padding:20px}
+
+.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.choice{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--brand);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s,border-color .15s;cursor:pointer}
+.choice:hover{transform:translateY(-4px);border-color:var(--brand-2);box-shadow:0 1px 2px rgba(16,40,60,.05),0 22px 46px rgba(16,40,60,.14)}
+.choice-top{padding:24px 24px 4px;display:flex;gap:16px;align-items:flex-start}
+.t-ico{width:52px;height:52px;border-radius:14px;flex:0 0 auto;display:grid;place-items:center;background:var(--brand-soft);border:1px solid var(--brand-2);color:var(--brand)}
+.t-ico svg{width:28px;height:28px}
+.choice-top .th h3{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink)}
+.choice-top .th .tag{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--brand-2);margin-top:3px;font-weight:700}
+.choice-body{padding:14px 24px 24px;flex:1;display:flex;flex-direction:column;gap:14px}
+.choice-body>p{color:var(--muted);font-size:13.5px;line-height:1.6}
+.mini-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.mini-list li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink)}
+.mini-list li .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.choice-foot{margin-top:auto;padding-top:4px}
+
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.search{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r2);padding:9px 13px}
+.search input{border:none;outline:none;font:inherit;flex:1;background:transparent;color:var(--ink)}
+.search svg{width:16px;height:16px;color:var(--faint);flex-shrink:0}
+.fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.yacht-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
+.yacht-card:hover{transform:translateY(-4px);border-color:var(--brand-2);box-shadow:0 1px 2px rgba(16,40,60,.05),0 22px 46px rgba(16,40,60,.14)}
+.yc-banner{height:120px;background:linear-gradient(135deg,#0e5a8a,#1573ad 62%,#2b8fc9);position:relative;display:flex;align-items:flex-end;padding:14px 16px;overflow:hidden}
+.yc-banner::after{content:"";position:absolute;right:-70px;top:-90px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.07)}
+.yc-banner .sail{position:absolute;right:2px;top:-6px;opacity:.22}
+.yc-banner .sail svg{width:120px;height:140px;color:#fff}
+.yc-hull{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.92);position:relative;z-index:1}
+.yc-body{padding:16px}
+.yc-name{font-family:var(--serif);font-size:21px;font-weight:400;color:var(--ink);line-height:1.05}
+.yc-model{font-size:12px;color:var(--muted);margin-top:4px}
+.yc-meta{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+.yc-meta div{display:flex;flex-direction:column}
+.yc-meta .l{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint)}
+.yc-meta .v{font-size:13px;font-weight:600;color:var(--ink);margin-top:2px}
+.yc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}
+
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;white-space:nowrap;line-height:1.5}
+.p-green{background:var(--good-bg);color:var(--good)}.p-amber{background:var(--warn-bg);color:var(--warn)}
+.p-red{background:var(--danger-bg);color:var(--danger)}.p-blue{background:var(--info-bg);color:var(--info)}
+.p-grey{background:#eef1f3;color:var(--muted)}.p-brand{background:var(--brand);color:#fff}.p-purple{background:#efeafa;color:var(--purple)}
+
+.yacht-hero{background:linear-gradient(135deg,#0e5a8a,#1573ad 62%,#2b8fc9);border-radius:var(--radius);color:#fff;padding:26px 28px;position:relative;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow)}
+.yacht-hero::after{content:"";position:absolute;right:-90px;top:-120px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.07)}
+.yacht-hero .sail{position:absolute;right:26px;top:-16px;opacity:.2}
+.yacht-hero .sail svg{width:180px;height:210px;color:#fff}
+.yacht-hero .eyebrow{color:rgba(255,255,255,.85)}
+.yacht-hero h2{font-family:var(--serif);font-size:34px;font-weight:400;position:relative;z-index:1;color:#fff}
+.yacht-hero .sub{font-size:14px;color:rgba(255,255,255,.82);margin-top:5px;position:relative;z-index:1}
+.spec-row{display:flex;gap:32px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+.spec-row .s .l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.75)}
+.spec-row .s .v{font-size:15px;font-weight:600;margin-top:3px;color:#fff}
+
+.subnav{position:sticky;top:70px;z-index:120;background:#fff;border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--shadow);display:flex;gap:3px;padding:6px;margin-bottom:20px;overflow-x:auto}
+.subnav button{flex:0 0 auto;background:none;border:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);padding:9px 15px;border-radius:var(--r2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.subnav button:hover{background:var(--brand-soft);color:var(--brand)}
+.subnav button.active{background:var(--brand);color:#fff}
+.ypanel{animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.panel-head{margin-bottom:14px}
+.panel-head h3{font-family:var(--serif);font-size:24px;font-weight:400;color:var(--ink)}
+.panel-head p{font-size:13px;color:var(--muted);margin-top:4px}
+
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:18px}
+.kpi{padding:15px 17px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);border-left:3px solid var(--brand);box-shadow:var(--shadow)}
+.kpi .l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-bottom:6px}
+.kpi .v{font-size:23px;font-weight:700;color:var(--brand);line-height:1}
+.kpi .u{font-size:11px;color:var(--muted);margin-top:5px}
+.kpi.amber{border-left-color:var(--warn)}.kpi.amber .v{color:var(--warn)}
+.kpi.green{border-left-color:var(--good)}.kpi.green .v{color:var(--good)}
+.kpi.red{border-left-color:var(--danger)}.kpi.red .v{color:var(--danger)}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px 26px}
+.fact .l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint)}
+.fact .v{font-size:14px;font-weight:600;color:var(--ink);margin-top:2px}
+.banner{padding:13px 16px;border-radius:var(--r2);border:1px solid;display:flex;gap:11px;align-items:flex-start;font-size:13px;line-height:1.55}
+.banner-blue{background:var(--info-bg);border-color:#cfe0ee;color:var(--brand)}
+.banner-green{background:var(--good-bg);border-color:#bfe3ce;color:var(--good)}
+.banner-amber{background:var(--warn-bg);border-color:#e6d59a;color:var(--warn)}
+.banner b{font-weight:700}.banner .x{font-size:16px;flex-shrink:0;line-height:1.3}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--surface-2);padding:11px 13px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface-2)}
+.t-wrap{overflow-x:auto}
+tr.clickable{cursor:pointer}
+
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.contact{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;display:flex;flex-direction:column;gap:11px;box-shadow:var(--shadow)}
+.contact .role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--brand-2)}
+.contact .nm{font-size:16px;font-weight:700;color:var(--ink)}
+.contact .rows{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted)}
+.contact .rows a{color:var(--brand);text-decoration:none}.contact .rows a:hover{text-decoration:underline}
+.contact .actions{display:flex;gap:8px;margin-top:auto}
+.avatar{width:44px;height:44px;border-radius:12px;background:var(--brand-soft);border:1px solid var(--brand-2);color:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.contact .top2{display:flex;align-items:center;gap:12px}
+
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.doc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;gap:13px;align-items:flex-start;transition:border-color .15s;box-shadow:var(--shadow)}
+.doc:hover{border-color:var(--brand-2)}
+.doc .dic{width:42px;height:46px;border-radius:9px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:11px;border:1px solid var(--brand-2)}
+.doc .dt{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.25}
+.doc .dm{font-size:11px;color:var(--muted);margin-top:3px}.doc .da{margin-top:10px}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+.field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
+.field input[type=text],.field input[type=number],.field select,.field textarea{padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r2);font-size:13.5px;color:var(--ink);font-family:inherit;background:#fff;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--brand)}
+.field textarea{resize:vertical;min-height:90px}
+.req{color:var(--danger)}.hint{font-size:11.5px;color:var(--muted)}
+
+.urg{display:flex;gap:8px;flex-wrap:wrap}
+.urg label{flex:1;min-width:96px;border:1.5px solid var(--line);border-radius:var(--r2);padding:10px 12px;cursor:pointer;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:8px;transition:all .15s;color:var(--muted)}
+.urg label .d{width:10px;height:10px;border-radius:50%}
+.urg input{position:absolute;opacity:0;width:0;height:0}
+.urg label:hover{border-color:var(--brand-2)}
+.urg .d-low{background:var(--faint)}.urg .d-normal{background:var(--info)}.urg .d-high{background:var(--warn)}.urg .d-critical{background:var(--danger)}
+.urg label.sel-low{border-color:var(--faint);background:#eef1f3;color:var(--ink)}
+.urg label.sel-normal{border-color:var(--info);background:var(--info-bg);color:var(--info)}
+.urg label.sel-high{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.urg label.sel-critical{border-color:var(--danger);background:var(--danger-bg);color:var(--danger)}
+
+.filebox{border:1.5px dashed var(--line);border-radius:var(--r2);padding:14px;background:var(--surface-2);text-align:center;cursor:pointer;transition:border-color .15s}
+.filebox:hover{border-color:var(--brand-2)}
+.filebox .fi{font-size:12.5px;color:var(--ink);font-weight:700}.filebox .fs{font-size:11px;color:var(--muted);margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:11.5px;color:var(--ink)}
+.chip .rm{cursor:pointer;color:var(--faint);font-weight:700}.chip .rm:hover{color:var(--danger)}
+
+.item-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:15px 17px;display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:border-color .15s,box-shadow .15s;box-shadow:var(--shadow)}
+.item-card:hover{border-color:var(--brand-2);box-shadow:0 1px 2px rgba(16,40,60,.05),0 14px 30px rgba(16,40,60,.12)}
+.item-card .tt{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.item-card .ref{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--faint)}
+.item-card h4{font-size:15px;font-weight:700;color:var(--ink)}
+.item-card .desc{font-size:12.5px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.item-card .tags{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.item-card .meta2{font-size:11px;color:var(--faint);display:flex;gap:14px;flex-wrap:wrap}
+.item-card .meta2 b{color:var(--muted)}
+
+/* modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(16,40,60,.5);z-index:500;backdrop-filter:blur(3px)}
+.overlay.show{display:block}
+.modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:var(--radius);box-shadow:0 30px 70px rgba(16,40,60,.4);z-index:600;width:min(560px,95vw);max-height:90vh;flex-direction:column;overflow:hidden}
+.modal.wide{width:min(760px,96vw)}
+.modal.show{display:flex}
+.modal-hdr{padding:16px 22px;background:linear-gradient(135deg,#0e5a8a,#1573ad 70%);display:flex;align-items:center;justify-content:space-between;color:#fff;gap:12px}
+.modal-hdr h3{font-size:17px;font-family:var(--serif);font-weight:400}
+.modal-hdr .mref{font-size:11px;color:rgba(255,255,255,.82);letter-spacing:.05em;margin-top:2px}
+.modal-hdr .cl{background:rgba(255,255,255,.15);border:none;color:#fff;font-size:20px;cursor:pointer;width:30px;height:30px;border-radius:8px;flex-shrink:0}
+.modal-hdr .cl:hover{background:rgba(255,255,255,.28)}
+.modal-body{padding:22px;overflow-y:auto;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.modal-body p{margin-bottom:10px}.modal-body .ink{color:var(--ink)}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;background:var(--surface-2)}
+
+.det-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.det-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-bottom:6px}
+.det-grid .l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:3px}
+.det-grid .v{font-size:13.5px;font-weight:600;color:var(--ink)}
+.det-grid select,.det-grid input{padding:8px 10px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:13px;color:var(--ink);width:100%;background:#fff}
+.det-grid select:focus,.det-grid input:focus{outline:none;border-color:var(--brand)}
+.sec-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin:16px 0 8px}
+.status-set{display:flex;gap:7px;flex-wrap:wrap}
+.status-set button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:6px 13px;font:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s}
+.status-set button:hover{border-color:var(--brand-2)}
+.status-set button.on-open{border-color:var(--info);background:var(--info-bg);color:var(--info)}
+.status-set button.on-prog{border-color:var(--warn);background:var(--warn-bg);color:var(--warn)}
+.status-set button.on-closed{border-color:var(--good);background:var(--good-bg);color:var(--good)}
+
+/* two-way thread */
+.thread{display:flex;flex-direction:column;gap:10px;margin-top:6px;max-height:290px;overflow-y:auto;padding:4px 2px}
+.msg{max-width:82%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5}
+.msg .who{font-size:10.5px;font-weight:700;letter-spacing:.02em;margin-bottom:3px;text-transform:uppercase}
+.msg .tm{font-size:10px;color:var(--faint);margin-top:4px}
+.msg.owner{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:3px}
+.msg.owner .who{color:rgba(255,255,255,.85)}.msg.owner .tm{color:rgba(255,255,255,.7)}
+.msg.baltic{align-self:flex-start;background:var(--surface-2);border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:3px}
+.msg.baltic .who{color:var(--brand-2)}
+.msg.system{align-self:center;background:transparent;color:var(--faint);font-size:11px;font-style:italic;padding:2px}
+.reply{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.reply .rc{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.reply .rc label{font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.05em}
+.reply select{padding:6px 9px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:12.5px;color:var(--ink);background:#fff}
+.reply textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:13px;min-height:64px;resize:vertical}
+.reply textarea:focus{outline:none;border-color:var(--brand)}
+
+/* charts / analyze */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.chart-grid.three{grid-template-columns:repeat(3,1fr)}
+.chart-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.chart-card h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);margin-bottom:14px}
+.donut-wrap{display:flex;align-items:center;gap:18px}
+.legend{display:flex;flex-direction:column;gap:8px}
+.legend .li{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink)}
+.legend .sw{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.legend .lv{color:var(--muted);font-weight:600;margin-left:auto}
+.hbar{display:grid;grid-template-columns:120px 1fr 54px;align-items:center;gap:12px;margin-bottom:11px}
+.hbar .hl{font-size:12px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .ht{height:16px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.hbar .hf{height:100%;border-radius:4px;background:var(--brand);transition:width .4s}
+.hbar .hv{font-size:12px;font-weight:700;color:var(--ink);text-align:right}
+.followup{display:flex;flex-direction:column;gap:9px}
+.fu{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border:1px solid var(--line);border-radius:var(--r2);background:#fff}
+.fu .fn{font-weight:700;color:var(--ink);font-size:13.5px}
+.fu .fm{font-size:11.5px;color:var(--muted);margin-top:1px}
+.filterbar{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;margin-bottom:18px}
+.filterbar .fg{display:flex;flex-direction:column;gap:5px}
+.filterbar .fg label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--faint)}
+.filterbar select{padding:8px 11px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:13px;color:var(--ink);background:#fff;min-width:128px}
+.filterbar select:focus{outline:none;border-color:var(--brand)}
+.filterbar .clear{margin-left:auto}
+.match-list{display:flex;flex-direction:column;gap:10px}
+.sla-ref{display:flex;flex-direction:column;gap:8px}
+.sla-ref .sr{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--ink);padding:7px 0;border-bottom:1px dashed var(--line)}
+.sla-ref .sr:last-child{border-bottom:none}
+.sla-ref .sr b{color:var(--muted);font-weight:700}
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.tool-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;cursor:pointer;transition:border-color .15s,transform .15s}
+.tool-card:hover{border-color:var(--brand-2);transform:translateY(-3px)}
+.tool-ic{font-size:24px}
+.tool-t{font-weight:700;color:var(--ink);margin-top:8px;font-size:14px}
+.tool-d{font-size:12px;color:var(--muted);margin-top:3px}
+.tool-hub{font-size:11px;font-weight:700;color:var(--brand);margin-top:9px}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kcol{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r2);padding:10px;min-height:70px}
+.khead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.kbody{display:flex;flex-direction:column;gap:8px}
+.kcard{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:10px;cursor:pointer;box-shadow:var(--shadow);transition:border-color .15s}
+.kcard:hover{border-color:var(--brand-2)}
+.kref{font-size:10.5px;font-weight:700;color:var(--faint);display:flex;gap:6px;align-items:center}
+.ktitle{font-size:13px;font-weight:600;color:var(--ink);margin:4px 0 6px;line-height:1.3}
+.kmeta{display:flex;align-items:center;gap:8px}
+.gantt{border:1px solid var(--line);border-radius:var(--r2);background:#fff;overflow-x:auto}
+.grow{display:grid;align-items:center;min-height:24px}
+.ghead{background:var(--surface-2);border-bottom:1px solid var(--line)}
+.glabel{font-size:11px;color:var(--ink);padding:4px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmon{font-size:8.5px;line-height:1.15;color:var(--faint);text-align:center;padding:4px 0;border-left:1px solid var(--line)}
+.gcell{height:14px;margin:2px 0;border-left:1px solid var(--line);border-radius:2px;display:flex;align-items:center;justify-content:center}
+.gnow{background:rgba(14,90,138,.06)}
+.gmon.gnow{color:var(--brand);font-weight:700}
+.gdot{width:9px;height:9px;border-radius:50%}
+.glegend{display:flex;gap:14px;padding:8px 12px;font-size:11px;color:var(--muted);border-top:1px solid var(--line);flex-wrap:wrap}
+.gsw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.gsw.gdotleg{border-radius:50%}
+.status-set button.on-q{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+.tool-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.tool-head h3{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ink)}
+.tool-head .hint{margin-left:auto}
+.kmove{margin-top:8px}
+.kmove select{width:100%;padding:5px 8px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:11.5px;color:var(--ink);background:#fff}
+.kmove select:focus{outline:none;border-color:var(--brand)}
+.caselink{font-family:inherit;font-size:11px}
+.workbar{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+.wtoggle{display:inline-flex;border:1.5px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.wtoggle button{border:none;background:#fff;padding:8px 14px;font:inherit;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.wtoggle button:not(:last-child){border-right:1.5px solid var(--line)}
+.wtoggle button.on{background:var(--brand);color:#fff}
+.wfilters{display:flex;gap:10px;flex-wrap:wrap}
+.wfl{display:flex;flex-direction:column;gap:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--faint)}
+.wfl select{padding:7px 10px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:12.5px;color:var(--ink);background:#fff;text-transform:none;font-weight:400;letter-spacing:0}
+.wactions{margin-left:auto;display:flex;gap:8px;align-items:flex-end}
+.kdates{margin-top:6px;font-size:11px}
+.kcard[draggable=true]{cursor:grab}
+.kcard.dragging{opacity:.45}
+.kcol.kover{outline:2px dashed var(--brand-2);outline-offset:-3px;background:var(--brand-soft)}
+.kempty{padding:14px 6px;text-align:center;border:1px dashed var(--line);border-radius:var(--r2);color:var(--faint);font-size:11.5px}
+.gbar{grid-row:1;align-self:center;height:15px;border-radius:4px;color:#fff;font-size:8.5px;font-weight:700;display:flex;align-items:center;padding:0 6px;overflow:hidden;white-space:nowrap;cursor:grab;z-index:2;min-width:14px}
+.gbar.dragging{opacity:.5}
+.fleetlabel{background:none;border:none;font:inherit;color:var(--brand);font-weight:700;cursor:pointer;padding:0;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.fleetlabel:hover{text-decoration:underline}
+.fleetlabel .hint{font-weight:400}
+#print-area{display:none}
+@media print{ body>*:not(#print-area){display:none!important} #print-area{display:block!important} .gantt{overflow:visible!important} }
+
+footer{background:var(--ink);color:rgba(255,255,255,.62);font-size:12px;text-align:center;padding:22px 24px;margin-top:36px;line-height:1.7}
+footer b{color:#fff}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cta-inline{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:860px){.choice-grid,.two-col,.form-grid,.det-grid,.chart-grid,.chart-grid.three{grid-template-columns:1fr}.brand .bt{display:none}.hbar{grid-template-columns:96px 1fr 48px}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="hdr">
+    <div class="brand">
+      <img src="data:image/png;base64,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" alt="Baltic Yachts">
+      <div class="vline"></div>
+      <div class="bt"><h1>Yacht Life</h1><p>Owner &amp; Service Portal</p></div>
+    </div>
+    <div class="hdr-btns" id="hdr-btns">
+      <button class="btn btn-ghost btn-sm" id="btn-workspace">← Workspace</button><button class="btn btn-ghost btn-sm" id="btn-home">Projects Home</button>
+      <button class="btn btn-ghost btn-sm" id="btn-desk">Service Desk</button>
+      <button class="btn btn-accent btn-sm" id="btn-share">Share</button>
+    </div>
+  </div>
+</header>
+
+<div class="proto-bar" id="proto-bar">Baltic workspace · Projects → Yacht Life (demo) · Sample fleet &amp; data — will bind to the SharePoint structure. Use ← Workspace to return to the hub.</div>
+
+<main>
+  <div class="crumbs" id="crumbs"></div>
+
+  <!-- LANDING -->
+  <section id="view-landing">
+    <div class="page-head"><div class="eyebrow">Baltic Projects</div><h2>Projects</h2>
+      <p>One entry point for the whole project lifecycle. Open a yacht still <b>in build</b>, or step into <b>Yacht Life</b> — the standalone home for every delivered Baltic: warranty, service, documentation and a direct line to the yard.</p></div>
+    <div class="choice-grid">
+      <div class="choice" id="choice-build" role="button" tabindex="0">
+        <div class="choice-top"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l7-4 7 4v14"></path><path d="M9 21v-6h6v6"></path></svg></div>
+          <div class="th"><h3>Projects in Build</h3><div class="tag">Active new-build sites</div></div></div>
+        <div class="choice-body"><p>The engineering, procurement and workbench sites for yachts in construction. This is where the Yacht Manual and all technical documentation are created during the build.</p>
+          <ul class="mini-list" id="build-list"></ul>
+          <div class="choice-foot"><button class="btn btn-primary btn-block" id="open-build">Open build projects</button></div></div>
+      </div>
+      <div class="choice" id="choice-life" role="button" tabindex="0">
+        <div class="choice-top"><div class="t-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18l-2 3H5z"></path><path d="M12 3v13"></path><path d="M12 5c4 1 7 4 8 8H12z"></path><path d="M11 16C7 16 5 13 4 9l7 2z"></path></svg></div>
+          <div class="th"><h3>Yacht Life</h3><div class="tag">Delivered fleet</div></div></div>
+        <div class="choice-body"><p>Every delivered Baltic gets its own Yacht Life page — Warranty, After Sale, service contacts, a two-way ticketing channel to the yard, and the complete Yacht Manual &amp; documentation. Plus a Baltic <b>Service Desk</b> across the whole fleet.</p>
+          <ul class="mini-list">
+            <li><span class="dot"></span>Warranty &amp; After-Sale with cost tracking</li>
+            <li><span class="dot"></span>Two-way tickets &amp; claims, assigned &amp; logged</li>
+            <li><span class="dot"></span>Fleet summary &amp; analyze tool</li>
+            <li><span class="dot"></span>Yacht Manual &amp; technical docs</li></ul>
+          <div class="choice-foot"><button class="btn btn-primary btn-block" id="open-life">Enter Yacht Life</button></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLEET -->
+  <section id="view-fleet" class="hidden">
+    <div class="page-head"><div class="eyebrow">Yacht Life</div><h2>Delivered Fleet</h2>
+      <p>Select a yacht to open its Yacht Life page, or open the <b>Baltic Service Desk</b> for the fleet-wide warranty, service and ticketing summary.</p></div>
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input type="text" id="fleet-search" placeholder="Search by name, model or hull number…"></div>
+      <span class="pill p-grey" id="fleet-count"></span>
+      <button class="btn btn-primary btn-sm" id="open-desk">📊 Baltic Service Desk</button>
+    </div>
+    <div class="fleet-grid" id="fleet-grid"></div>
+  </section>
+
+  <!-- SERVICE DESK -->
+  <section id="view-desk" class="hidden"></section>
+
+  <!-- YACHT -->
+  <section id="view-yacht" class="hidden"></section>
+</main>
+
+<footer><b>Baltic Yachts Ltd</b> — Engineering &amp; Service &nbsp;|&nbsp; Yacht Life Owner &amp; Service Portal &nbsp;|&nbsp; Standalone prototype v3<br>
+  To be embedded in the Baltic Hub / Workspace. Alholmintie 78, 68600 Pietarsaari, Finland.</footer>
+
+<div id="print-area"></div>
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="modal">
+  <div class="modal-hdr"><div><h3 id="modal-title">Info</h3><div class="mref hidden" id="modal-ref"></div></div><button class="cl" id="modal-close" aria-label="Close">×</button></div>
+  <div class="modal-body" id="modal-body"></div>
+  <div class="modal-foot hidden" id="modal-foot"></div>
+</div>
+
+<script>
+/* ═══════ DATA ═══════ */
+var YACHTS = [
+  { id:"canova", name:"Canova", hull:"Baltic 142", model:"142 Custom — bluewater cruiser", loa:"43.3 m", delivered:"2019", owner:"[Owner — to confirm]", flag:"[Flag]", na:"Farr Yacht Design", warranty:"expired", wStart:"2019-06-01", wEnd:"2021-06-01", nextService:"Annual haul-out — [date]", docs:12, region:"Mediterranean / Palma" },
+  { id:"pinkgin", name:"Pink Gin", hull:"Baltic 175", model:"175 — sloop", loa:"53.7 m", delivered:"2017", owner:"[Owner — to confirm]", flag:"[Flag]", na:"judel/vrolijk", warranty:"expired", wStart:"2017-05-01", wEnd:"2019-05-01", nextService:"Rig inspection — [date]", docs:14, region:"Caribbean / Mediterranean" },
+  { id:"mysong", name:"My Song", hull:"Baltic 130", model:"130 Custom — performance cruiser", loa:"39.6 m", delivered:"2016", owner:"[Owner — to confirm]", flag:"[Flag]", na:"Reichel/Pugh", warranty:"expired", wStart:"2016-05-01", wEnd:"2018-05-01", nextService:"Systems service — [date]", docs:11, region:"Mediterranean" },
+  { id:"path", name:"Path", hull:"Baltic 146", model:"146 Custom — ketch", loa:"44.6 m", delivered:"2021", owner:"[Owner — to confirm]", flag:"[Flag]", na:"judel/vrolijk", warranty:"active", wStart:"2021-07-01", wEnd:"2026-10-01", nextService:"2-year systems check — [date]", docs:15, region:"Global" },
+  { id:"nikata", name:"Nikata", hull:"Baltic 115", model:"115 — fast cruiser", loa:"35.0 m", delivered:"2015", owner:"[Owner — to confirm]", flag:"[Flag]", na:"judel/vrolijk", warranty:"expired", wStart:"2015-06-01", wEnd:"2017-06-01", nextService:"Annual service — [date]", docs:10, region:"Mediterranean" },
+  { id:"winwin", name:"WinWin", hull:"Baltic 108", model:"108 Custom — sloop", loa:"33.0 m", delivered:"2014", owner:"[Owner — to confirm]", flag:"[Flag]", na:"Farr Yacht Design", warranty:"refit", wStart:"2024-01-01", wEnd:"2026-12-01", nextService:"Post-refit sea trial — [date]", docs:13, region:"Palma (post-refit)" }
+];
+var AREAS = ["Rig & Deck","Hull & Structure","Mechanical / Propulsion","Electrical","Electronics & Navigation","Hydraulics","Plumbing & Sanitation","HVAC & Climate","Interior & Joinery","Paint & Finish","Sails & Covers","Safety Equipment","Other"];
+var BALTIC_TEAM = ["Unassigned","Warranty Manager","After-Sales Coordinator","Service Team Lead (Palma)","Project / Systems Engineer","Duty Engineer"];
+var BILLABLE = ["Warranty","Goodwill","Chargeable"];
+var CONTACTS = [
+  { role:"Warranty Manager", name:"[Assign name]", email:"warranty@balticyachts.fi", phone:"+358 (0)6 781 9200", region:"Pietarsaari yard" },
+  { role:"After-Sales Coordinator", name:"[Assign name]", email:"service@balticyachts.fi", phone:"+358 (0)6 781 9200", region:"Pietarsaari yard" },
+  { role:"Service Team Lead", name:"[Assign name]", email:"palma@balticyachts.fi", phone:"+34 [number]", region:"Palma service centre" },
+  { role:"Project / Systems Engineer", name:"[Assign name]", email:"engineering@balticyachts.fi", phone:"+358 (0)6 781 9200", region:"Engineering" },
+  { role:"Emergency Support (24/7)", name:"On-call duty engineer", email:"support@balticyachts.fi", phone:"+358 [24/7 number]", region:"Worldwide" }
+];
+/* items: kind ticket|warranty ; cost EUR ; billable ; assignee ; thread[{when,side,author,text}] */
+var SEED = {
+  path:[
+    { ref:"BY-1041", kind:"ticket", title:"Bow thruster intermittent fault", area:"Mechanical / Propulsion", urgency:"high", status:"In progress", date:"2026-06-18", reporter:"Captain — Path", assignee:"Service Team Lead (Palma)", cost:3200, billable:"Warranty", desc:"Bow thruster trips out after ~10s at full load. PLC log attached.", photos:2, logs:1,
+      thread:[{when:"2026-06-18 09:20",side:"owner",author:"Captain — Path",text:"Bow thruster trips out after ~10s at full load. PLC log attached."},{when:"2026-06-19 14:05",side:"baltic",author:"Service Team Lead (Palma)",text:"Reviewing the PLC log — suspect thermal cut-out. We'll attend at your berth Thursday."},{when:"2026-06-20 08:10",side:"owner",author:"Captain — Path",text:"Thursday works, we'll be aboard from 08:00."}] },
+    { ref:"BY-1032", kind:"ticket", title:"Nav display flicker at helm", area:"Electronics & Navigation", urgency:"normal", status:"Open", date:"2026-06-05", reporter:"First Mate — Path", assignee:"Unassigned", cost:0, billable:"Warranty", desc:"Starboard MFD flickers on cold start, clears after warm-up.", photos:1, logs:0,
+      thread:[{when:"2026-06-05 16:40",side:"owner",author:"First Mate — Path",text:"Starboard MFD flickers on cold start, clears after warm-up."}] },
+    { ref:"WC-2207", kind:"warranty", title:"Hydraulic seal weep — captive winch", area:"Hydraulics", urgency:"high", status:"In progress", date:"2026-06-10", reporter:"Captain — Path", assignee:"Warranty Manager", cost:1800, billable:"Warranty", desc:"Slow hydraulic weep at port captive winch seal. Photos attached.", photos:3, logs:0,
+      thread:[{when:"2026-06-10 10:00",side:"owner",author:"Captain — Path",text:"Slow hydraulic weep at port captive winch seal."},{when:"2026-06-11 09:15",side:"baltic",author:"Warranty Manager",text:"Logged under warranty. Seal kit dispatched, our tech will fit on next visit."}] },
+    { ref:"RFQ-3050", kind:"rfq", title:"Quote: replace lazy-jack lines & stackpack", area:"Sails & Covers", urgency:"low", status:"Open", date:"2026-06-25", reporter:"Captain — Path", assignee:"Unassigned", cost:0, billable:"Chargeable", quote:{amount:0,state:"Requested"}, desc:"Please quote replacing the lazy-jack lines and refurbishing the stackpack over winter.", photos:1, logs:0,
+      thread:[{when:"2026-06-25 11:30",side:"owner",author:"Captain — Path",text:"Please quote replacing the lazy-jack lines and refurbishing the stackpack over winter."}] }
+  ],
+  winwin:[
+    { ref:"BY-0990", kind:"ticket", title:"Post-refit AC balancing in owner cabin", area:"HVAC & Climate", urgency:"normal", status:"Closed", date:"2026-04-22", reporter:"Service — Palma", assignee:"Service Team Lead (Palma)", cost:950, billable:"Chargeable", desc:"Owner cabin running warm after refit. Rebalanced fan-coil flow; verified.", photos:0, logs:1,
+      thread:[{when:"2026-04-22 11:00",side:"baltic",author:"Service Team Lead (Palma)",text:"Raised during sea trial — owner cabin warm."},{when:"2026-04-24 10:30",side:"baltic",author:"Service Team Lead (Palma)",text:"Rebalanced fan-coil flow; verified within spec. Closing."}] },
+    { ref:"WC-2190", kind:"warranty", title:"Gelcoat crack — transom step", area:"Paint & Finish", urgency:"normal", status:"Closed", date:"2026-03-30", reporter:"Captain — WinWin", assignee:"Warranty Manager", cost:2400, billable:"Warranty", desc:"Hairline gelcoat crack at transom step. Ground out and refinished under refit.", photos:2, logs:0,
+      thread:[{when:"2026-03-30 13:20",side:"owner",author:"Captain — WinWin",text:"Hairline gelcoat crack at transom step."},{when:"2026-04-02 09:00",side:"baltic",author:"Warranty Manager",text:"Covered under warranty; repaired during refit and signed off."}] }
+  ],
+  canova:[
+    { ref:"BY-1005", kind:"ticket", title:"Watermaker low output", area:"Plumbing & Sanitation", urgency:"normal", status:"Open", date:"2026-06-28", reporter:"Engineer — Canova", assignee:"Unassigned", cost:0, billable:"Chargeable", desc:"Watermaker output down ~30%. Possibly membrane fouling.", photos:0, logs:1,
+      thread:[{when:"2026-06-28 12:00",side:"owner",author:"Engineer — Canova",text:"Watermaker output down ~30%. Possibly membrane fouling — advice?"}] },
+    { ref:"RFQ-3021", kind:"rfq", title:"Quote: watermaker membrane replacement", area:"Plumbing & Sanitation", urgency:"normal", status:"In progress", date:"2026-06-29", reporter:"Engineer — Canova", assignee:"After-Sales Coordinator", cost:0, billable:"Chargeable", quote:{amount:4200,state:"Quoted"}, desc:"Requesting a quote to replace the watermaker membranes and service the high-pressure pump.", photos:0, logs:0,
+      thread:[{when:"2026-06-29 09:00",side:"owner",author:"Engineer — Canova",text:"Requesting a quote to replace the watermaker membranes and service the HP pump."},{when:"2026-06-30 15:20",side:"baltic",author:"After-Sales Coordinator",text:"Quote prepared: 4,200 EUR incl. parts & labour, ex-travel. Valid 30 days."}] }
+  ],
+  mysong:[
+    { ref:"WC-2150", kind:"warranty", title:"Furler bearing replacement (goodwill)", area:"Rig & Deck", urgency:"normal", status:"Closed", date:"2026-02-14", reporter:"Captain — My Song", assignee:"Warranty Manager", cost:1200, billable:"Goodwill", desc:"Furler bearing noise just out of warranty; handled as goodwill.", photos:1, logs:0,
+      thread:[{when:"2026-02-14 15:00",side:"owner",author:"Captain — My Song",text:"Furler bearing noisy."},{when:"2026-02-16 10:00",side:"baltic",author:"Warranty Manager",text:"Just outside warranty — we'll cover as goodwill. Bearing replaced."}] }
+  ]
+};
+var DOCS = [
+  {t:"Yacht Owner's Manual",m:"PDF · full handbook",k:"PDF"},{t:"System Manuals — Electrical",m:"PDF · schematics + operation",k:"PDF"},
+  {t:"System Manuals — Mechanical",m:"PDF · propulsion & steering",k:"PDF"},{t:"System Manuals — Hydraulics",m:"PDF · winches, keel, lift",k:"PDF"},
+  {t:"HVAC & Climate",m:"PDF · AC cooling & ventilation",k:"PDF"},{t:"As-Built General Arrangement",m:"DWG / PDF drawings",k:"DWG"},
+  {t:"Electrical Schematics (as-built)",m:"PDF · AC/DC distribution",k:"PDF"},{t:"Rig & Sail Plan",m:"PDF · rig tune & sail data",k:"PDF"},
+  {t:"Certificates — Class / Flag / CE",m:"PDF pack",k:"PDF"},{t:"Handover & Commissioning Pack",m:"PDF · sea-trial + sign-off",k:"PDF"},
+  {t:"Warranty Terms & Conditions",m:"PDF",k:"PDF"},{t:"Spare Parts Catalogue",m:"XLSX · parts & suppliers",k:"XLS"}
+];
+var WARRANTY_LABEL = { active:["Warranty active","p-green"], expired:["Warranty expired","p-grey"], refit:["In refit","p-blue"] };
+
+/* ═══════ STATE / STORE ═══════ */
+var state = { view:"landing", yachtId:null, tab:"overview", tool:null, workView:"board", workFilter:{status:"all",area:"all",assignee:"all"}, ownerMode:false, deskYacht:null, deskFilter:{status:"all",urgency:"all",area:"all",kind:"all",yacht:"all"} };
+var STORE_KEY="by_life_v3";
+function el(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function currentYacht(){ for(var i=0;i<YACHTS.length;i++){ if(YACHTS[i].id===state.yachtId) return YACHTS[i]; } return null; }
+function yById(id){ for(var i=0;i<YACHTS.length;i++){ if(YACHTS[i].id===id) return YACHTS[i]; } return null; }
+function readStore(){ try{ var r=localStorage.getItem(STORE_KEY); return r?JSON.parse(r):{}; }catch(e){ return {}; } }
+function writeStore(o){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(o)); }catch(e){} }
+var mem={};
+function getItems(id){ var s=readStore(); if(s[id]){ mem[id]=s[id]; return s[id]; } if(mem[id]) return mem[id]; var seed=JSON.parse(JSON.stringify(SEED[id]||[])); s[id]=seed; writeStore(s); mem[id]=seed; return seed; }
+function saveItems(id,arr){ mem[id]=arr; var s=readStore(); s[id]=arr; writeStore(s); }
+function addItem(id,it){ var a=getItems(id); a.unshift(it); saveItems(id,a); }
+function findItem(id,ref){ var a=getItems(id); for(var i=0;i<a.length;i++){ if(a[i].ref===ref) return a[i]; } return null; }
+
+function money(n){ n=n||0; return "€"+n.toLocaleString("en-GB"); }
+function urgencyPill(u){ var m={low:["Low","p-grey"],normal:["Normal","p-blue"],high:["High","p-amber"],critical:["Critical","p-red"]}[u]||["Normal","p-blue"]; return '<span class="pill '+m[1]+'">'+m[0]+'</span>'; }
+function statusPill(s){ var c=s==="Closed"?"p-green":(s==="In progress"?"p-amber":"p-blue"); return '<span class="pill '+c+'">'+esc(s)+'</span>'; }
+function kindPill(k){ return k==="warranty"?'<span class="pill p-purple">Warranty</span>':(k==="rfq"?'<span class="pill p-green">RFQ</span>':'<span class="pill p-brand">Ticket</span>'); }
+function lastResponder(it){ var t=it.thread||[]; for(var i=t.length-1;i>=0;i--){ if(t[i].side==="baltic") return t[i].author; } return null; }
+function sailIcon(){ return '<span class="sail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v18"></path><path d="M12 4c5 1.5 8.5 5.5 9.5 10.5H12z"></path><path d="M10.5 20C6 20 3.5 16.5 2.5 12L10.5 14z"></path></svg></span>'; }
+function fact(l,v){ return '<div class="fact"><div class="l">'+esc(l)+'</div><div class="v">'+esc(v)+'</div></div>'; }
+function nowStamp(){ var d=new Date(); function p(n){return (n<10?"0":"")+n;} return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes()); }
+function monthsUntil(dstr){ var end=new Date(dstr+"T00:00:00"); var now=new Date(); return (end.getFullYear()-now.getFullYear())*12 + (end.getMonth()-now.getMonth()) + (end.getDate()>=now.getDate()?0:-1); }
+
+/* ═══════ ROUTER ═══════ */
+function setView(v){
+  state.view=v;
+  el("view-landing").classList.toggle("hidden",v!=="landing");
+  el("view-fleet").classList.toggle("hidden",v!=="fleet");
+  el("view-desk").classList.toggle("hidden",v!=="servicedesk");
+  el("view-yacht").classList.toggle("hidden",v!=="yacht");
+  renderCrumbs(); window.scrollTo(0,0);
+}
+function renderCrumbs(){
+  var c=el("crumbs"), y=currentYacht(), h="";
+  if(state.ownerMode){ c.innerHTML = y ? '<span class="here">'+esc(y.name)+' · Yacht Life</span>' : ''; return; }
+  h='<button data-nav="landing">Projects</button>';
+  if(state.view==="fleet") h+='<span class="sep">›</span><span class="here">Yacht Life</span>';
+  if(state.view==="servicedesk"){ h+='<span class="sep">›</span><button data-nav="fleet">Yacht Life</button><span class="sep">›</span><span class="here">Service Desk</span>'; }
+  if(state.view==="yacht" && y){ h+='<span class="sep">›</span><button data-nav="fleet">Yacht Life</button><span class="sep">›</span><span class="here">'+esc(y.name)+'</span>'; }
+  c.innerHTML=h;
+}
+
+/* ═══════ LANDING / FLEET ═══════ */
+function renderBuildList(){ var b=[{code:"135-01",name:"Nordquist"},{code:"78-04",name:"Mark In"},{code:"80-CR01",name:"Proff Na"},{code:"107C-01",name:"ZETEO"}],h="";
+  for(var i=0;i<b.length;i++) h+='<li><span class="dot"></span><b style="color:var(--ink)">'+esc(b[i].name)+'</b>&nbsp;<span style="color:var(--muted)">· '+esc(b[i].code)+'</span></li>'; el("build-list").innerHTML=h; }
+function renderFleet(filter){
+  var grid=el("fleet-grid"),h="",n=0; filter=(filter||"").toLowerCase();
+  for(var i=0;i<YACHTS.length;i++){ var y=YACHTS[i], hay=(y.name+" "+y.hull+" "+y.model).toLowerCase(); if(filter&&hay.indexOf(filter)<0) continue; n++;
+    var wl=WARRANTY_LABEL[y.warranty]||WARRANTY_LABEL.expired;
+    var openT=getItems(y.id).filter(function(t){return t.status!=="Closed";}).length;
+    h+='<div class="yacht-card" data-yacht="'+y.id+'" role="button" tabindex="0"><div class="yc-banner">'+sailIcon()+'<div class="yc-hull">'+esc(y.hull)+'</div></div>'
+      +'<div class="yc-body"><div class="yc-name">'+esc(y.name)+'</div><div class="yc-model">'+esc(y.model)+'</div>'
+      +'<div class="yc-meta"><div><span class="l">LOA</span><span class="v">'+esc(y.loa)+'</span></div><div><span class="l">Delivered</span><span class="v">'+esc(y.delivered)+'</span></div><div><span class="l">Region</span><span class="v" style="font-size:12px">'+esc(y.region)+'</span></div></div>'
+      +'<div class="yc-foot"><span class="pill '+wl[1]+'">'+wl[0]+'</span><span class="pill '+(openT?'p-amber':'p-grey')+'">'+openT+' open</span></div></div></div>';
+  }
+  grid.innerHTML=h||'<div class="banner banner-blue" style="grid-column:1/-1"><span class="x">ℹ</span><div>No yachts match “'+esc(filter)+'”.</div></div>';
+  el("fleet-count").textContent=n+" yacht"+(n===1?"":"s");
+}
+
+/* ═══════ YACHT (tabbed) ═══════ */
+function openYacht(id,tab){ state.yachtId=id; state.tab=tab||"overview"; state.tool=null; var y=currentYacht(); if(!y) return;
+  el("view-yacht").innerHTML=buildYachtShell(y); setView("yacht"); wireYachtShell(y); showTab(state.tab); }
+function buildYachtShell(y){
+  var wl=WARRANTY_LABEL[y.warranty]||WARRANTY_LABEL.expired;
+  var h='<div class="yacht-hero">'+sailIcon()+'<div class="eyebrow">'+esc(y.hull)+' · Yacht Life</div><h2>'+esc(y.name)+'</h2><div class="sub">'+esc(y.model)+'</div>'
+    +'<div class="spec-row"><div class="s"><div class="l">LOA</div><div class="v">'+esc(y.loa)+'</div></div><div class="s"><div class="l">Delivered</div><div class="v">'+esc(y.delivered)+'</div></div><div class="s"><div class="l">Naval architect</div><div class="v">'+esc(y.na)+'</div></div><div class="s"><div class="l">Home region</div><div class="v">'+esc(y.region)+'</div></div><div class="s"><div class="l">Warranty</div><div class="v"><span class="pill '+wl[1]+'">'+wl[0]+'</span></div></div></div></div>';
+  h+='<div class="subnav" id="subnav"><button data-tab="overview">Overview</button><button data-tab="warranty">Warranty</button><button data-tab="aftersale">After Sale</button><button data-tab="team">Service Team</button><button data-tab="comms">Communication</button><button data-tab="rfq">Request a Quote</button><button data-tab="docs">Manual &amp; Docs</button>'+(state.ownerMode?"":'<button data-tab="tools">Tools · Baltic</button>')+'</div><div id="panel-host"></div>';
+  return h;
+}
+function showTab(tab){ state.tab=tab; if(tab!=="tools") state.tool=null; var y=currentYacht(); if(!y) return;
+  el("subnav").querySelectorAll("button").forEach(function(b){ b.classList.toggle("active",b.getAttribute("data-tab")===tab); });
+  el("panel-host").innerHTML='<div class="ypanel">'+panelHtml(y,tab)+'</div>'; wirePanel(y,tab); window.scrollTo(0,0); }
+function panelHtml(y,tab){ return ({overview:panelOverview,warranty:panelWarranty,aftersale:panelAfterSale,team:panelTeam,comms:panelComms,rfq:panelRFQ,docs:panelDocs,tools:panelTools}[tab]||function(){return"";})(y); }
+
+function panelOverview(y){
+  var wl=WARRANTY_LABEL[y.warranty]||WARRANTY_LABEL.expired, items=getItems(y.id);
+  var openT=items.filter(function(t){return t.status!=="Closed";}).length;
+  var cost=items.reduce(function(a,t){return a+(t.cost||0);},0);
+  var h='<div class="kpi-row"><div class="kpi"><div class="l">Warranty</div><div class="v" style="font-size:17px">'+wl[0].replace("Warranty ","")+'</div><div class="u">Ends '+esc(y.wEnd)+'</div></div>'
+    +'<div class="kpi amber"><div class="l">Open items</div><div class="v">'+openT+'</div><div class="u">'+items.length+' total logged</div></div>'
+    +'<div class="kpi"><div class="l">Cost to date</div><div class="v" style="font-size:19px">'+money(cost)+'</div><div class="u">Warranty + service</div></div>'
+    +'<div class="kpi"><div class="l">Documents</div><div class="v">'+esc(y.docs)+'</div><div class="u">Manual &amp; technical</div></div></div>';
+  h+='<div class="card"><div class="card-hdr"><h3>Yacht overview</h3></div><div class="card-body"><div class="facts">'
+    +fact("Yacht name",y.name)+fact("Hull / model",y.hull)+fact("LOA",y.loa)+fact("Delivered",y.delivered)+fact("Owner",y.owner)+fact("Flag",y.flag)+fact("Naval architect",y.na)+fact("Warranty window",y.wStart+" → "+y.wEnd)+fact("Next service",y.nextService)
+    +'</div><div class="banner banner-blue" style="margin-top:16px"><span class="x">★</span><div>This Yacht Life page travels with the yacht. Share it at delivery — it becomes the owner &amp; crew’s direct channel to the Baltic yard for the life of the vessel.</div></div>'
+    +'<div class="cta-inline"><button class="btn btn-primary" data-goto="comms">Open communication</button><button class="btn btn-outline" id="ov-share">Share this yacht</button></div></div></div>';
+  return h;
+}
+function panelWarranty(y){
+  var wl=WARRANTY_LABEL[y.warranty]||WARRANTY_LABEL.expired;
+  var claims=getItems(y.id).filter(function(t){return t.kind==="warranty";});
+  var h='<div class="panel-head"><h3>Warranty</h3><p>Coverage, plus warranty claims with a logged number, assignee and full two-way history.</p></div>';
+  h+='<div class="card" style="margin-bottom:18px"><div class="card-hdr"><h3>Coverage</h3><span class="pill '+wl[1]+'">'+wl[0]+'</span></div><div class="card-body"><div class="facts">'
+    +'<div class="fact"><div class="l">Start</div><div class="v">'+esc(y.wStart)+'</div></div><div class="fact"><div class="l">End</div><div class="v">'+esc(y.wEnd)+'</div></div><div class="fact"><div class="l">Standard term</div><div class="v">24 months (structure per contract)</div></div></div>'
+    +'<ul class="mini-list" style="margin-top:14px"><li><span class="dot"></span>Hull, structure &amp; laminate per build contract</li><li><span class="dot"></span>Baltic-installed systems &amp; equipment</li><li><span class="dot"></span>Workmanship on yard-supplied scope</li><li><span class="dot"></span>Third-party equipment per OEM terms</li></ul>'
+    +'<div class="cta-inline"><button class="btn btn-primary" data-raise="warranty">Raise a warranty claim</button></div></div></div>';
+  h+='<div class="card-hdr" style="border:none;padding:0 2px 10px"><h3>Warranty claims</h3><span class="pill p-grey">'+claims.length+' logged</span></div>';
+  h+='<div id="warranty-list" style="display:flex;flex-direction:column;gap:12px"></div>';
+  return h;
+}
+function panelAfterSale(y){
+  var h='<div class="panel-head"><h3>After Sale</h3><p>The upcoming service &amp; warranty plan, the standard schedule, and maintenance history.</p></div>';
+  h+='<div class="card" style="margin-bottom:18px"><div class="card-hdr"><h3>Planned service &amp; warranty</h3><span class="pill p-grey">from the Baltic plan</span></div><div class="card-body"><div class="banner banner-blue" style="margin-bottom:12px"><span class="x">🗓️</span><div>Upcoming work planned by the Baltic team. <b>Confirm</b> a date, or use <b>Request a Quote</b> / <b>Communication</b> to propose changes.</div></div>'+planRows(y,true)+'</div></div>';
+  h+='<div class="two-col">'
+    +'<div class="card"><div class="card-hdr"><h3>Service schedule</h3></div><div class="card-body"><div class="banner banner-blue"><span class="x">⚓</span><div><b>Next: </b>'+esc(y.nextService)+'</div></div>'
+    +'<div class="t-wrap" style="margin-top:12px"><table><thead><tr><th>Interval</th><th>Scope</th><th>Status</th></tr></thead><tbody><tr><td>Annual</td><td>Haul-out, hull &amp; systems check</td><td>'+statusPill("Open")+'</td></tr><tr><td>2-year</td><td>Rig inspection &amp; systems service</td><td>'+statusPill("Open")+'</td></tr><tr><td>5-year</td><td>Major survey / refit planning</td><td>'+statusPill("Open")+'</td></tr></tbody></table></div></div></div>'
+    +'<div class="card"><div class="card-hdr"><h3>Service &amp; refit history</h3></div><div class="card-body t-wrap"><table><thead><tr><th>Date</th><th>Work</th><th>Location</th></tr></thead><tbody><tr><td>[date]</td><td>Annual service</td><td>'+esc(y.region)+'</td></tr><tr><td>[date]</td><td>Systems software update</td><td>Palma</td></tr></tbody></table>'
+    +'<div class="cta-inline"><button class="btn btn-outline" data-raise="ticket">Request a service</button></div></div></div></div>';
+  return h;
+}
+function panelTeam(y){
+  var h='<div class="panel-head"><h3>Service Baltic Team</h3><p>Your dedicated Baltic contacts for '+esc(y.name)+'.</p></div>';
+  h+='<div class="banner banner-amber" style="margin-bottom:14px"><span class="x">☎</span><div>Names shown are placeholders — assign the real service team per yacht.</div></div>';
+  h+='<div class="contact-grid">'+CONTACTS.map(contactCard).join("")+'</div>'; return h;
+}
+function contactCard(c){ var initials=(c.name&&c.name.charAt(0)!=="[")?c.name.split(" ").map(function(w){return w.charAt(0);}).join("").slice(0,2).toUpperCase():"BY";
+  return '<div class="contact"><div class="top2"><div class="avatar">'+esc(initials)+'</div><div><div class="role">'+esc(c.role)+'</div><div class="nm">'+esc(c.name)+'</div></div></div><div class="rows"><div>✉ <a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a></div><div>☎ '+esc(c.phone)+'</div><div>📍 '+esc(c.region)+'</div></div><div class="actions"><a class="btn btn-outline btn-sm" href="mailto:'+esc(c.email)+'">Email</a><button class="btn btn-primary btn-sm" data-raise="ticket">Raise ticket</button></div></div>'; }
+function panelComms(y){
+  var h='<div class="panel-head"><h3>Communication &amp; Tickets</h3><p>Two-way channel to the yard. Every ticket has a logged number, an assignee, and a full conversation history.</p></div>';
+  h+='<div class="banner banner-green" style="margin-bottom:16px"><span class="x">✎</span><div>Click a ticket to open the conversation, see who’s handling it and reply. Use <b>Raise a ticket</b> to open a new one.</div></div>';
+  h+='<div class="card"><div class="card-hdr"><h3>Tickets</h3><div style="display:flex;gap:10px;align-items:center"><span class="pill p-grey" id="tk-count"></span><button class="btn btn-primary btn-sm" id="btn-new-ticket">＋ Raise a ticket</button></div></div><div class="card-body" id="ticket-list" style="display:flex;flex-direction:column;gap:12px"></div></div>';
+  return h;
+}
+function panelDocs(y){
+  var h='<div class="panel-head"><h3>Yacht Manual &amp; Documentation</h3><p>The complete technical library for '+esc(y.name)+'.</p></div>';
+  h+='<div class="banner banner-blue" style="margin-bottom:14px"><span class="x">📘</span><div>Built in the project site during construction and published here on delivery.</div></div>';
+  h+='<div class="doc-grid">'+DOCS.map(function(d){return '<div class="doc"><div class="dic">'+esc(d.k)+'</div><div class="dinfo"><div class="dt">'+esc(d.t)+'</div><div class="dm">'+esc(d.m)+'</div><div class="da"><button class="btn btn-outline btn-sm" data-doc="'+esc(d.t)+'">Open</button></div></div></div>';}).join("")+'</div>';
+  return h;
+}
+
+/* ═══════ PLANS (service & warranty planning) ═══════ */
+var PLAN_KEY="by_life_plans";
+var PLAN_SEED={
+  path:[ {ref:"PL-4001",title:"Annual haul-out & systems check",type:"Service",date:"2026-09-15",status:"Planned",note:"Lift, antifoul, systems inspection.",linked:""},
+         {ref:"PL-4002",title:"End-of-warranty inspection",type:"Warranty",date:"2026-09-10",status:"Planned",note:"Full survey before warranty ends 2026-10-01.",linked:"WC-2207"} ],
+  winwin:[ {ref:"PL-4010",title:"Post-refit sea trial",type:"Service",date:"2026-07-20",status:"Confirmed",note:"Verify refit scope under way.",linked:""} ],
+  canova:[ {ref:"PL-4020",title:"Watermaker service",type:"Service",date:"2026-08-05",status:"Planned",note:"Membrane check / replacement.",linked:"BY-1005"} ]
+};
+var pmem={};
+function readPlanStore(){ try{ var r=localStorage.getItem(PLAN_KEY); return r?JSON.parse(r):{}; }catch(e){ return {}; } }
+function writePlanStore(o){ try{ localStorage.setItem(PLAN_KEY,JSON.stringify(o)); }catch(e){} }
+function getPlans(id){ var s=readPlanStore(); if(s[id]){pmem[id]=s[id];return s[id];} if(pmem[id])return pmem[id]; var seed=JSON.parse(JSON.stringify(PLAN_SEED[id]||[])); s[id]=seed; writePlanStore(s); pmem[id]=seed; return seed; }
+function savePlans(id,arr){ pmem[id]=arr; var s=readPlanStore(); s[id]=arr; writePlanStore(s); }
+function addPlan(id,p){ var a=getPlans(id); a.push(p); a.sort(function(x,y){return x.date<y.date?-1:1;}); savePlans(id,a); }
+function findPlan(id,ref){ var a=getPlans(id); for(var i=0;i<a.length;i++) if(a[i].ref===ref) return a[i]; return null; }
+function planStatusPill(s){ var m={Planned:"p-blue",Confirmed:"p-amber",Done:"p-green"}[s]||"p-grey"; return '<span class="pill '+m+'">'+esc(s)+'</span>'; }
+function planTypePill(t){ return t==="Warranty"?'<span class="pill p-purple">Warranty</span>':'<span class="pill p-brand">Service</span>'; }
+function caseLink(ref){ if(!ref) return '<span class="hint">—</span>'; var k=ref.indexOf("WC-")===0?"warranty":(ref.indexOf("RFQ-")===0?"rfq":"ticket"); var cls=k==="warranty"?"p-purple":(k==="rfq"?"p-green":"p-brand"); return '<button class="pill '+cls+' caselink" data-caselink="'+esc(ref)+'" style="border:none;cursor:pointer">'+esc(ref)+'</button>'; }
+function itemOptions(yid,selRef){ var items=getItems(yid), o='<option value="">None</option>'; items.forEach(function(t){ o+='<option value="'+esc(t.ref)+'"'+(t.ref===selRef?" selected":"")+'>'+esc(t.ref)+' — '+esc(t.title)+'</option>'; }); return o; }
+function planRows(y,ownerView){
+  var plans=getPlans(y.id); if(!plans.length) return '<div class="hint">No planned work yet.</div>';
+  var h='<div class="t-wrap"><table><thead><tr><th>Date</th><th>Planned work</th><th>Type</th><th>Linked case</th><th>Status</th><th></th></tr></thead><tbody>';
+  plans.forEach(function(p){
+    var act=ownerView ? (p.status==="Planned"?'<button class="btn btn-outline btn-sm" data-plan-confirm="'+esc(p.ref)+'">Confirm</button>':'<span class="hint">'+(p.status==="Confirmed"?"Confirmed":"Completed")+'</span>')
+      : '<button class="btn btn-outline btn-sm" data-plan-edit="'+esc(p.ref)+'">Update</button>';
+    h+='<tr><td style="white-space:nowrap;font-weight:600">'+esc(p.date)+'</td><td>'+esc(p.title)+'<div class="hint">'+esc(p.ref)+(p.note?' · '+esc(p.note):'')+'</div></td><td>'+planTypePill(p.type)+'</td><td>'+caseLink(p.linked)+'</td><td>'+planStatusPill(p.status)+'</td><td>'+act+'</td></tr>';
+  });
+  return h+'</tbody></table></div>';
+}
+function openPlanForm(y){
+  var body='<form id="plan-form"><div class="form-grid">'
+    +'<div class="field full"><label>Planned work <span class="req">*</span></label><input type="text" id="p-title" placeholder="e.g. Annual haul-out" required></div>'
+    +'<div class="field"><label>Type</label><select id="p-type"><option>Service</option><option>Warranty</option></select></div>'
+    +'<div class="field"><label>Date (YYYY-MM-DD)</label><input type="text" id="p-date" placeholder="2026-09-15"></div>'
+    +'<div class="field full"><label>Linked ticket / warranty case (optional)</label><select id="p-linked">'+itemOptions(y.id,"")+'</select></div>'
+    +'<div class="field full"><label>Note</label><textarea id="p-note" placeholder="Scope / location…"></textarea></div>'
+    +'</div><div id="plan-msg"></div></form>';
+  openModal({ title:"Plan service / warranty", ref:y.name, wide:true, body:body,
+    footer:'<button class="btn btn-outline" data-close="1">Cancel</button><button class="btn btn-primary" id="p-submit">Add to plan</button>' });
+  el("p-submit").addEventListener("click",function(){ submitPlan(y); });
+}
+function submitPlan(y){
+  var t=el("p-title").value.trim(); if(!t){ el("plan-msg").innerHTML='<div class="banner banner-amber" style="margin-top:12px"><span class="x">!</span><div>Add a title.</div></div>'; return; }
+  var p={ref:"PL-"+Math.floor(4000+((new Date().getTime())%6000)),title:t,type:el("p-type").value,date:(el("p-date").value.trim()||nowStamp().slice(0,10)),status:"Planned",note:el("p-note").value.trim(),linked:(el("p-linked")?el("p-linked").value:"")};
+  addPlan(y.id,p); closeModal(); if(state.tab==="tools") showTab("tools"); if(state.tab==="aftersale") showTab("aftersale");
+}
+function confirmPlan(yid,ref){ var p=findPlan(yid,ref); if(!p) return; p.status="Confirmed"; savePlans(yid,getPlans(yid)); if(state.tab==="aftersale") showTab("aftersale"); if(state.tab==="tools") showTab("tools"); }
+function openPlanEdit(yid,ref){
+  var p=findPlan(yid,ref); if(!p) return;
+  var opts=["Planned","Confirmed","Done"].map(function(s){return '<option'+(s===p.status?" selected":"")+'>'+s+'</option>';}).join("");
+  var body='<div class="det-grid">'
+    +'<div style="grid-column:1/-1"><div class="l">Planned work</div><input type="text" id="pe-title" value="'+esc(p.title)+'"></div>'
+    +'<div><div class="l">Type</div><select id="pe-type"><option'+(p.type==="Service"?" selected":"")+'>Service</option><option'+(p.type==="Warranty"?" selected":"")+'>Warranty</option></select></div>'
+    +'<div><div class="l">Date</div><input type="text" id="pe-date" value="'+esc(p.date)+'"></div>'
+    +'<div><div class="l">Status</div><select id="pe-status">'+opts+'</select></div>'
+    +'<div><div class="l">Linked ticket / warranty case</div><select id="pe-linked">'+itemOptions(yid,p.linked||"")+'</select></div>'
+    +'<div style="grid-column:1/-1"><div class="l">Note</div><input type="text" id="pe-note" value="'+esc(p.note||"")+'"></div></div>';
+  openModal({ title:"Update plan", ref:p.ref, wide:true, body:body, footer:'<button class="btn btn-outline" data-close="1">Close</button><button class="btn btn-primary" id="pe-save">Save</button>' });
+  el("pe-save").addEventListener("click",function(){ var pp=findPlan(yid,ref); pp.title=el("pe-title").value.trim()||pp.title; pp.type=el("pe-type").value; pp.date=el("pe-date").value.trim()||pp.date; pp.status=el("pe-status").value; pp.linked=el("pe-linked").value; pp.note=el("pe-note").value.trim(); savePlans(yid,getPlans(yid)); closeModal(); if(state.tab==="tools") showTab("tools"); if(state.tab==="aftersale") showTab("aftersale"); });
+}
+
+/* ═══════ WORKLIST (source for board + timeline) ═══════ */
+var WORK_KEY="by_life_work2";
+var WORK_SEED={
+  path:[
+    {ref:"WL-5001",title:"Bow thruster repair — attend at berth",area:"Mechanical / Propulsion",assignee:"Service Team Lead (Palma)",start:"2026-06-19",end:"2026-06-27",status:"In progress",linked:"BY-1041"},
+    {ref:"WL-5002",title:"Investigate helm MFD flicker",area:"Electronics & Navigation",assignee:"Unassigned",start:"2026-07-08",end:"2026-07-15",status:"To do",linked:"BY-1032"},
+    {ref:"WL-5003",title:"Fit captive winch seal kit",area:"Hydraulics",assignee:"Warranty Manager",start:"2026-06-12",end:"2026-07-05",status:"In progress",linked:"WC-2207"},
+    {ref:"WL-5004",title:"Annual haul-out preparation",area:"Hull & Structure",assignee:"After-Sales Coordinator",start:"2026-09-01",end:"2026-09-20",status:"To do",linked:""},
+    {ref:"WL-5005",title:"Lazy-jack & stackpack refit",area:"Sails & Covers",assignee:"Service Team Lead (Palma)",start:"2026-11-01",end:"2026-11-20",status:"To do",linked:"RFQ-3050"},
+    {ref:"WL-5006",title:"Rig inspection (2-year)",area:"Rig & Deck",assignee:"Project / Systems Engineer",start:"2026-10-05",end:"2026-10-12",status:"To do",linked:""}
+  ],
+  winwin:[
+    {ref:"WL-5010",title:"Owner cabin AC rebalance",area:"HVAC & Climate",assignee:"Service Team Lead (Palma)",start:"2026-04-22",end:"2026-04-24",status:"Done",linked:"BY-0990"},
+    {ref:"WL-5011",title:"Transom gelcoat repair",area:"Paint & Finish",assignee:"Warranty Manager",start:"2026-03-30",end:"2026-04-05",status:"Done",linked:"WC-2190"},
+    {ref:"WL-5012",title:"Post-refit systems commissioning",area:"Electrical",assignee:"Project / Systems Engineer",start:"2026-07-15",end:"2026-08-10",status:"In progress",linked:""},
+    {ref:"WL-5013",title:"Sea trial & handover",area:"Other",assignee:"After-Sales Coordinator",start:"2026-08-18",end:"2026-08-22",status:"To do",linked:""}
+  ],
+  canova:[
+    {ref:"WL-5020",title:"Watermaker membrane replacement",area:"Plumbing & Sanitation",assignee:"After-Sales Coordinator",start:"2026-08-01",end:"2026-08-06",status:"To do",linked:"RFQ-3021"},
+    {ref:"WL-5021",title:"Watermaker output diagnosis",area:"Plumbing & Sanitation",assignee:"Unassigned",start:"2026-07-10",end:"2026-07-12",status:"To do",linked:"BY-1005"},
+    {ref:"WL-5022",title:"Annual service — Palma",area:"Mechanical / Propulsion",assignee:"Service Team Lead (Palma)",start:"2026-09-14",end:"2026-09-25",status:"To do",linked:""}
+  ],
+  mysong:[
+    {ref:"WL-5030",title:"Furler bearing follow-up check",area:"Rig & Deck",assignee:"Warranty Manager",start:"2026-07-20",end:"2026-07-22",status:"To do",linked:"WC-2150"},
+    {ref:"WL-5031",title:"Keel ram seal service",area:"Hydraulics",assignee:"Project / Systems Engineer",start:"2026-10-01",end:"2026-10-18",status:"To do",linked:""}
+  ],
+  nikata:[
+    {ref:"WL-5040",title:"Winter storage & systems lay-up",area:"Electrical",assignee:"After-Sales Coordinator",start:"2026-11-10",end:"2026-12-05",status:"To do",linked:""}
+  ],
+  pinkgin:[
+    {ref:"WL-5050",title:"Nav electronics upgrade scoping",area:"Electronics & Navigation",assignee:"Project / Systems Engineer",start:"2026-08-25",end:"2026-09-15",status:"To do",linked:""}
+  ]
+};
+var wmem={};
+function readWorkStore(){ try{ var r=localStorage.getItem(WORK_KEY); return r?JSON.parse(r):{}; }catch(e){ return {}; } }
+function writeWorkStore(o){ try{ localStorage.setItem(WORK_KEY,JSON.stringify(o)); }catch(e){} }
+function getWork(id){ var s=readWorkStore(); if(s[id]){wmem[id]=s[id];return s[id];} if(wmem[id])return wmem[id]; var seed=JSON.parse(JSON.stringify(WORK_SEED[id]||[])); s[id]=seed; writeWorkStore(s); wmem[id]=seed; return seed; }
+function saveWork(id,arr){ wmem[id]=arr; var s=readWorkStore(); s[id]=arr; writeWorkStore(s); }
+function addWork(id,w){ var a=getWork(id); a.push(w); saveWork(id,a); }
+function findWork(id,ref){ var a=getWork(id); for(var i=0;i<a.length;i++) if(a[i].ref===ref) return a[i]; return null; }
+function setWorkStatus(yid,ref,st){ var w=findWork(yid,ref); if(!w||w.status===st) return; w.status=st; saveWork(yid,getWork(yid)); state.tool="work"; showTab("tools"); }
+function workStatusPill(s){ var m={"To do":"p-blue","In progress":"p-amber","Done":"p-green"}[s]||"p-grey"; return '<span class="pill '+m+'">'+esc(s)+'</span>'; }
+function filteredWork(y){ var f=state.workFilter; return getWork(y.id).filter(function(t){ if(f.status!=="all"&&t.status!==f.status) return false; if(f.area!=="all"&&t.area!==f.area) return false; if(f.assignee!=="all"&&(t.assignee||"Unassigned")!==f.assignee) return false; return true; }); }
+function fmtDate(x){ return x.getFullYear()+"-"+((x.getMonth()+1)<10?"0":"")+(x.getMonth()+1)+"-"+((x.getDate())<10?"0":"")+x.getDate(); }
+function kToDate(k){ var yy=Math.floor(k/12), m=((k%12)+12)%12; return yy+"-"+((m+1)<10?"0":"")+(m+1)+"-01"; }
+function rescheduleWork(yid,ref,mi){ var w=findWork(yid,ref); if(!w) return; var startK=monthKey(new Date())-6; var curS=monthKey(w.start||new Date()), curE=monthKey(w.end||w.start||new Date()); var dur=Math.max(0,curE-curS); var ns=startK+mi; w.start=kToDate(ns); w.end=kToDate(ns+dur); saveWork(yid,getWork(yid)); state.tool="work"; state.workView="timeline"; showTab("tools"); }
+function addWorkFromCase(yid,ref){ var it=findItem(yid,ref); if(!it) return; var d=new Date(), e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+7);
+  var w={ref:"WL-"+Math.floor(5000+((new Date().getTime())%5000)),title:it.title,area:it.area,assignee:(it.assignee&&it.assignee!=="Unassigned")?it.assignee:"Unassigned",start:fmtDate(d),end:fmtDate(e),status:"To do",linked:ref};
+  addWork(yid,w); closeModal(); state.tool="work"; state.workView="list"; openWorkEdit(yid,w.ref); }
+function linkedWorkHtml(yid,ref){ var ws=getWork(yid).filter(function(w){return w.linked===ref;}); if(!ws.length) return '<div class="hint">None yet — use “＋ Add to worklist” to schedule work for this case.</div>'; return '<div style="display:flex;flex-direction:column;gap:6px">'+ws.map(function(w){ return '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px"><div><b>'+esc(w.ref)+'</b> · '+esc(w.title)+' <span class="hint">'+esc(w.start||"—")+' → '+esc(w.end||"—")+'</span></div>'+workStatusPill(w.status)+'</div>'; }).join("")+'</div>'; }
+
+/* ═══════ RFQ / QUOTE ═══════ */
+function quotePill(s){ var m={Requested:"p-blue",Quoted:"p-amber",Accepted:"p-green",Declined:"p-red"}[s]||"p-grey"; return '<span class="pill '+m+'">'+esc(s)+'</span>'; }
+function qBtn(s,t){ var on=(t.quote&&t.quote.state)===s; return '<button data-q="'+esc(s)+'"'+(on?' class="on-q"':'')+'>'+esc(s)+'</button>'; }
+function setQuoteState(yid,ref,st){ var it=findItem(yid,ref); it.quote=it.quote||{amount:0,state:"Requested"}; if(it.quote.state===st) return; it.quote.state=st; it.thread=it.thread||[];
+  it.thread.push({when:nowStamp(),side:"system",author:"",text:"Quote "+st.toLowerCase()+((st==="Quoted"&&it.quote.amount)?" at "+money(it.quote.amount):"")+"."});
+  if(st==="Accepted"||st==="Declined") it.status="Closed";
+  saveItems(yid,getItems(yid));
+  var qs=el("d-qstate"); if(qs) qs.innerHTML=quotePill(st);
+  var set=el("quote-set"); if(set) set.querySelectorAll("button").forEach(function(b){ b.className=b.getAttribute("data-q")===st?"on-q":""; });
+  var th=el("thread"); if(th) th.innerHTML=threadHtml(it); refreshLists(yid); }
+
+function panelRFQ(y){
+  var h='<div class="panel-head"><h3>Request a Quote</h3><p>Ask the Baltic team to quote work or services for '+esc(y.name)+'. Attach photos and details, then track the offer here.</p></div>';
+  h+='<div class="banner banner-blue" style="margin-bottom:16px"><span class="x">💶</span><div>Describe the work, choose the area and send it to Baltic — you’ll get a logged <b>RFQ</b> number and the quoted offer back in the same place.</div></div>';
+  h+='<div class="card"><div class="card-hdr"><h3>Requests for quote</h3><div style="display:flex;gap:10px;align-items:center"><span class="pill p-grey" id="rfq-count"></span><button class="btn btn-primary btn-sm" id="btn-new-rfq">＋ New request</button></div></div><div class="card-body" id="rfq-list" style="display:flex;flex-direction:column;gap:12px"></div></div>';
+  return h;
+}
+
+/* ═══════ TOOLS (Baltic-only) ═══════ */
+function toolIcon(k){ return {work:"🗂️",gantt:"📅",kanban:"🗂️",offers:"💶",plan:"🗓️",proc:"🛒",cost:"⏱️",site:"🏗️"}[k]||"🔧"; }
+function toolWrap(y,title,icon,inner){ return '<div class="tool-head"><button class="btn btn-outline btn-sm" id="tool-back">← All tools</button><h3>'+icon+' '+esc(title)+'</h3><span class="hint">'+esc(y.name)+' · '+esc(y.hull)+' — Baltic only</span></div>'+inner; }
+function panelTools(y){
+  if(state.tool==="work") return toolWrap(y,"Work — board, timeline & worklist","🗂️",renderWork(y));
+  if(state.tool==="plan") return toolWrap(y,"Service & Warranty planning","🗓️",'<div style="display:flex;justify-content:flex-end;margin-bottom:12px"><button class="btn btn-primary btn-sm" id="btn-add-plan">＋ Plan work</button></div>'+planRows(y,false));
+  if(state.tool==="offers") return toolWrap(y,"Offers & RFQs","💶",'<div class="banner banner-blue" style="margin-bottom:12px"><span class="x">💶</span><div>Quotes requested by the yacht. Open one to set the amount and status.</div></div>'+renderOffers(y));
+  var h='<div class="panel-head"><h3>Tools · Baltic</h3><p>Internal project tools for '+esc(y.name)+' — visible to Baltic Yachts only, not shared with the owner. Open a tool to work in it.</p></div>';
+  h+='<div class="banner banner-amber" style="margin-bottom:16px"><span class="x">🔒</span><div>Baltic-only workspace. Working tools open in their own view; the rest link to the yacht’s tools in the Hub.</div></div>';
+  var tools=[
+    {k:"work",t:"Work — board & timeline",d:"Worklist that fills the Kanban & Gantt"},
+    {k:"plan",t:"Service & Warranty planning",d:"Schedule visits & inspections"},
+    {k:"offers",t:"Offers & RFQs",d:"Quotes requested by the yacht"},
+    {k:"proc",t:"Procurement",d:"Purchasing for this yacht",hub:1},
+    {k:"cost",t:"Time & Cost",d:"Labour & cost tracking",hub:1},
+    {k:"site",t:"Project site",d:"Build documentation & history",hub:1}
+  ];
+  h+='<div class="tool-grid">'+tools.map(function(tt){ return '<div class="tool-card" '+(tt.hub?'data-hub="'+esc(tt.t)+'"':'data-tool="'+tt.k+'"')+'><div class="tool-ic">'+toolIcon(tt.k)+'</div><div class="tool-t">'+esc(tt.t)+'</div><div class="tool-d">'+esc(tt.d)+'</div><div class="tool-hub">'+(tt.hub?"Opens in Hub ↗":"Open →")+'</div></div>'; }).join("")+'</div>';
+  return h;
+}
+function renderKanban(y){
+  var tasks=filteredWork(y), cols=[["To do","p-blue"],["In progress","p-amber"],["Done","p-green"]];
+  var h='<div class="kanban">';
+  cols.forEach(function(c){ var list=tasks.filter(function(t){return t.status===c[0];});
+    h+='<div class="kcol" data-status="'+esc(c[0])+'"><div class="khead"><span class="pill '+c[1]+'">'+esc(c[0])+'</span><span class="hint">'+list.length+'</span></div><div class="kbody">';
+    h+=(list.length? list.map(function(t){ return '<div class="kcard" draggable="true" data-work="'+esc(t.ref)+'"><div class="kref">'+esc(t.ref)+(t.linked?' · '+caseLink(t.linked):'')+'</div><div class="ktitle">'+esc(t.title)+'</div><div class="kmeta"><span class="hint">'+esc(t.area)+'</span><span class="hint">'+esc(t.assignee||"Unassigned")+'</span></div><div class="kdates hint">'+esc(t.start||"—")+' → '+esc(t.end||"—")+'</div></div>'; }).join(""):'<div class="kempty">Drop work here</div>');
+    h+='</div></div>';
+  });
+  return h+'</div>';
+}
+function monthKey(d){ d=(d instanceof Date)?d:(parseWhen(d)||new Date()); return d.getFullYear()*12+d.getMonth(); }
+function renderGantt(y){
+  var now=new Date(), startK=monthKey(now)-6, N=18, todayCol=6, i;
+  var cols='grid-template-columns:170px repeat('+N+',minmax(26px,1fr))';
+  var header='<div class="glabel"></div>';
+  for(i=0;i<N;i++){ var yr=Math.floor((startK+i)/12), mo=((startK+i)%12+12)%12, d=new Date(yr,mo,1);
+    header+='<div class="gmon'+(i===todayCol?' gnow':'')+'">'+d.toLocaleDateString("en-GB",{month:"short"})+(mo===0?"<br>"+yr:"")+'</div>'; }
+  function bar(label,fromK,toK,color){ var c='<div class="glabel">'+esc(label)+'</div>'; for(var j=0;j<N;j++){ var k=startK+j, on=(k>=fromK&&k<=toK); c+='<div class="gcell'+(j===todayCol?' gnow':'')+'" data-mi="'+j+'"'+(on?' style="background:'+color+'"':'')+'></div>'; } return '<div class="grow" style="'+cols+'">'+c+'</div>'; }
+  function marker(label,atK,color){ var c='<div class="glabel">'+esc(label)+'</div>'; for(var j=0;j<N;j++){ var k=startK+j; c+='<div class="gcell'+(j===todayCol?' gnow':'')+'" data-mi="'+j+'">'+(k===atK?'<span class="gdot" style="background:'+color+'"></span>':'')+'</div>'; } return '<div class="grow" style="'+cols+'">'+c+'</div>'; }
+  function taskBar(label,fromIdx,toIdx,color,ref){ fromIdx=Math.max(0,Math.min(N-1,fromIdx)); toIdx=Math.max(fromIdx,Math.min(N-1,toIdx)); var c='<div class="glabel">'+esc(label)+'</div>'; for(var j=0;j<N;j++){ c+='<div class="gcell'+(j===todayCol?' gnow':'')+'" data-mi="'+j+'"></div>'; } c+='<div class="gbar" draggable="true" data-work="'+esc(ref)+'" style="grid-row:1;grid-column:'+(2+fromIdx)+' / '+(3+toIdx)+';background:'+color+'" title="'+esc(label)+'">'+esc(ref)+'</div>'; return '<div class="grow gtask" style="'+cols+'">'+c+'</div>'; }
+  var rows=bar("Warranty window",monthKey(y.wStart),monthKey(y.wEnd),"var(--brand)");
+  getPlans(y.id).forEach(function(p){ rows+=marker("◇ "+p.type+": "+p.title+(p.linked?" ["+p.linked+"]":""), monthKey(p.date), p.type==="Warranty"?"#6b4fa0":"#0e5a8a"); });
+  var tasks=filteredWork(y);
+  if(tasks.length){ tasks.forEach(function(t){ var col={"To do":"#1573ad","In progress":"#b7791f","Done":"#2f7d57"}[t.status]||"#1573ad"; rows+=taskBar(t.ref+" · "+t.title+(t.linked?" ["+t.linked+"]":""), monthKey(t.start||now)-startK, monthKey(t.end||t.start||now)-startK, col, t.ref); }); }
+  else rows+='<div class="grow" style="'+cols+'"><div class="glabel hint">No work items in filter</div></div>';
+  return '<div class="gantt"><div class="grow ghead" style="'+cols+'">'+header+'</div>'+rows
+    +'<div class="glegend"><span><span class="gsw" style="background:var(--brand)"></span>Warranty</span><span><span class="gsw" style="background:#1573ad"></span>To do</span><span><span class="gsw" style="background:#b7791f"></span>In progress</span><span><span class="gsw" style="background:#2f7d57"></span>Done</span><span><span class="gsw gdotleg" style="background:#0e5a8a"></span>Planned event</span></div></div>';
+}
+function renderOffers(y){
+  var rfqs=getItems(y.id).filter(function(t){return t.kind==="rfq";});
+  if(!rfqs.length) return '<div class="hint">No RFQs from this yacht yet.</div>';
+  var h='<div class="t-wrap"><table><thead><tr><th>RFQ</th><th>Title</th><th>Area</th><th>Quote</th><th>Status</th><th></th></tr></thead><tbody>';
+  rfqs.forEach(function(t){ var q=t.quote||{amount:0,state:"Requested"};
+    h+='<tr class="clickable" data-item="'+esc(t.ref)+'"><td style="font-weight:700">'+esc(t.ref)+'</td><td>'+esc(t.title)+'</td><td>'+esc(t.area)+'</td><td style="font-weight:700">'+(q.amount?money(q.amount):"—")+'</td><td>'+quotePill(q.state)+'</td><td><button class="btn btn-outline btn-sm">Open</button></td></tr>'; });
+  return h+'</tbody></table></div>';
+}
+
+/* ═══════ WORK: worklist + linked board & timeline ═══════ */
+function wViewBtn(v,label,cur){ return '<button data-wview="'+v+'"'+(v===cur?' class="on"':'')+'>'+esc(label)+'</button>'; }
+function workSel(id,label,opts,cur){ var o=opts.map(function(x){return '<option value="'+esc(x)+'"'+(x===cur?" selected":"")+'>'+(x==="all"?"All":esc(x))+'</option>';}).join(""); return '<label class="wfl">'+esc(label)+'<select data-wfilter="'+id+'">'+o+'</select></label>'; }
+function renderWork(y){
+  var v=state.workView||(state.workView="board"), f=state.workFilter;
+  var head='<div class="workbar"><div class="wtoggle">'+wViewBtn("list","Worklist",v)+wViewBtn("board","Board",v)+wViewBtn("timeline","Timeline",v)+'</div>'
+    +'<div class="wfilters">'+workSel("wf-status","Status",["all","To do","In progress","Done"],f.status)+workSel("wf-area","Area",["all"].concat(AREAS),f.area)+workSel("wf-assignee","Assignee",["all"].concat(BALTIC_TEAM),f.assignee)+'</div>'
+    +'<div class="wactions">'+(v==="list"?'<button class="btn btn-primary btn-sm" id="btn-add-work">＋ Add work</button>':'')+(v==="timeline"?'<button class="btn btn-primary btn-sm" id="btn-send-gantt">📤 Generate &amp; send</button>':'')+'</div></div>';
+  var body;
+  if(v==="list") body='<div class="banner banner-blue" style="margin-bottom:12px"><span class="x">📋</span><div>The worklist is the single source — it fills the Board and the Timeline. Add or edit tasks here and link each to its Ticket / Warranty / RFQ.</div></div>'+renderWorkList(y);
+  else if(v==="board") body='<div class="banner banner-blue" style="margin-bottom:12px"><span class="x">🗂️</span><div>Drag cards between columns to change status. Click a card to edit it; the case pill opens the linked Ticket / Warranty / RFQ.</div></div>'+renderKanban(y);
+  else body='<div class="banner banner-blue" style="margin-bottom:12px"><span class="x">📅</span><div>Timeline built from the worklist (bars coloured by status) plus the warranty window and planned events. <b>Drag a bar</b> to reschedule it. Use <b>Generate &amp; send</b> to share it with the yacht and service team.</div></div>'+renderGantt(y);
+  return head+body;
+}
+function renderWorkList(y){
+  var tasks=filteredWork(y); if(!tasks.length) return '<div class="hint">No work items match. Use ＋ Add work to create one.</div>';
+  var h='<div class="t-wrap"><table><thead><tr><th>Task</th><th>Area</th><th>Linked case</th><th>Assignee</th><th>Start</th><th>End</th><th>Status</th><th></th></tr></thead><tbody>';
+  tasks.forEach(function(t){ h+='<tr><td style="font-weight:600">'+esc(t.title)+'<div class="hint">'+esc(t.ref)+'</div></td><td>'+esc(t.area)+'</td><td>'+caseLink(t.linked)+'</td><td>'+esc(t.assignee||"Unassigned")+'</td><td style="white-space:nowrap">'+esc(t.start||"—")+'</td><td style="white-space:nowrap">'+esc(t.end||"—")+'</td><td>'+workStatusPill(t.status)+'</td><td><button class="btn btn-outline btn-sm" data-work-edit="'+esc(t.ref)+'">Edit</button></td></tr>'; });
+  return h+'</tbody></table></div>';
+}
+function openWorkForm(y){
+  var body='<form id="work-form"><div class="form-grid">'
+    +'<div class="field full"><label>Task <span class="req">*</span></label><input type="text" id="w-title" placeholder="e.g. Fit captive winch seal kit" required></div>'
+    +'<div class="field"><label>Area</label><select id="w-area">'+AREAS.map(function(a){return '<option>'+esc(a)+'</option>';}).join("")+'</select></div>'
+    +'<div class="field"><label>Assignee</label><select id="w-assignee">'+BALTIC_TEAM.map(function(a){return '<option>'+esc(a)+'</option>';}).join("")+'</select></div>'
+    +'<div class="field"><label>Start (YYYY-MM-DD)</label><input type="text" id="w-start" placeholder="2026-07-10"></div>'
+    +'<div class="field"><label>End (YYYY-MM-DD)</label><input type="text" id="w-end" placeholder="2026-07-15"></div>'
+    +'<div class="field"><label>Status</label><select id="w-status"><option>To do</option><option>In progress</option><option>Done</option></select></div>'
+    +'<div class="field full"><label>Linked ticket / warranty / RFQ</label><select id="w-linked">'+itemOptions(y.id,"")+'</select></div>'
+    +'</div><div id="work-msg"></div></form>';
+  openModal({ title:"Add work item", ref:y.name, wide:true, body:body, footer:'<button class="btn btn-outline" data-close="1">Cancel</button><button class="btn btn-primary" id="w-submit">Add to worklist</button>' });
+  el("w-submit").addEventListener("click",function(){ submitWork(y); });
+}
+function submitWork(y){
+  var t=el("w-title").value.trim(); if(!t){ el("work-msg").innerHTML='<div class="banner banner-amber" style="margin-top:12px"><span class="x">!</span><div>Add a task title.</div></div>'; return; }
+  var w={ref:"WL-"+Math.floor(5000+((new Date().getTime())%5000)),title:t,area:el("w-area").value,assignee:el("w-assignee").value,start:el("w-start").value.trim(),end:el("w-end").value.trim(),status:el("w-status").value,linked:el("w-linked").value};
+  addWork(y.id,w); closeModal(); state.tool="work"; state.workView="list"; showTab("tools");
+}
+function openWorkEdit(yid,ref){
+  var w=findWork(yid,ref); if(!w) return;
+  var body='<div class="det-grid">'
+    +'<div style="grid-column:1/-1"><div class="l">Task</div><input type="text" id="we-title" value="'+esc(w.title)+'"></div>'
+    +'<div><div class="l">Area</div><select id="we-area">'+AREAS.map(function(a){return '<option'+(a===w.area?" selected":"")+'>'+esc(a)+'</option>';}).join("")+'</select></div>'
+    +'<div><div class="l">Assignee</div><select id="we-assignee">'+BALTIC_TEAM.map(function(a){return '<option'+(a===(w.assignee||"Unassigned")?" selected":"")+'>'+esc(a)+'</option>';}).join("")+'</select></div>'
+    +'<div><div class="l">Start</div><input type="text" id="we-start" value="'+esc(w.start||"")+'"></div>'
+    +'<div><div class="l">End</div><input type="text" id="we-end" value="'+esc(w.end||"")+'"></div>'
+    +'<div><div class="l">Status</div><select id="we-status">'+["To do","In progress","Done"].map(function(s){return '<option'+(s===w.status?" selected":"")+'>'+s+'</option>';}).join("")+'</select></div>'
+    +'<div><div class="l">Linked case</div><select id="we-linked">'+itemOptions(yid,w.linked||"")+'</select></div>'
+    +'</div>'+(w.linked?'<div style="margin-top:10px">Open linked case: '+caseLink(w.linked)+'</div>':'');
+  openModal({ title:"Edit work item", ref:w.ref, wide:true, body:body, footer:'<button class="btn btn-outline" data-close="1">Close</button><button class="btn btn-primary" id="we-save">Save</button>' });
+  var cl=el("modal-body").querySelector("[data-caselink]"); if(cl) cl.addEventListener("click",function(){ openItemDetail(yid,cl.getAttribute("data-caselink")); });
+  el("we-save").addEventListener("click",function(){ var ww=findWork(yid,ref); ww.title=el("we-title").value.trim()||ww.title; ww.area=el("we-area").value; ww.assignee=el("we-assignee").value; ww.start=el("we-start").value.trim(); ww.end=el("we-end").value.trim(); ww.status=el("we-status").value; ww.linked=el("we-linked").value; saveWork(yid,getWork(yid)); closeModal(); state.tool="work"; showTab("tools"); });
+}
+function openSendGantt(y){
+  var body='<p class="ink">Generate the current schedule (with your filters applied) to send to the yacht and the Baltic service team.</p>'
+    +'<div class="sec-label">Recipients</div><label style="display:block;margin-bottom:6px"><input type="checkbox" id="rc-yacht" checked> Yacht owner / crew — '+esc(y.name)+'</label><label style="display:block"><input type="checkbox" id="rc-team" checked> Baltic service team</label>'
+    +'<div class="sec-label">Preview</div>'+renderGantt(y);
+  openModal({ title:"Generate & send schedule", ref:y.name, wide:true, body:body, footer:'<button class="btn btn-outline" data-close="1">Close</button><button class="btn btn-soft" id="g-print">🖨 Printable / PDF</button><button class="btn btn-primary" id="g-send">Send</button>' });
+  el("g-print").addEventListener("click",function(){ printGantt(y); });
+  el("g-send").addEventListener("click",function(){ var to=[]; if(el("rc-yacht").checked) to.push("the yacht"); if(el("rc-team").checked) to.push("the service team"); closeModal(); openModal({title:"Schedule sent",ref:y.name,body:'<div class="banner banner-green"><span class="x">✓</span><div>Schedule prepared for '+esc(to.join(" & ")||"—")+'. <span class="hint">Prototype — on Hub integration this emails the Gantt (PDF) to the selected recipients automatically.</span></div></div>',footer:'<button class="btn btn-primary" data-close="1">Close</button>'}); });
+}
+function printGantt(y){ var pa=el("print-area"); pa.innerHTML='<div style="padding:22px"><h2 style="font-family:var(--serif);color:#16242e;margin-bottom:2px">'+esc(y.name)+' — Schedule</h2><div style="color:#5b6b78;font-size:12px;margin-bottom:14px">'+esc(y.hull)+' · Generated '+nowStamp().slice(0,10)+' · Baltic Yachts</div>'+renderGantt(y)+'</div>'; window.print(); }
+function renderFleetGantt(){
+  var now=new Date(), startK=monthKey(now)-6, N=18, todayCol=6, i;
+  var cols='grid-template-columns:150px repeat('+N+',minmax(22px,1fr))';
+  var header='<div class="glabel"></div>';
+  for(i=0;i<N;i++){ var yr=Math.floor((startK+i)/12), mo=((startK+i)%12+12)%12, d=new Date(yr,mo,1); header+='<div class="gmon'+(i===todayCol?' gnow':'')+'">'+d.toLocaleDateString("en-GB",{month:"short"})+(mo===0?"<br>"+yr:"")+'</div>'; }
+  var rows="";
+  YACHTS.forEach(function(y){
+    var work=getWork(y.id), spanFrom=null, spanTo=null;
+    work.forEach(function(w){ var s=monthKey(w.start||now), e=monthKey(w.end||w.start||now); if(spanFrom===null||s<spanFrom) spanFrom=s; if(spanTo===null||e>spanTo) spanTo=e; });
+    var wEndK=monthKey(y.wEnd);
+    var c='<div class="glabel"><button class="fleetlabel" data-open-yacht="'+y.id+'">'+esc(y.name)+' <span class="hint">'+esc(y.hull)+'</span></button></div>';
+    for(var j=0;j<N;j++){ var k=startK+j; var onWork=(spanFrom!==null&&k>=spanFrom&&k<=spanTo); c+='<div class="gcell'+(j===todayCol?' gnow':'')+'"'+(onWork?' style="background:#1573ad"':'')+'>'+(k===wEndK?'<span class="gdot" style="background:#6b4fa0"></span>':'')+'</div>'; }
+    rows+='<div class="grow" style="'+cols+'">'+c+'</div>';
+  });
+  return '<div class="gantt"><div class="grow ghead" style="'+cols+'">'+header+'</div>'+rows+'<div class="glegend"><span><span class="gsw" style="background:#1573ad"></span>Scheduled work window</span><span><span class="gsw gdotleg" style="background:#6b4fa0"></span>Warranty ends</span></div></div>';
+}
+
+/* item card (ticket or warranty) */
+function itemCard(t){
+  var resp=lastResponder(t);
+  return '<div class="item-card" data-item="'+esc(t.ref)+'"><div class="tt"><span class="ref">'+esc(t.ref)+'</span><div class="tags">'+kindPill(t.kind)+urgencyPill(t.urgency)+statusPill(t.status)+(t.kind==="rfq"?quotePill((t.quote&&t.quote.state)||"Requested"):"")+'</div></div>'
+    +'<h4>'+esc(t.title)+'</h4><div class="tags"><span class="pill p-grey">'+esc(t.area)+'</span><span class="hint">'+esc(t.date)+' · '+esc(t.reporter)+'</span></div>'
+    +'<div class="desc">'+esc(t.desc)+'</div>'
+    +'<div class="meta2"><span><b>Assigned:</b> '+esc(t.assignee||"Unassigned")+'</span><span><b>Responded:</b> '+esc(resp||"—")+'</span>'+(t.kind==="rfq"?'<span><b>Quote:</b> '+((t.quote&&t.quote.amount)?money(t.quote.amount):"—")+'</span>':'<span><b>Cost:</b> '+money(t.cost)+' · '+esc(t.billable||"—")+'</span>')+'<span>💬 '+((t.thread||[]).length)+'</span></div></div>';
+}
+function renderItemList(id,kind,containerId,countId){
+  var list=getItems(id).filter(function(t){return t.kind===kind;}), box=el(containerId); if(!box) return; var h="";
+  if(!list.length) box.innerHTML='<div class="hint">Nothing logged yet.</div>';
+  else{ for(var i=0;i<list.length;i++) h+=itemCard(list[i]); box.innerHTML=h;
+    box.querySelectorAll("[data-item]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(id,c.getAttribute("data-item")); }); }); }
+  if(countId){ var openN=list.filter(function(t){return t.status!=="Closed";}).length; var e=el(countId); if(e) e.textContent=openN+" open · "+list.length+" total"; }
+}
+
+/* ═══════ WIRING ═══════ */
+function wireYachtShell(y){ el("subnav").querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){ state.tool=null; showTab(b.getAttribute("data-tab")); }); }); }
+function wirePanel(y,tab){
+  el("view-yacht").querySelectorAll("[data-goto]").forEach(function(b){ b.addEventListener("click",function(){ showTab(b.getAttribute("data-goto")); }); });
+  el("view-yacht").querySelectorAll("[data-raise]").forEach(function(b){ b.addEventListener("click",function(){ openItemForm(y,b.getAttribute("data-raise")); }); });
+  el("view-yacht").querySelectorAll("[data-doc]").forEach(function(b){ b.addEventListener("click",function(){ openModal({title:"Document",ref:b.getAttribute("data-doc"),body:"<p class='ink'>In the standalone prototype, documents are placeholders.</p><p>On integration, <b>Open</b> links straight to this file in the yacht’s library — published automatically from the project site built during construction.</p>"}); }); });
+  var ov=el("ov-share"); if(ov) ov.addEventListener("click",shareYacht);
+  if(tab==="comms"){ renderItemList(y.id,"ticket","ticket-list","tk-count"); el("btn-new-ticket").addEventListener("click",function(){ openItemForm(y,"ticket"); }); }
+  if(tab==="warranty"){ renderItemList(y.id,"warranty","warranty-list",null); }
+  if(tab==="rfq"){ renderItemList(y.id,"rfq","rfq-list","rfq-count"); el("btn-new-rfq").addEventListener("click",function(){ openItemForm(y,"rfq"); }); }
+  if(tab==="aftersale"){ el("view-yacht").querySelectorAll("[data-plan-confirm]").forEach(function(b){ b.addEventListener("click",function(){ confirmPlan(y.id,b.getAttribute("data-plan-confirm")); }); });
+    el("view-yacht").querySelectorAll("[data-caselink]").forEach(function(b){ b.addEventListener("click",function(ev){ ev.stopPropagation(); openItemDetail(y.id,b.getAttribute("data-caselink")); }); }); }
+  if(tab==="tools"){
+    var back=el("tool-back"); if(back) back.addEventListener("click",function(){ state.tool=null; showTab("tools"); });
+    el("view-yacht").querySelectorAll("[data-tool]").forEach(function(b){ b.addEventListener("click",function(){ state.tool=b.getAttribute("data-tool"); showTab("tools"); }); });
+    el("view-yacht").querySelectorAll("[data-hub]").forEach(function(b){ b.addEventListener("click",function(){ openModal({title:b.getAttribute("data-hub"),body:"<p class='ink'>This tool lives on the Baltic project site for "+esc(y.name)+".</p><p>In the standalone prototype it isn’t linked. Once Yacht Life is embedded in the Baltic Hub, this opens the yacht’s "+esc(b.getAttribute("data-hub"))+" tool directly — Baltic only.</p>"}); }); });
+    var ap=el("btn-add-plan"); if(ap) ap.addEventListener("click",function(){ openPlanForm(y); });
+    el("view-yacht").querySelectorAll("[data-plan-edit]").forEach(function(b){ b.addEventListener("click",function(){ openPlanEdit(y.id,b.getAttribute("data-plan-edit")); }); });
+    el("view-yacht").querySelectorAll("[data-wview]").forEach(function(b){ b.addEventListener("click",function(){ state.workView=b.getAttribute("data-wview"); showTab("tools"); }); });
+    el("view-yacht").querySelectorAll("[data-wfilter]").forEach(function(sel){ sel.addEventListener("change",function(){ state.workFilter[sel.getAttribute("data-wfilter").replace("wf-","")]=sel.value; showTab("tools"); }); });
+    var aw=el("btn-add-work"); if(aw) aw.addEventListener("click",function(){ openWorkForm(y); });
+    var sg=el("btn-send-gantt"); if(sg) sg.addEventListener("click",function(){ openSendGantt(y); });
+    el("view-yacht").querySelectorAll("[data-work-edit]").forEach(function(b){ b.addEventListener("click",function(){ openWorkEdit(y.id,b.getAttribute("data-work-edit")); }); });
+    el("view-yacht").querySelectorAll(".kcard[data-work]").forEach(function(card){
+      card.addEventListener("dragstart",function(e){ e.dataTransfer.setData("text/plain",card.getAttribute("data-work")); e.dataTransfer.effectAllowed="move"; card.classList.add("dragging"); });
+      card.addEventListener("dragend",function(){ card.classList.remove("dragging"); });
+      card.addEventListener("click",function(e){ if(e.target.closest&&e.target.closest("[data-caselink]")) return; openWorkEdit(y.id,card.getAttribute("data-work")); });
+    });
+    el("view-yacht").querySelectorAll(".kcol").forEach(function(col){
+      col.addEventListener("dragover",function(e){ e.preventDefault(); col.classList.add("kover"); });
+      col.addEventListener("dragleave",function(){ col.classList.remove("kover"); });
+      col.addEventListener("drop",function(e){ e.preventDefault(); col.classList.remove("kover"); var ref=e.dataTransfer.getData("text/plain"); if(ref) setWorkStatus(y.id,ref,col.getAttribute("data-status")); });
+    });
+    var gchart=el("view-yacht").querySelector(".gantt");
+    if(gchart){
+      el("view-yacht").querySelectorAll(".gbar[data-work]").forEach(function(bar){
+        bar.addEventListener("dragstart",function(e){ e.dataTransfer.setData("text/plain",bar.getAttribute("data-work")); e.dataTransfer.effectAllowed="move"; bar.classList.add("dragging"); });
+        bar.addEventListener("dragend",function(){ bar.classList.remove("dragging"); });
+      });
+      gchart.addEventListener("dragover",function(e){ if(e.target.closest&&e.target.closest(".gcell[data-mi]")){ e.preventDefault(); } });
+      gchart.addEventListener("drop",function(e){ var cell=e.target.closest&&e.target.closest(".gcell[data-mi]"); if(!cell) return; e.preventDefault(); var ref=e.dataTransfer.getData("text/plain"); if(ref) rescheduleWork(y.id,ref,parseInt(cell.getAttribute("data-mi"),10)); });
+    }
+    el("view-yacht").querySelectorAll("[data-caselink]").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation(); openItemDetail(y.id,b.getAttribute("data-caselink")); }); });
+    el("view-yacht").querySelectorAll("[data-item]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(y.id,c.getAttribute("data-item")); }); });
+  }
+}
+
+/* ═══════ RAISE (pop-out) ═══════ */
+var pendingFiles={photos:[],logs:[]};
+function openItemForm(y,kind){
+  pendingFiles={photos:[],logs:[]};
+  var isW=kind==="warranty", isR=kind==="rfq";
+  var opts=AREAS.map(function(a){return '<option value="'+esc(a)+'">'+esc(a)+'</option>';}).join("");
+  var body='<form id="item-form"><div class="form-grid">'
+    +'<div class="field full"><label>'+(isR?"Request title":isW?"Claim title":"Issue title")+' <span class="req">*</span></label><input type="text" id="f-title" placeholder="Short summary" required></div>'
+    +'<div class="field"><label>Area <span class="req">*</span></label><select id="f-area">'+opts+'</select></div>'
+    +'<div class="field"><label>Your name / role</label><input type="text" id="f-reporter" placeholder="e.g. Captain — '+esc(y.name)+'"></div>'
+    +'<div class="field full"><label>Description <span class="req">*</span></label><textarea id="f-desc" placeholder="Describe what is happening, when it started, and any troubleshooting done…" required></textarea></div>'
+    +'<div class="field full"><label>Urgency</label><div class="urg" id="f-urg">'+urgRadio("low","Low")+urgRadio("normal","Normal")+urgRadio("high","High")+urgRadio("critical","Critical")+'</div></div>'
+    +'<div class="field"><label>Photos</label><label class="filebox" for="f-photos"><div class="fi">📷 Add photos</div><div class="fs">JPG / PNG — multiple</div></label><input type="file" id="f-photos" accept="image/*" multiple style="display:none"><div class="chips" id="chips-photos"></div></div>'
+    +'<div class="field"><label>Data logs</label><label class="filebox" for="f-logs"><div class="fi">📈 Add data logs</div><div class="fs">CSV / JSON / TXT / LOG</div></label><input type="file" id="f-logs" accept=".csv,.json,.txt,.log,.xml" multiple style="display:none"><div class="chips" id="chips-logs"></div></div>'
+    +'</div><div id="form-msg"></div></form>';
+  openModal({ title:(isR?"Request a quote":isW?"Raise a warranty claim":"Raise a ticket"), ref:y.name, wide:true, body:body,
+    footer:'<button class="btn btn-outline" data-close="1">Cancel</button><button class="btn btn-primary" id="f-submit">'+(isR?"Send request to Baltic":"Send to Baltic Team")+'</button>' });
+  wireFiles("f-photos","chips-photos","photos"); wireFiles("f-logs","chips-logs","logs");
+  el("f-urg").querySelectorAll("input").forEach(function(inp){ inp.addEventListener("change",syncUrg); }); syncUrg();
+  el("f-submit").addEventListener("click",function(){ submitItem(y,kind); });
+}
+function urgRadio(v,l){ var c=v==="normal"?" checked":""; return '<label data-urg="'+v+'"><input type="radio" name="urg" value="'+v+'"'+c+'><span class="d d-'+v+'"></span>'+l+'</label>'; }
+function syncUrg(){ var box=el("f-urg"); if(!box) return; box.querySelectorAll("label").forEach(function(lb){ lb.className=lb.querySelector("input").checked?"sel-"+lb.getAttribute("data-urg"):""; }); }
+function wireFiles(inputId,chipsId,key){ var inp=el(inputId); inp.addEventListener("change",function(){ for(var i=0;i<inp.files.length;i++) pendingFiles[key].push(inp.files[i].name); renderChips(chipsId,key); inp.value=""; }); }
+function renderChips(chipsId,key){ var box=el(chipsId),arr=pendingFiles[key],h=""; for(var i=0;i<arr.length;i++) h+='<span class="chip">'+esc(arr[i])+'<span class="rm" data-i="'+i+'">×</span></span>'; box.innerHTML=h;
+  box.querySelectorAll(".rm").forEach(function(x){ x.addEventListener("click",function(){ arr.splice(parseInt(x.getAttribute("data-i"),10),1); renderChips(chipsId,key); }); }); }
+function submitItem(y,kind){
+  var title=el("f-title").value.trim(), desc=el("f-desc").value.trim();
+  if(!title||!desc){ el("form-msg").innerHTML='<div class="banner banner-amber" style="margin-top:14px"><span class="x">!</span><div>Please add a title and description.</div></div>'; return; }
+  var urg="normal", ur=el("f-urg").querySelector("input:checked"); if(ur) urg=ur.value;
+  var reporter=el("f-reporter").value.trim()||("Owner / crew — "+y.name);
+  var num=Math.floor(2000+((new Date().getTime())%8000));
+  var ref=(kind==="warranty"?"WC-":(kind==="rfq"?"RFQ-":"BY-"))+num;
+  var it={ ref:ref, kind:kind, title:title, area:el("f-area").value, urgency:urg, status:"Open", date:nowStamp().slice(0,10), reporter:reporter,
+    assignee:"Unassigned", cost:0, billable:(kind==="warranty"?"Warranty":"Chargeable"),
+    desc:desc, photos:pendingFiles.photos.length, logs:pendingFiles.logs.length,
+    thread:[{when:nowStamp(),side:"owner",author:reporter,text:desc}] };
+  if(kind==="rfq") it.quote={amount:0,state:"Requested"};
+  addItem(y.id,it); closeModal();
+  if(state.tab==="comms"&&kind==="ticket") renderItemList(y.id,"ticket","ticket-list","tk-count");
+  if(state.tab==="warranty"&&kind==="warranty") renderItemList(y.id,"warranty","warranty-list",null);
+  if(state.tab==="rfq"&&kind==="rfq") renderItemList(y.id,"rfq","rfq-list","rfq-count");
+  openModal({ title:(kind==="rfq"?"Request logged":kind==="warranty"?"Claim logged":"Ticket logged"), ref:ref,
+    body:'<div class="banner banner-green"><span class="x">✓</span><div><b>'+esc(ref)+'</b> has been logged and sent to the Baltic Team. <span class="hint">Prototype — on Hub integration this creates a tracked record and notifies your service contacts by email.</span></div></div>',
+    footer:'<button class="btn btn-outline" data-close="1">Close</button><button class="btn btn-primary" id="view-new">Open it</button>' });
+  el("view-new").addEventListener("click",function(){ openItemDetail(y.id,ref); });
+}
+
+/* ═══════ DETAIL (pop-out, two-way) ═══════ */
+function openItemDetail(yid,ref){
+  var t=findItem(yid,ref); if(!t) return;
+  var defaultSide=state.ownerMode?"owner":"baltic";
+  var resp=lastResponder(t);
+  var asgOpts=BALTIC_TEAM.map(function(a){return '<option value="'+esc(a)+'"'+(a===(t.assignee||"Unassigned")?" selected":"")+'>'+esc(a)+'</option>';}).join("");
+  var billOpts=BILLABLE.map(function(a){return '<option value="'+esc(a)+'"'+(a===t.billable?" selected":"")+'>'+esc(a)+'</option>';}).join("");
+  var body='<div class="det-row">'+kindPill(t.kind)+urgencyPill(t.urgency)+statusPill(t.status)+'<span class="pill p-grey">'+esc(t.area)+'</span></div>'
+    +'<h3 style="font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:14px">'+esc(t.title)+'</h3>'
+    +'<div class="det-grid">'
+    +'<div><div class="l">Reported</div><div class="v">'+esc(t.date)+'</div></div>'
+    +'<div><div class="l">By</div><div class="v">'+esc(t.reporter)+'</div></div>'
+    +'<div><div class="l">Assigned to (working on it)</div><select id="d-assignee">'+asgOpts+'</select></div>'
+    +'<div><div class="l">Last responded by</div><div class="v" id="d-resp">'+esc(resp||"—")+'</div></div>'
+    +(state.ownerMode?'':'<div><div class="l">Cost (EUR)</div><input type="number" id="d-cost" value="'+(t.cost||0)+'" min="0" step="50"></div><div><div class="l">Billable</div><select id="d-bill">'+billOpts+'</select></div>')
+    +'<div><div class="l">Photos</div><div class="v">'+(t.photos||0)+'</div></div>'
+    +'<div><div class="l">Data logs</div><div class="v">'+(t.logs||0)+'</div></div>'
+    +'</div>'
+    +(t.kind==="rfq"?('<div class="sec-label">Quote / Offer</div><div class="det-grid"><div><div class="l">Amount (EUR)</div>'+(state.ownerMode?'<div class="v">'+((t.quote&&t.quote.amount)?money(t.quote.amount):"—")+'</div>':'<input type="number" id="d-quote" value="'+((t.quote&&t.quote.amount)||0)+'" min="0" step="100">')+'</div><div><div class="l">Offer status</div><div class="v" id="d-qstate">'+quotePill((t.quote&&t.quote.state)||"Requested")+'</div></div></div><div class="status-set" id="quote-set" style="margin-top:8px">'+(state.ownerMode?(qBtn("Accepted",t)+qBtn("Declined",t)):(qBtn("Requested",t)+qBtn("Quoted",t)+qBtn("Accepted",t)+qBtn("Declined",t)))+'</div>'):'')
+    +'<div class="sec-label">Description</div><p class="ink">'+esc(t.desc)+'</p>'
+    +'<div class="sec-label">Status</div><div class="status-set" id="status-set">'+statusBtn("Open",t.status)+statusBtn("In progress",t.status)+statusBtn("Closed",t.status)+'</div>'
+    +(state.ownerMode?'':'<div class="sec-label">Linked work items</div>'+linkedWorkHtml(yid,ref))
+    +'<div class="sec-label">Conversation</div><div class="thread" id="thread">'+threadHtml(t)+'</div>'
+    +'<div class="reply"><div class="rc"><label>Reply as</label><select id="r-side"><option value="owner"'+(defaultSide==="owner"?" selected":"")+'>Yacht (owner / crew)</option><option value="baltic"'+(defaultSide==="baltic"?" selected":"")+'>Baltic Team</option></select><input type="text" id="r-name" placeholder="Your name (optional)" style="flex:1;min-width:120px;padding:6px 9px;border:1.5px solid var(--line);border-radius:var(--r2);font:inherit;font-size:12.5px"></div>'
+    +'<textarea id="r-text" placeholder="Write a reply…"></textarea></div>';
+  openModal({ title:(t.kind==="rfq"?"RFQ / Quote":t.kind==="warranty"?"Warranty claim":"Ticket"), ref:t.ref, wide:true, body:body,
+    footer:'<button class="btn btn-outline" data-close="1">Close</button>'+(state.ownerMode?'':'<button class="btn btn-soft" id="add-to-work">＋ Add to worklist</button>')+'<button class="btn btn-primary" id="r-send">Send reply</button>' });
+  el("status-set").querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){ setItemStatus(yid,ref,b.getAttribute("data-st")); }); });
+  el("d-assignee").addEventListener("change",function(){ var it=findItem(yid,ref); var v=el("d-assignee").value; it.assignee=v; it.thread.push({when:nowStamp(),side:"system",author:"",text:(v==="Unassigned"?"Unassigned.":"Assigned to "+v+".")}); saveItems(yid,getItems(yid)); el("thread").innerHTML=threadHtml(it); refreshLists(yid); });
+  var dc=el("d-cost"); if(dc) dc.addEventListener("change",function(){ var it=findItem(yid,ref); it.cost=parseInt(dc.value,10)||0; saveItems(yid,getItems(yid)); refreshLists(yid); });
+  var db=el("d-bill"); if(db) db.addEventListener("change",function(){ var it=findItem(yid,ref); it.billable=db.value; saveItems(yid,getItems(yid)); refreshLists(yid); });
+  var dq=el("d-quote"); if(dq) dq.addEventListener("change",function(){ var it=findItem(yid,ref); it.quote=it.quote||{amount:0,state:"Requested"}; it.quote.amount=parseInt(dq.value,10)||0; saveItems(yid,getItems(yid)); refreshLists(yid); });
+  var qset=el("quote-set"); if(qset) qset.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){ setQuoteState(yid,ref,b.getAttribute("data-q")); }); });
+  el("r-send").addEventListener("click",function(){ sendReply(yid,ref); });
+  var atw=el("add-to-work"); if(atw) atw.addEventListener("click",function(){ addWorkFromCase(yid,ref); });
+}
+function statusBtn(s,cur){ var cls=s===cur?(s==="Open"?" class=\"on-open\"":s==="In progress"?" class=\"on-prog\"":" class=\"on-closed\""):""; return '<button data-st="'+esc(s)+'"'+cls+'>'+esc(s)+'</button>'; }
+function threadHtml(t){ var m=t.thread||[]; if(!m.length) return '<div class="hint">No messages yet.</div>'; var h="";
+  for(var i=0;i<m.length;i++){ var x=m[i]; if(x.side==="system"){ h+='<div class="msg system">'+esc(x.text)+' · '+esc(x.when)+'</div>'; }
+    else{ h+='<div class="msg '+(x.side==="owner"?"owner":"baltic")+'"><div class="who">'+(x.side==="owner"?"Yacht":"Baltic")+' · '+esc(x.author||"")+'</div><div>'+esc(x.text)+'</div><div class="tm">'+esc(x.when)+'</div></div>'; } }
+  return h; }
+function sendReply(yid,ref){ var txt=el("r-text").value.trim(); if(!txt) return; var side=el("r-side").value;
+  var nm=el("r-name").value.trim()||(side==="owner"?"Owner / crew":(state.desk?"Baltic Service Desk":"Baltic Team"));
+  var it=findItem(yid,ref); it.thread=it.thread||[]; it.thread.push({when:nowStamp(),side:side,author:nm,text:txt}); saveItems(yid,getItems(yid));
+  el("thread").innerHTML=threadHtml(it); el("r-text").value=""; var r=el("d-resp"); if(r) r.textContent=lastResponder(it)||"—";
+  var th=el("thread"); th.scrollTop=th.scrollHeight; refreshLists(yid); }
+function setItemStatus(yid,ref,st){ var t=findItem(yid,ref); if(!t||t.status===st) return; t.status=st; t.thread=t.thread||[]; t.thread.push({when:nowStamp(),side:"system",author:"",text:"Status changed to "+st+"."}); saveItems(yid,getItems(yid));
+  var ss=el("status-set"); if(ss) ss.querySelectorAll("button").forEach(function(b){ var s=b.getAttribute("data-st"); b.className=s===st?(s==="Open"?"on-open":s==="In progress"?"on-prog":"on-closed"):""; });
+  var th=el("thread"); if(th) th.innerHTML=threadHtml(t); refreshLists(yid); }
+function refreshLists(yid){ if(state.view==="yacht"){ if(state.tab==="comms") renderItemList(yid,"ticket","ticket-list","tk-count"); if(state.tab==="warranty") renderItemList(yid,"warranty","warranty-list",null); if(state.tab==="rfq") renderItemList(yid,"rfq","rfq-list","rfq-count"); if(state.tab==="tools") showTab("tools"); } if(state.view==="servicedesk") renderDesk(); }
+
+/* ═══════ SERVICE DESK ═══════ */
+/* time / SLA helpers */
+function parseWhen(s){ if(!s) return null; s=String(s); if(s.indexOf(" ")>0) s=s.replace(" ","T"); else if(s.length===10) s=s+"T00:00:00"; var d=new Date(s); return isNaN(d.getTime())?null:d; }
+function itemCreated(it){ return parseWhen((it.thread&&it.thread[0]&&it.thread[0].when)||it.date); }
+function firstResponseH(it){ var c=itemCreated(it); if(!c) return null; var t=it.thread||[]; for(var i=0;i<t.length;i++){ if(t[i].side==="baltic"){ var d=parseWhen(t[i].when); if(d) return (d-c)/3600000; } } return null; }
+function lastWhen(it){ var t=it.thread||[]; for(var i=t.length-1;i>=0;i--){ var d=parseWhen(t[i].when); if(d) return d; } return itemCreated(it); }
+function resolutionD(it){ if(it.status!=="Closed") return null; var c=itemCreated(it),l=lastWhen(it); return (c&&l)?(l-c)/86400000:null; }
+function ageD(it){ if(it.status==="Closed") return null; var c=itemCreated(it); return c?(new Date()-c)/86400000:null; }
+var SLA_TARGET_H={critical:4,high:24,normal:72,low:120};
+function slaBreach(it){ var tgt=SLA_TARGET_H[it.urgency]||72; var fr=firstResponseH(it); if(fr!=null) return fr>tgt; var a=ageD(it); return a!=null?a*24>tgt:false; }
+function fmtDur(h){ if(h==null) return "—"; return h<48?((Math.round(h*10)/10)+" h"):((Math.round(h/24*10)/10)+" d"); }
+function avg(a){ if(!a.length) return null; var s=0,i; for(i=0;i<a.length;i++) s+=a[i]; return s/a.length; }
+function cap(s){ s=String(s); return s.charAt(0).toUpperCase()+s.slice(1); }
+function yachtLabel(id){ var y=yById(id); return y?y.name:id; }
+
+/* filter + collect */
+function passFilter(it,y,f){ if(f.status!=="all"&&it.status!==f.status) return false; if(f.urgency!=="all"&&it.urgency!==f.urgency) return false; if(f.area!=="all"&&it.area!==f.area) return false; if(f.kind!=="all"&&it.kind!==f.kind) return false; if(f.yacht!=="all"&&y.id!==f.yacht) return false; return true; }
+function collectItems(f){ var out=[],i,j; for(i=0;i<YACHTS.length;i++){ var y=YACHTS[i], items=getItems(y.id); for(j=0;j<items.length;j++){ if(passFilter(items[j],y,f)) out.push({y:y,it:items[j]}); } } return out; }
+
+function computeStats(pairs){
+  var s={items:0,openTickets:0,openClaims:0,warrantyCost:0,serviceCost:0,goodwillCost:0,byStatus:{Open:0,"In progress":0,Closed:0},byArea:{},byYacht:{},age:{a:0,b:0,c:0},fr:[],res:[],breaches:0};
+  for(var i=0;i<pairs.length;i++){ var it=pairs[i].it, y=pairs[i].y; s.items++;
+    s.byStatus[it.status]=(s.byStatus[it.status]||0)+1; s.byArea[it.area]=(s.byArea[it.area]||0)+1; s.byYacht[y.id]=(s.byYacht[y.id]||0)+(it.cost||0);
+    if(it.billable==="Warranty") s.warrantyCost+=(it.cost||0); else if(it.billable==="Goodwill") s.goodwillCost+=(it.cost||0); else s.serviceCost+=(it.cost||0);
+    if(it.status!=="Closed"){ if(it.kind==="warranty") s.openClaims++; else s.openTickets++; }
+    var fr=firstResponseH(it); if(fr!=null) s.fr.push(fr);
+    var rd=resolutionD(it); if(rd!=null) s.res.push(rd);
+    if(slaBreach(it)) s.breaches++;
+    var a=ageD(it); if(a!=null){ if(a<=7)s.age.a++; else if(a<=30)s.age.b++; else s.age.c++; }
+  }
+  return s;
+}
+function kpiBox(l,v,u,cls){ return '<div class="kpi'+(cls?" "+cls:"")+'"><div class="l">'+esc(l)+'</div><div class="v" style="font-size:19px">'+esc(String(v))+'</div><div class="u">'+esc(u)+'</div></div>'; }
+function filterSel(id,label,opts,cur,labeler){ var o=opts.map(function(v){ var lab=v==="all"?"All":(labeler?labeler(v):cap(v)); return '<option value="'+esc(v)+'"'+(v===cur?" selected":"")+'>'+esc(lab)+'</option>'; }).join(""); return '<div class="fg"><label>'+esc(label)+'</label><select data-filter="'+id+'">'+o+'</select></div>'; }
+function deskItemCard(y,it){ var fr=firstResponseH(it), br=slaBreach(it);
+  return '<div class="item-card" data-item-desk="1" data-yid="'+y.id+'" data-ref="'+esc(it.ref)+'"><div class="tt"><span class="ref">'+esc(y.name)+' · '+esc(it.ref)+'</span><div class="tags">'+kindPill(it.kind)+urgencyPill(it.urgency)+statusPill(it.status)+(br?'<span class="pill p-red">SLA</span>':'')+'</div></div><h4>'+esc(it.title)+'</h4><div class="meta2"><span><b>Area:</b> '+esc(it.area)+'</span><span><b>Assigned:</b> '+esc(it.assignee||"Unassigned")+'</span><span><b>1st response:</b> '+fmtDur(fr)+'</span><span><b>Cost:</b> '+money(it.cost)+'</span></div></div>'; }
+function donutSVG(segs){
+  var total=0,i; for(i=0;i<segs.length;i++) total+=segs[i].value; if(total<=0) total=1;
+  var r=52,C=2*Math.PI*r,off=0,circ="";
+  for(i=0;i<segs.length;i++){ var frac=segs[i].value/total, len=frac*C;
+    circ+='<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="'+segs[i].color+'" stroke-width="16" stroke-dasharray="'+len.toFixed(2)+' '+(C-len).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"></circle>'; off+=len; }
+  return '<svg viewBox="0 0 120 120" width="120" height="120" style="transform:rotate(-90deg)"><circle cx="60" cy="60" r="'+r+'" fill="none" stroke="#eef1f3" stroke-width="16"></circle>'+circ+'</svg>';
+}
+function hbars(rows,color,fmt){ var max=0,i; for(i=0;i<rows.length;i++) if(rows[i].v>max) max=rows[i].v; if(max<=0) max=1; var h="";
+  for(i=0;i<rows.length;i++){ var w=Math.round(rows[i].v/max*100); h+='<div class="hbar"><div class="hl">'+esc(rows[i].l)+'</div><div class="ht"><div class="hf" style="width:'+w+'%;background:'+(color||"var(--brand)")+'"></div></div><div class="hv">'+(fmt?fmt(rows[i].v):rows[i].v)+'</div></div>'; }
+  return h||'<div class="hint">No data.</div>'; }
+function openServiceDesk(){ state.deskFilter={status:"all",urgency:"all",area:"all",kind:"all",yacht:"all"}; renderDesk(); setView("servicedesk"); }
+function renderDesk(){
+  var f=state.deskFilter, pairs=collectItems(f), s=computeStats(pairs), i;
+  pairs.sort(function(a,b){ var ao=a.it.status!=="Closed"?0:1, bo=b.it.status!=="Closed"?0:1; if(ao!==bo) return ao-bo; return (ageD(b.it)||0)-(ageD(a.it)||0); });
+  var fu=[];
+  for(i=0;i<YACHTS.length;i++){ var yy=YACHTS[i]; if(f.yacht!=="all"&&yy.id!==f.yacht) continue; var mo=monthsUntil(yy.wEnd),cls,label;
+    if(yy.warranty==="expired"||mo<0){cls="p-grey";label="Lapsed"+(mo<0?" "+Math.abs(mo)+"m ago":"");} else if(mo<=6){cls="p-amber";label="Due in "+mo+"m";} else {cls="p-green";label=mo+"m left";}
+    fu.push({y:yy,mo:mo,cls:cls,label:label}); }
+  fu.sort(function(a,b){return a.mo-b.mo;});
+  var dueSoon=fu.filter(function(x){return x.cls==="p-amber";}).length;
+  var statusSegs=[{label:"Open",value:s.byStatus.Open||0,color:"#1573ad"},{label:"In progress",value:s.byStatus["In progress"]||0,color:"#b7791f"},{label:"Closed",value:s.byStatus.Closed||0,color:"#2f7d57"}];
+  var areaRows=Object.keys(s.byArea).map(function(k){return {l:k,v:s.byArea[k]};}).sort(function(a,b){return b.v-a.v;}).slice(0,6);
+  var costRows=YACHTS.map(function(y){return {l:y.name,v:s.byYacht[y.id]||0};}).filter(function(r){return r.v>0;}).sort(function(a,b){return b.v-a.v;});
+  var ageRows=[{l:"0–7 days",v:s.age.a},{l:"8–30 days",v:s.age.b},{l:"30+ days",v:s.age.c}];
+  var avgFr=avg(s.fr), avgRes=avg(s.res);
+
+  var h='<div class="page-head"><div class="eyebrow">Baltic · Internal</div><h2>Service Desk</h2><p>Fleet-wide warranty, service &amp; ticketing — summary, cost, SLA and warranty follow-up. Filter below, then open any yacht or item to drill in.</p></div>';
+  h+='<div class="filterbar">'+filterSel("status","Status",["all","Open","In progress","Closed"],f.status)+filterSel("kind","Type",["all","ticket","warranty"],f.kind)+filterSel("urgency","Urgency",["all","low","normal","high","critical"],f.urgency)+filterSel("area","Area",["all"].concat(AREAS),f.area)+filterSel("yacht","Yacht",["all"].concat(YACHTS.map(function(y){return y.id;})),f.yacht,yachtLabel)+'<div class="fg clear"><button class="btn btn-outline btn-sm" id="f-clear">Clear filters</button></div></div>';
+  h+='<div class="kpi-row">'+kpiBox("Open tickets",s.openTickets,"in selection","amber")+kpiBox("Open warranty claims",s.openClaims,"in selection","red")+kpiBox("Warranty cost",money(s.warrantyCost),"warranty-covered","")+kpiBox("Service cost",money(s.serviceCost),"chargeable + "+money(s.goodwillCost)+" goodwill","green")+kpiBox("Warranty follow-ups",dueSoon,"due within 6 months","amber")+'</div>';
+  h+='<div class="kpi-row">'+kpiBox("Avg first response",fmtDur(avgFr),"across responded items","")+kpiBox("Avg resolution",avgRes==null?"—":((Math.round(avgRes*10)/10)+" d"),"raised → closed","green")+kpiBox("SLA breaches",s.breaches,"vs first-response target",s.breaches?"red":"")+kpiBox("Open > 30 days",s.age.c,"ageing backlog",s.age.c?"amber":"")+'</div>';
+  h+='<div class="card-hdr" style="border:none;padding:2px 2px 12px"><h3>Analyze</h3><span class="pill p-grey">'+s.items+' item'+(s.items===1?'':'s')+' in selection</span></div>';
+  h+='<div class="chart-grid three" style="margin-bottom:18px">'
+    +'<div class="chart-card"><h4>Items by status</h4><div class="donut-wrap">'+donutSVG(statusSegs)+'<div class="legend">'+statusSegs.map(function(g){return '<div class="li"><span class="sw" style="background:'+g.color+'"></span>'+g.label+'<span class="lv">'+g.value+'</span></div>';}).join("")+'</div></div></div>'
+    +'<div class="chart-card"><h4>Items by area (top 6)</h4>'+hbars(areaRows,"var(--brand-2)")+'</div>'
+    +'<div class="chart-card"><h4>Ageing of open items</h4>'+hbars(ageRows,"var(--warn)")+'</div></div>';
+  h+='<div class="chart-grid" style="margin-bottom:18px">'
+    +'<div class="chart-card"><h4>Cost by yacht</h4>'+hbars(costRows,"var(--brand)",money)+'</div>'
+    +'<div class="chart-card"><h4>SLA — first-response targets</h4><div class="sla-ref"><div class="sr"><span class="pill p-red">Critical</span><b>4 hours</b></div><div class="sr"><span class="pill p-amber">High</span><b>1 working day</b></div><div class="sr"><span class="pill p-blue">Normal</span><b>3 working days</b></div><div class="sr"><span class="pill p-grey">Low</span><b>5 working days</b></div></div></div></div>';
+  h+='<div class="card" style="margin-bottom:18px"><div class="card-hdr"><h3>Fleet schedule — all projects</h3><span class="pill p-grey">overview</span></div><div class="card-body"><div class="banner banner-blue" style="margin-bottom:12px"><span class="x">📅</span><div>Every delivered project on one timeline — scheduled work windows (from each yacht’s worklist) and warranty-end markers. Click a yacht to open it.</div></div>'+renderFleetGantt()+'</div></div>';
+  h+='<div class="two-col">'
+    +'<div class="card"><div class="card-hdr"><h3>Warranty follow-up</h3><span class="pill '+(dueSoon?"p-amber":"p-grey")+'">'+dueSoon+' due soon</span></div><div class="card-body"><div class="followup">'
+    +(fu.length? fu.map(function(x){ return '<div class="fu"><div><div class="fn">'+esc(x.y.name)+' · '+esc(x.y.hull)+'</div><div class="fm">Warranty ends '+esc(x.y.wEnd)+'</div></div><div style="display:flex;gap:8px;align-items:center"><span class="pill '+x.cls+'">'+esc(x.label)+'</span><button class="btn btn-outline btn-sm" data-open-yacht="'+x.y.id+'">Open</button></div></div>'; }).join(""):'<div class="hint">No yachts in selection.</div>')
+    +'</div></div></div>'
+    +'<div class="card"><div class="card-hdr"><h3>Fleet — tickets, claims &amp; cost</h3></div><div class="card-body t-wrap"><table><thead><tr><th>Yacht</th><th>Warranty</th><th>Open T</th><th>Open W</th><th>Cost</th><th></th></tr></thead><tbody id="desk-rows"></tbody></table></div></div>'
+    +'</div>';
+  h+='<div class="card" style="margin-top:18px"><div class="card-hdr"><h3>Matching items</h3><span class="pill p-grey">'+pairs.length+'</span></div><div class="card-body"><div class="match-list">'
+    +(pairs.length? pairs.map(function(p){return deskItemCard(p.y,p.it);}).join(""):'<div class="hint">No items match the current filters.</div>')
+    +'</div></div></div>';
+  el("view-desk").innerHTML=h;
+
+  var perY={}; for(i=0;i<pairs.length;i++){ var p=pairs[i]; var o=perY[p.y.id]||(perY[p.y.id]={t:0,w:0,cost:0}); if(p.it.status!=="Closed"){ if(p.it.kind==="warranty")o.w++; else o.t++; } o.cost+=(p.it.cost||0); }
+  var rows="";
+  for(i=0;i<YACHTS.length;i++){ var y=YACHTS[i]; if(f.yacht!=="all"&&y.id!==f.yacht) continue; var oy=perY[y.id]||{t:0,w:0,cost:0}, wl=WARRANTY_LABEL[y.warranty]||WARRANTY_LABEL.expired;
+    rows+='<tr class="clickable" data-open-yacht="'+y.id+'"><td style="font-weight:700;color:var(--ink)">'+esc(y.name)+'<div style="font-size:11px;color:var(--faint);font-weight:400">'+esc(y.hull)+'</div></td><td><span class="pill '+wl[1]+'">'+wl[0]+'</span></td><td><span class="pill '+(oy.t?'p-amber':'p-grey')+'">'+oy.t+'</span></td><td><span class="pill '+(oy.w?'p-red':'p-grey')+'">'+oy.w+'</span></td><td style="font-weight:700">'+money(oy.cost)+'</td><td><button class="btn btn-outline btn-sm" data-open-yacht="'+y.id+'">Open</button></td></tr>'; }
+  el("desk-rows").innerHTML=rows||'<tr><td colspan="6"><span class="hint">No yachts in selection.</span></td></tr>';
+
+  el("view-desk").querySelectorAll("[data-filter]").forEach(function(sel){ sel.addEventListener("change",function(){ state.deskFilter[sel.getAttribute("data-filter")]=sel.value; renderDesk(); }); });
+  el("f-clear").addEventListener("click",function(){ state.deskFilter={status:"all",urgency:"all",area:"all",kind:"all",yacht:"all"}; renderDesk(); });
+  el("view-desk").querySelectorAll("[data-open-yacht]").forEach(function(b){ b.addEventListener("click",function(ev){ ev.stopPropagation(); openYacht(b.getAttribute("data-open-yacht")); }); });
+  el("view-desk").querySelectorAll("[data-item-desk]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(c.getAttribute("data-yid"),c.getAttribute("data-ref")); }); });
+}
+
+/* ═══════ MODAL ═══════ */
+function openModal(opt){
+  el("modal-title").textContent=opt.title||"Info";
+  var ref=el("modal-ref"); if(opt.ref){ ref.textContent=opt.ref; ref.classList.remove("hidden"); } else ref.classList.add("hidden");
+  el("modal-body").innerHTML=opt.body||"";
+  var foot=el("modal-foot"); if(opt.footer){ foot.innerHTML=opt.footer; foot.classList.remove("hidden"); } else { foot.innerHTML=""; foot.classList.add("hidden"); }
+  el("modal").classList.toggle("wide",!!opt.wide);
+  el("overlay").classList.add("show"); el("modal").classList.add("show");
+  foot.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener("click",closeModal); });
+}
+function closeModal(){ el("overlay").classList.remove("show"); el("modal").classList.remove("show"); }
+
+/* ═══════ SHARE ═══════ */
+function shareYacht(){ var y=currentYacht(); if(!y) return; var base=window.location.href.split("#")[0], link=base+"#yacht="+y.id;
+  openModal({ title:"Share "+y.name, ref:"Single-yacht link",
+    body:'<p class="ink">Yacht Life is built to be shared <b>standalone</b> — one link per yacht that opens straight into that yacht’s page.</p>'
+      +'<div class="field full" style="margin:6px 0 12px"><label>Owner link (single yacht only)</label><input type="text" id="share-link" value="'+esc(link)+'" readonly></div>'
+      +'<p>Opened with this link the page boots directly into <b>'+esc(y.name)+'</b> in <b>owner mode</b> — the fleet index, Service Desk and other yachts are not reachable.</p>'
+      +'<p class="hint">In this prototype that’s driven by the link. Once embedded in the Baltic Hub, each yacht gets its own permission-controlled page so an owner only ever sees their own yacht.</p>',
+    footer:'<button class="btn btn-outline" data-close="1">Close</button><button class="btn btn-primary" id="copy-link">Copy link</button>' });
+  var inp=el("share-link"); el("copy-link").addEventListener("click",function(){ inp.select(); try{ document.execCommand("copy"); el("copy-link").textContent="Copied ✓"; }catch(e){ el("copy-link").textContent="Select & copy"; } });
+}
+
+/* ═══════ INIT ═══════ */
+function applyOwnerChrome(){ el("btn-home").classList.toggle("hidden",state.ownerMode); el("btn-desk").classList.toggle("hidden",state.ownerMode); var bw2=el("btn-workspace"); if(bw2) bw2.classList.toggle("hidden",state.ownerMode); }
+function routeFromHash(){ var hsh=(window.location.hash||"").replace(/^#/,""); var m=hsh.match(/^yacht=(.+)$/);
+  if(m){ var id=m[1]; if(yById(id)){ state.ownerMode=true; applyOwnerChrome(); openYacht(id); return true; } }
+  if(hsh==="fleet"){ setView("fleet"); return true; }
+  if(hsh==="desk"){ openServiceDesk(); return true; }
+  return false; }
+function init(){
+  renderBuildList(); renderFleet("");
+  el("choice-life").addEventListener("click",function(){ setView("fleet"); });
+  el("open-life").addEventListener("click",function(ev){ ev.stopPropagation(); setView("fleet"); });
+  el("choice-build").addEventListener("click",buildInfo);
+  el("open-build").addEventListener("click",function(ev){ ev.stopPropagation(); buildInfo(); });
+  el("btn-home").addEventListener("click",function(){ state.ownerMode=false; applyOwnerChrome(); setView("landing"); }); var bw=el("btn-workspace"); if(bw) bw.addEventListener("click",function(){ window.location.href="../index.html"; });
+  el("btn-desk").addEventListener("click",openServiceDesk);
+  el("open-desk").addEventListener("click",openServiceDesk);
+  el("btn-share").addEventListener("click",function(){ if(state.view==="yacht"){ shareYacht(); return; } openModal({title:"Sharing Yacht Life",body:'<p class="ink">Open a yacht, then use <b>Share this yacht</b> to get a single-yacht owner link.</p><p>Each delivered yacht can be shared as its own standalone page so the owner and crew only reach that one yacht.</p>'}); });
+  el("fleet-search").addEventListener("input",function(){ renderFleet(this.value); });
+  document.addEventListener("click",function(ev){ var t=ev.target;
+    var card=t.closest?t.closest("[data-yacht]"):null; if(card){ openYacht(card.getAttribute("data-yacht")); return; }
+    var nav=t.closest?t.closest("[data-nav]"):null; if(nav){ var v=nav.getAttribute("data-nav"); if(v==="landing"){ state.ownerMode=false; applyOwnerChrome(); setView("landing"); } else setView("fleet"); } });
+  document.addEventListener("keydown",function(ev){ if(ev.key==="Escape") closeModal();
+    if((ev.key==="Enter"||ev.key===" ")&&ev.target&&ev.target.getAttribute){ var yid=ev.target.getAttribute("data-yacht"); if(yid){ ev.preventDefault(); openYacht(yid); } if(ev.target.id==="choice-life"){ ev.preventDefault(); setView("fleet"); } } });
+  el("overlay").addEventListener("click",closeModal); el("modal-close").addEventListener("click",closeModal);
+  applyOwnerChrome(); if(!routeFromHash()) setView("landing");
+}
+function buildInfo(){ window.location.href="index.html"; }
+init();
+</script>
+</body>
+</html>
