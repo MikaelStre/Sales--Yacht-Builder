@@ -1,21 +1,23 @@
-# workbench-v43 — what changed vs v42
+# workbench-v43 — changes vs v42
 
-This is the complete workspace with the **Yacht Life** addition folded into **Projects**.
+Complete workspace with the **Yacht Life** addition and the new **Project Follow-up / Project Reporting**.
 
-## Changed / added (only these two)
-- **index.html** (hub) — the **Projects** tile now opens `projects/landing.html`; blurb updated. Nothing else on the hub changed.
-- **projects/landing.html** (NEW) — the new **Projects landing**: choose **Projects in Build** (opens the existing `projects/index.html`) or **Yacht Life** (delivered fleet, warranty, after-sale, service team, two-way tickets, RFQ, docs, Baltic Service Desk, and the Tools worklist → linked Board & Gantt). **← Workspace** returns to the hub.
+## Changed / added
+- **index.html** (hub) — Projects tile opens `projects/landing.html`. (only line changed on the hub)
+- **projects/landing.html** (NEW) — Projects landing: **Projects in Build** (opens existing `projects/index.html`) or **Yacht Life**.
+- **projects/project-follow-up.html** (NEW) — **Project Reporting**: the monthly project-reporting sheet (Contract / Hours / Procurement / PnL: Business approval vs Current forecast) rebuilt from `B121-01 Project reporting.xlsx`. The PM fills the highlighted cells each month and **Saves the month** → monthly history; includes an **Analyze** tool (profit-% trend, forecast-profit trend, hours-over-time, business-vs-forecast). Contract sales price + budgeted production/engineering hours are flagged **“from sales.”**
+- **projects/*.html nav** — a **Project Follow-up** tab added after *Price calculation* on every project page (nav link only).
+- **Yacht Life app** — on the **Service Desk** matching items and the yacht ticket/warranty/RFQ lists, a **👁 View** button opens a **read-only** look at the ticket / warranty / service info (easy at-a-glance), with **Open full** to edit.
 
-## Everything else is the untouched v42 content
-engineering/ (full tree), procurement/, projects/ (all existing tools), sales/ — unchanged.
+## Untouched v42 content
+engineering/, sales/, all existing projects tools (page bodies unchanged; only the nav gained one tab).
 
-## Two placeholders to swap (environment limitation)
-`procurement/index.html` and `procurement/project-material.html` are **regenerated placeholders**.
-Their originals are small SharePoint files that returned no content when downloaded in this
-environment. **Replace these two with your v42 originals** — the procurement `still-to-buy.html`
-and every other page is the real content.
+## Project-tile landings (2026-07-07)
+- **procurement/index.html** — now a **project-tiles landing** (Yacht-Life style) for in-build projects; each tile opens `still-to-buy.html?p=HULL` (and Project Material). This REPLACES the old placeholder — only `procurement/project-material.html` remains a placeholder.
+- **sales/ongoing.html** &amp; **sales/resting.html** — rebuilt as **project tiles** (ongoing / resting sales projects); each tile opens `pricing.html?p=HULL` / `specification.html?p=HULL`.
+
+## One placeholder to swap
+`procurement/index.html` + `procurement/project-material.html` are regenerated placeholders (small SharePoint files returned no content in this environment). Replace with your v42 originals; everything else is real.
 
 ## Demo note
-Yacht Life data (fleet, tickets, warranty, worklist, plans) is sample data held in the browser
-(localStorage) so the demo is clickable offline. It binds to the SharePoint structure next,
-per `Yacht-Life-Hub-Integration-Scoping.docx`. Styling is kept as v42.
+Yacht Life and Project Reporting data are held in the browser (localStorage) for the demo; they bind to the SharePoint structure next. Styling kept as v42.

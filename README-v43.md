@@ -34,3 +34,7 @@ Then re-zip / re-upload as **workbench-v43**. Do not delete or change any other 
 - **Styling** matches v42 (ocean-blue `#0e5a8a`, slate ink, Calibri, 16px radius, v42 logo).
 - The single-yacht owner share link is `projects/landing.html#yacht=<id>` (owner mode hides the
   Baltic-only nav). In production this becomes a permission-scoped page.
+
+
+## FIX (2026-07-07)
+The earlier overlay shipped `project-follow-up.html` but NOT the project pages that hold the **Project Follow-up tab**, so there was no link to open it. This overlay now includes the updated **projects/*.html** (v42 content + the one nav tab). Upload the whole `projects/` folder (at minimum `projects/index.html`) so the tab appears. `project-follow-up.html` was already correct.
