@@ -880,13 +880,14 @@ function itemCard(t){
   return '<div class="item-card" data-item="'+esc(t.ref)+'"><div class="tt"><span class="ref">'+esc(t.ref)+'</span><div class="tags">'+kindPill(t.kind)+urgencyPill(t.urgency)+statusPill(t.status)+(t.kind==="rfq"?quotePill((t.quote&&t.quote.state)||"Requested"):"")+'</div></div>'
     +'<h4>'+esc(t.title)+'</h4><div class="tags"><span class="pill p-grey">'+esc(t.area)+'</span><span class="hint">'+esc(t.date)+' · '+esc(t.reporter)+'</span></div>'
     +'<div class="desc">'+esc(t.desc)+'</div>'
-    +'<div class="meta2"><span><b>Assigned:</b> '+esc(t.assignee||"Unassigned")+'</span><span><b>Responded:</b> '+esc(resp||"—")+'</span>'+(t.kind==="rfq"?'<span><b>Quote:</b> '+((t.quote&&t.quote.amount)?money(t.quote.amount):"—")+'</span>':'<span><b>Cost:</b> '+money(t.cost)+' · '+esc(t.billable||"—")+'</span>')+'<span>💬 '+((t.thread||[]).length)+'</span></div></div>';
+    +'<div class="meta2"><span><b>Assigned:</b> '+esc(t.assignee||"Unassigned")+'</span><span><b>Responded:</b> '+esc(resp||"—")+'</span>'+(t.kind==="rfq"?'<span><b>Quote:</b> '+((t.quote&&t.quote.amount)?money(t.quote.amount):"—")+'</span>':'<span><b>Cost:</b> '+money(t.cost)+' · '+esc(t.billable||"—")+'</span>')+'<span>💬 '+((t.thread||[]).length)+'</span><button class="btn btn-outline btn-sm" data-view="'+esc(t.ref)+'" style="margin-left:auto;padding:4px 10px">👁 View</button></div></div>';
 }
 function renderItemList(id,kind,containerId,countId){
   var list=getItems(id).filter(function(t){return t.kind===kind;}), box=el(containerId); if(!box) return; var h="";
   if(!list.length) box.innerHTML='<div class="hint">Nothing logged yet.</div>';
   else{ for(var i=0;i<list.length;i++) h+=itemCard(list[i]); box.innerHTML=h;
-    box.querySelectorAll("[data-item]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(id,c.getAttribute("data-item")); }); }); }
+    box.querySelectorAll("[data-item]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(id,c.getAttribute("data-item")); }); });
+    box.querySelectorAll("[data-view]").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation(); openItemView(id,b.getAttribute("data-view")); }); }); }
   if(countId){ var openN=list.filter(function(t){return t.status!=="Closed";}).length; var e=el(countId); if(e) e.textContent=openN+" open · "+list.length+" total"; }
 }
 
@@ -985,6 +986,24 @@ function submitItem(y,kind){
   el("view-new").addEventListener("click",function(){ openItemDetail(y.id,ref); });
 }
 
+/* ═══════ VIEW-ONLY (at a glance) ═══════ */
+function vRow(l,v){ return '<div><div class="l">'+esc(l)+'</div><div class="v">'+esc(v)+'</div></div>'; }
+function openItemView(yid,ref){
+  var t=findItem(yid,ref); if(!t) return; var resp=lastResponder(t);
+  var kl=t.kind==="warranty"?"Warranty claim":(t.kind==="rfq"?"RFQ / Quote":"Ticket");
+  var body='<div class="det-row">'+kindPill(t.kind)+urgencyPill(t.urgency)+statusPill(t.status)+'<span class="pill p-grey">'+esc(t.area)+'</span>'+(t.kind==="rfq"?quotePill((t.quote&&t.quote.state)||"Requested"):"")+'</div>'
+    +'<h3 style="font-family:var(--serif);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:14px">'+esc(t.title)+'</h3>'
+    +'<div class="det-grid">'+vRow("Number",t.ref)+vRow("Reported",t.date)+vRow("By",t.reporter)+vRow("Assigned to (working on it)",t.assignee||"Unassigned")+vRow("Last responded by",resp||"—")
+    +(t.kind==="rfq"?vRow("Quote",((t.quote&&t.quote.amount)?money(t.quote.amount):"—")+" · "+((t.quote&&t.quote.state)||"Requested")):(state.ownerMode?'':vRow("Cost",money(t.cost)+" · "+(t.billable||"—"))))
+    +vRow("Photos",(t.photos||0))+vRow("Data logs",(t.logs||0))+'</div>'
+    +'<div class="sec-label">Description</div><p class="ink">'+esc(t.desc)+'</p>'
+    +'<div class="sec-label">Conversation</div><div class="thread">'+threadHtml(t)+'</div>'
+    +'<div class="banner banner-blue" style="margin-top:12px"><span class="x">👁</span><div>View only — a quick look at this '+esc(t.kind==="warranty"?"warranty claim":t.kind==="rfq"?"quote request":"ticket")+'.'+(state.ownerMode?'':' Use <b>Open full</b> to respond or edit.')+'</div></div>';
+  var foot='<button class="btn btn-outline" data-close="1">Close</button>'+(state.ownerMode?'':'<button class="btn btn-primary" id="v-open">Open full</button>');
+  openModal({ title:kl+" · view", ref:t.ref, wide:true, body:body, footer:foot });
+  var vo=el("v-open"); if(vo) vo.addEventListener("click",function(){ openItemDetail(yid,ref); });
+}
+
 /* ═══════ DETAIL (pop-out, two-way) ═══════ */
 function openItemDetail(yid,ref){
   var t=findItem(yid,ref); if(!t) return;
@@ -1071,7 +1090,7 @@ function computeStats(pairs){
 function kpiBox(l,v,u,cls){ return '<div class="kpi'+(cls?" "+cls:"")+'"><div class="l">'+esc(l)+'</div><div class="v" style="font-size:19px">'+esc(String(v))+'</div><div class="u">'+esc(u)+'</div></div>'; }
 function filterSel(id,label,opts,cur,labeler){ var o=opts.map(function(v){ var lab=v==="all"?"All":(labeler?labeler(v):cap(v)); return '<option value="'+esc(v)+'"'+(v===cur?" selected":"")+'>'+esc(lab)+'</option>'; }).join(""); return '<div class="fg"><label>'+esc(label)+'</label><select data-filter="'+id+'">'+o+'</select></div>'; }
 function deskItemCard(y,it){ var fr=firstResponseH(it), br=slaBreach(it);
-  return '<div class="item-card" data-item-desk="1" data-yid="'+y.id+'" data-ref="'+esc(it.ref)+'"><div class="tt"><span class="ref">'+esc(y.name)+' · '+esc(it.ref)+'</span><div class="tags">'+kindPill(it.kind)+urgencyPill(it.urgency)+statusPill(it.status)+(br?'<span class="pill p-red">SLA</span>':'')+'</div></div><h4>'+esc(it.title)+'</h4><div class="meta2"><span><b>Area:</b> '+esc(it.area)+'</span><span><b>Assigned:</b> '+esc(it.assignee||"Unassigned")+'</span><span><b>1st response:</b> '+fmtDur(fr)+'</span><span><b>Cost:</b> '+money(it.cost)+'</span></div></div>'; }
+  return '<div class="item-card" data-item-desk="1" data-yid="'+y.id+'" data-ref="'+esc(it.ref)+'"><div class="tt"><span class="ref">'+esc(y.name)+' · '+esc(it.ref)+'</span><div class="tags">'+kindPill(it.kind)+urgencyPill(it.urgency)+statusPill(it.status)+(br?'<span class="pill p-red">SLA</span>':'')+'</div></div><h4>'+esc(it.title)+'</h4><div class="meta2"><span><b>Area:</b> '+esc(it.area)+'</span><span><b>Assigned:</b> '+esc(it.assignee||"Unassigned")+'</span><span><b>1st response:</b> '+fmtDur(fr)+'</span><span><b>Cost:</b> '+money(it.cost)+'</span><button class="btn btn-outline btn-sm" data-deskview-yid="'+y.id+'" data-deskview-ref="'+esc(it.ref)+'" style="margin-left:auto;padding:4px 10px">👁 View</button></div></div>'; }
 function donutSVG(segs){
   var total=0,i; for(i=0;i<segs.length;i++) total+=segs[i].value; if(total<=0) total=1;
   var r=52,C=2*Math.PI*r,off=0,circ="";
@@ -1132,6 +1151,7 @@ function renderDesk(){
   el("f-clear").addEventListener("click",function(){ state.deskFilter={status:"all",urgency:"all",area:"all",kind:"all",yacht:"all"}; renderDesk(); });
   el("view-desk").querySelectorAll("[data-open-yacht]").forEach(function(b){ b.addEventListener("click",function(ev){ ev.stopPropagation(); openYacht(b.getAttribute("data-open-yacht")); }); });
   el("view-desk").querySelectorAll("[data-item-desk]").forEach(function(c){ c.addEventListener("click",function(){ openItemDetail(c.getAttribute("data-yid"),c.getAttribute("data-ref")); }); });
+  el("view-desk").querySelectorAll("[data-deskview-ref]").forEach(function(b){ b.addEventListener("click",function(e){ e.stopPropagation(); openItemView(b.getAttribute("data-deskview-yid"),b.getAttribute("data-deskview-ref")); }); });
 }
 
 /* ═══════ MODAL ═══════ */
